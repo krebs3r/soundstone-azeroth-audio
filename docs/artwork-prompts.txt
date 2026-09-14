@@ -1,0 +1,15 @@
+Artwork generated with the built-in Imagegen tool.
+
+Atlas generation prompt:
+Use case: background-extraction
+Asset type: production texture atlas for the approved Soundstone World of Warcraft audio addon.
+Input image 1: approved visual reference, the Soundstone design board. Extract and faithfully redraw ONLY its logo and three golden category symbols into one transparent sprite atlas.
+Output: ONE square image with a genuinely transparent alpha background, no checkerboard, no black backdrop, no text, no watermark. Exactly a 2 by 2 grid of equally sized square cells. Each cell must have generous equal transparent padding (about 18% of the cell on all sides) so no object touches cell boundaries.
+Top-left cell: approved combined Soundstone logo from the upper left of reference, pale rounded grey/off-white hearthstone with cyan-blue spiral rune, warm bronze mounting details, and two thick gold sound-wave arcs on EACH side. Centered, strong silhouette. This must match the approved reference, not a new design.
+Top-right cell: the approved golden Gesamt audio symbol: a small centered circular dot and two curved broadcast/sound-wave arcs on EACH side. Exactly the gold category glyph visible in the reference. No square frame.
+Bottom-left cell: approved gold speaker silhouette facing right with two gold sound-wave arcs to its right, matching the reference. No square frame.
+Bottom-right cell: approved golden musical note (two beamed eighth notes), matching the upper-right Musik category icon in the reference. No frame and no mute slash.
+Style: high-quality crisp fantasy UI gold metal with restrained bevel, strong readable silhouettes and the same color language as the original mockup. The stone should retain its painted fantasy item texture. All 4 glyphs individually isolated on true transparency. No decorative enclosing frames, labels, UI panels, layout lines, shadows outside the objects or other elements. Align shapes in the exact centers of their cells and keep the same visual scale for the three audio glyphs. Ideal atlas size 1024x1024.
+
+Final black-matte conversion prompt:
+Edit this exact four-icon atlas. Preserve all four symbols, their positions and proportions exactly: upper left hearthstone with gold sound waves, upper right gold audio waves, lower left speaker, lower right musical notes. Replace EVERY checkerboard background pixel with completely SOLID PURE BLACK (#000000). No grey squares, no checkerboard, no gradients, no glow or shadows outside the icons. The result is intentionally an OPAQUE BLACK-BACKGROUND texture atlas for additive compositing in a game UI; do not simulate transparency. Output the same square two by two layout with clean isolated symbols on an entirely uniform pure black backdrop. Do not change the icons or add text.
