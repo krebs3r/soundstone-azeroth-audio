@@ -17,10 +17,17 @@ for line in toc.splitlines():
         assert (addon / line).is_file(), f'Missing TOC entry: {line}'
 bindings = ET.parse(addon / 'Bindings.xml').getroot()
 assert len(bindings.findall('Binding')) == 4
-texture = (addon / 'Media/Icons.tga').read_bytes()
-width, height = struct.unpack_from('<HH', texture, 12)
-assert (width, height, texture[2], texture[16], texture[17]) == (512, 512, 2, 32, 40)
-assert len(texture) == 18 + 512 * 512 * 4
+textures = list((addon / 'Media').glob('*.tga'))
+assert len(textures) == 14, 'Unexpected runtime texture set'
+for path in textures:
+    texture = path.read_bytes()
+    width, height = struct.unpack_from('<HH', texture, 12)
+    assert width == height and width in (64, 128, 512), path.name
+    assert (texture[2], texture[16], texture[17]) == (2, 32, 40), path.name
+    assert len(texture) == 18 + width * height * 4, path.name
+    alpha = texture[21::4]
+    assert min(alpha) == 0 and max(alpha) == 255, f'Missing transparency: {path.name}'
+    assert any(0 < a < 255 for a in alpha), f'Missing antialiasing: {path.name}'
 dest = root / 'dist'
 dest.mkdir(exist_ok=True)
 output = dest / f'Soundstone-{version}.zip'

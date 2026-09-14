@@ -52,6 +52,26 @@ local de = {
     BIND_MASTER = "Gesamten Spielton umschalten", BIND_SFX = "Soundeffekte umschalten", BIND_MUSIC = "Musik umschalten",
 }
 
+en.COMPACT='Compact view';en.EXPAND='Expanded view';en.OUTPUT='WoW output device'
+en.SIZE='Soundstone size';en.RESET_SIZE='Reset size';en.RESET='Reset position'
+en.DEVICE_UNAVAILABLE='Output devices unavailable';en.DEVICE_GONE='Device no longer available'
+en.DEVICE_RESTART_ERROR='WoW could not restart audio. Check the selected device in Audio settings.'
+en.DEVICE_BUSY='Audio device change in progress';en.DEVICE_SCROLL='Scroll to see more devices'
+en.DRAG_HELP='Click: options and output device. Drag: move.'
+en.TOGGLE_HELP='Left-click: toggle | Right-click: expanded view'
+en.MINIMAP_HELP='Left-click: change view | Right-click: show/hide Soundstone'
+en.BIND_PANEL='Switch compact / expanded view'
+en.HELP='/soundstone: change view; compact, expand, bar, minimap, lock, reset, scale [75-150]; master/sfx/music [0-100|on|off|toggle]'
+de.COMPACT='Kompaktansicht';de.EXPAND='Große Ansicht';de.OUTPUT='WoW-Ausgabegerät'
+de.SIZE='Soundstone-Größe';de.RESET_SIZE='Größe zurücksetzen';de.RESET='Position zurücksetzen'
+de.DEVICE_UNAVAILABLE='Ausgabegeräte nicht verfügbar';de.DEVICE_GONE='Gerät nicht mehr verfügbar'
+de.DEVICE_RESTART_ERROR='WoW konnte den Ton nicht neu starten. Prüfe das Gerät in den Audioeinstellungen.'
+de.DEVICE_BUSY='Gerätewechsel läuft';de.DEVICE_SCROLL='Mausrad: weitere Geräte'
+de.DRAG_HELP='Klick: Optionen und Ausgabegerät. Ziehen: verschieben.'
+de.TOGGLE_HELP='Linksklick: umschalten | Rechtsklick: große Ansicht'
+de.MINIMAP_HELP='Linksklick: Ansicht wechseln | Rechtsklick: Soundstone ein/aus'
+de.BIND_PANEL='Kompakte / große Ansicht wechseln'
+de.HELP='/soundstone: Ansicht wechseln; compact, expand, bar, minimap, lock, reset, scale [75-150]; master/sfx/music [0-100|on|off|toggle]'
 A.L = setmetatable(GetLocale and GetLocale() == "deDE" and de or {}, { __index = en })
 BINDING_HEADER_SOUNDSTONE = A.L.BIND_HEADER
 BINDING_NAME_SOUNDSTONE_PANEL = A.L.BIND_PANEL

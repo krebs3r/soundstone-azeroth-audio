@@ -8,7 +8,7 @@ local function object(kind, name, parent)
     if name then _G[name] = o end
     return o
 end
-function methods:SetSize(w,h) self.width,self.height=w,h end
+function methods:SetSize(w,h) local changed=self.width~=w or self.height~=h;self.width,self.height=w,h;if changed then self:Fire('OnSizeChanged',w,h) end end
 function methods:SetWidth(w) self.width=w end
 function methods:SetHeight(h) self.height=h end
 function methods:GetWidth() return self.width end
@@ -17,8 +17,23 @@ function methods:SetPoint(...) table.insert(self.points, {...}) end
 function methods:GetPoint(i) return unpack(self.points[i or 1] or {}) end
 function methods:ClearAllPoints() self.points={} end
 function methods:SetAllPoints(...) self.allPoints={...} end
-function methods:GetCenter() return 960,540 end
-function methods:GetEffectiveScale() return 1 end
+function methods:SetScale(v) self.scale=v end
+function methods:GetEffectiveScale() return (self.scale or 1)*(self.parent and self.parent:GetEffectiveScale() or 1) end
+local function coordinates(o)
+    if o==UIParent then return 0,0,o.width*o:GetEffectiveScale(),o.height*o:GetEffectiveScale() end
+    local p=o.points[1] or {'CENTER'};local point,relative,rpoint,x,y=p[1],p[2],p[3],p[4],p[5]
+    if type(relative)~='table' then x,y=relative,rpoint;relative=o.parent or UIParent;rpoint=point end
+    local l,b,w,h=coordinates(relative)
+    local function fraction(s) return s:find('LEFT') and 0 or (s:find('RIGHT') and 1 or .5),s:find('BOTTOM') and 0 or (s:find('TOP') and 1 or .5) end
+    local rx,ry=fraction(rpoint or point);local ax,ay=fraction(point)
+    local scale=o:GetEffectiveScale();local ow,oh=o.width*scale,o.height*scale
+    return l+w*rx+(x or 0)*scale-ow*ax,b+h*ry+(y or 0)*scale-oh*ay,ow,oh
+end
+function methods:GetCenter() local l,b,w,h=coordinates(self);local s=self:GetEffectiveScale();return (l+w/2)/s,(b+h/2)/s end
+function methods:GetLeft() local l=coordinates(self);return l/self:GetEffectiveScale() end
+function methods:GetTop() local _,b,_,h=coordinates(self);return (b+h)/self:GetEffectiveScale() end
+function methods:SetFont(path,size,flags) self.fontPath,self.fontSize=path,size end
+function methods:SetWordWrap(value) self.wordWrap=value end
 function methods:SetScript(event, fn) self.scripts[event]=fn end
 function methods:GetScript(event) return self.scripts[event] end
 function methods:HookScript(event,fn)
@@ -91,11 +106,16 @@ function IsShiftKeyDown() return Mock.shift or false end
 function IsLoggedIn() return false end
 function GetMinimapShape() return Mock.minimapShape or 'ROUND' end
 function GetCursorPosition() return 1000,600 end
+function GetPhysicalScreenSize() return Mock.physicalWidth or 1920,Mock.physicalHeight or 1080 end
 DEFAULT_CHAT_FRAME={AddMessage=function(_,v) table.insert(Mock.messages,v) end}
 GameTooltip={SetOwner=function() end, SetText=function() end, AddLine=function() end, Show=function() end, Hide=function() end}
 
 Mock.cvars={Sound_MasterVolume='0.8',Sound_SFXVolume='0.6',Sound_MusicVolume='0.25',
-    Sound_EnableAllSound='1',Sound_EnableSFX='1',Sound_EnableMusic='1',Sound_AmbienceVolume='0.45',Sound_DialogVolume='0.9'}
+    Sound_EnableAllSound='1',Sound_EnableSFX='1',Sound_EnableMusic='1',Sound_AmbienceVolume='0.45',Sound_DialogVolume='0.9',Sound_OutputDriverIndex='0'}
+Mock.devices={'System Default','Speakers','Headset'};Mock.restarts=0
+function Sound_GameSystem_GetNumOutputDrivers() if Mock.deviceError then error('unavailable') end;return #Mock.devices end
+function Sound_GameSystem_GetOutputDriverNameByIndex(i) return Mock.devices[i+1] end
+function Sound_GameSystem_RestartSoundSystem() if Mock.restartError then error('restart denied') end;Mock.restarts=Mock.restarts+1 end
 function Mock.read(name) if Mock.throwRead then error('missing API') end; return Mock.cvars[name] end
 function Mock.write(name,value)
     if Mock.throwWrite then error('restricted write') end

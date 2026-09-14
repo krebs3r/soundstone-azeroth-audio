@@ -12,7 +12,7 @@ if os.environ.get('SOUNDSTONE_TEST_DEPS'):
 from lupa.lua51 import LuaRuntime
 
 ROOT = Path(__file__).resolve().parents[1]
-FILES = ['Locale.lua', 'Compat.lua', 'Audio.lua', 'UI.lua', 'Core.lua']
+FILES = ['Locale.lua', 'Compat.lua', 'Assets.lua', 'Layout.lua', 'Audio.lua', 'Devices.lua', 'UI.lua', 'Core.lua']
 total = 0
 for variant, project, locale, legacy, backdrop in [
     ('Retail', 1, 'deDE', False, True),
@@ -24,6 +24,8 @@ for variant, project, locale, legacy, backdrop in [
     print('\n--- ' + variant + ' ---', flush=True)
     lua = LuaRuntime(unpack_returned_tuples=True)
     lua.execute((ROOT / 'tests/wow_mock.lua').read_text(encoding='utf-8'))
+    lua.globals().print = lambda *items: print(*items, flush=True)
+    lua.execute('SoundstoneDB={positions={bar={point="CENTER",x=145,y=-85}},showBar=true,showMinimap=true,locked=false}')
     lua.globals().WOW_PROJECT_ID = project
     lua.globals().Mock.locale = locale
     if legacy:
@@ -37,7 +39,8 @@ for variant, project, locale, legacy, backdrop in [
     total += lua.execute((ROOT / 'tests/test_soundstone.lua').read_text(encoding='utf-8'))
     assert ns.L.MASTER == ('Gesamt' if locale == 'deDE' else 'Master')
     # Reload into an independent namespace and fresh frames, keeping saved data/CVars.
-    lua.execute('SoundstoneDB.positions.bar={point="CENTER",x=145,y=-85}; SoundstoneDB.showBar=false; SoundstoneDB.locked=true')
+    total += lua.execute((ROOT / 'tests/test_v02.lua').read_text(encoding='utf-8'))
+    lua.execute('SoundstoneDB.position={x=145,y=-85}; SoundstoneDB.showBar=false; SoundstoneDB.locked=true')
     saved = ns.db
     cvars = lua.globals().Mock.cvars
     lua.execute((ROOT / 'tests/wow_mock.lua').read_text(encoding='utf-8'))
@@ -54,7 +57,7 @@ for variant, project, locale, legacy, backdrop in [
         load((ROOT / 'Soundstone' / name).read_text(encoding='utf-8'), '@'+name, reloaded)
     reloaded.Initialize(reloaded)
     assert len(lua.globals().Mock.writes) == 0
-    assert reloaded.db.positions.bar.x == 145
+    assert reloaded.db.position.x == 145
     assert reloaded.db.locked is True
     assert reloaded.UI.bar.IsShown(reloaded.UI.bar) is False
     assert reloaded.audio.Get(reloaded.audio, 'music').percent == 30
@@ -69,7 +72,8 @@ for name in FILES:
 ns.Initialize(ns)
 assert ns.db.showBar is True
 assert ns.db.minimapAngle == 225
-assert ns.db.positions.bar is None
+assert ns.db.positions is None
+assert ns.db.schema == 2
 total += 1
 print('PASS corrupted SavedVariables recover to valid defaults', flush=True)
 print(f'\nPASS: {total} scenario checks across 5 simulated API/client configurations.', flush=True)

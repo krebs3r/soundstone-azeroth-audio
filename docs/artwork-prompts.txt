@@ -13,3 +13,16 @@ Style: high-quality crisp fantasy UI gold metal with restrained bevel, strong re
 
 Final black-matte conversion prompt:
 Edit this exact four-icon atlas. Preserve all four symbols, their positions and proportions exactly: upper left hearthstone with gold sound waves, upper right gold audio waves, lower left speaker, lower right musical notes. Replace EVERY checkerboard background pixel with completely SOLID PURE BLACK (#000000). No grey squares, no checkerboard, no gradients, no glow or shadows outside the icons. The result is intentionally an OPAQUE BLACK-BACKGROUND texture atlas for additive compositing in a game UI; do not simulate transparency. Output the same square two by two layout with clean isolated symbols on an entirely uniform pure black backdrop. Do not change the icons or add text.
+
+Soundstone 0.2 frame sprite sheet — 2026-09-14
+Use case: precise-object-edit
+Asset type: production game UI skin sprite sheet for the Soundstone WoW addon.
+Reference image: approved design-concept.png. Reproduce the exact material language of the two LOWER mixer windows: left RETAIL and right CLASSIC.
+Create ONE 1536 by 1024 transparent RGBA sprite sheet, front-on, orthographic, no perspective, no scene, no labels or typography.
+Layout has TWO equal columns. Keep 48 pixels clear around every object.
+TOP ROW: two EMPTY rectangular mixer window shells, each approximately 640x340: left thin gold-and-silver beveled Retail frame, near-black subtly blue-grey interior, diagonal clipped/softened outer corners, small restrained gold crest centered on top edge; right weathered iron Classic frame with corner rivets, charcoal textured interior, clipped rounded outer corners. Exactly like the reference windows. These are EMPTY shells: NO title text, NO header dividing line, NO icons, NO sliders, NO close button, NO knobs. The large center field must be uninterrupted and dark, so the frame can be cut into nine-slice parts. Both shells aligned in size.
+MIDDLE ROW: left and right EMPTY compact bar shells, each approximately 640x90, matching the corresponding large shell. NO grip dots, NO dividers, NO icons, NO numbers.
+BOTTOM ROW: neatly separated reusable controls matching the reference, in this exact horizontal order: red square metal close button with gold X; dark rectangular metal toggle button with NO text; red rectangular metal toggle button with NO text; small vertical gold-metal diamond slider thumb; small vertical silver-metal diamond slider thumb; single small round metal grip rivet; thin gold Retail title ornament.
+All objects completely separate with generous transparent padding. GENUINELY TRANSPARENT ALPHA outside each object. Do not draw checkerboard squares. Preserve authentic reference shading and restrained highlights; do not invent ornate scrollwork or different silhouettes. No baked drop shadows beyond the objects, no glow, no text except the close X. Runtime production assets, not a presentation board.
+
+Export note: The returned sheet had an opaque exterior. The exporter mechanically clips the exterior and encodes genuine alpha; it does not rely on the generation prompt to guarantee transparency.
