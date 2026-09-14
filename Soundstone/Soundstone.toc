@@ -1,0 +1,14 @@
+## Interface: 120100, 50504, 20506, 11509
+## Title: Soundstone - Azeroth Audio
+## Notes: A compact Blizzard-inspired mixer for master, effects and music.
+## Notes-deDE: Kompakte Audiosteuerung fuer Gesamtlautstaerke, Soundeffekte und Musik.
+## Author: krebs3r
+## Version: 0.1.0
+## SavedVariables: SoundstoneDB
+## IconTexture: Interface\Icons\INV_Misc_Rune_01
+
+Locale.lua
+Compat.lua
+Audio.lua
+UI.lua
+Core.lua

@@ -1,0 +1,6 @@
+<Bindings>
+    <Binding name="SOUNDSTONE_PANEL" header="SOUNDSTONE">if Soundstone then Soundstone:TogglePanel() end</Binding>
+    <Binding name="SOUNDSTONE_MASTER">if Soundstone then Soundstone:Toggle("master") end</Binding>
+    <Binding name="SOUNDSTONE_SFX">if Soundstone then Soundstone:Toggle("sfx") end</Binding>
+    <Binding name="SOUNDSTONE_MUSIC">if Soundstone then Soundstone:Toggle("music") end</Binding>
+</Bindings>
