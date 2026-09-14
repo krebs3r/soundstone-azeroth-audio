@@ -22,7 +22,7 @@ local function sprite(parent,name,layer)
     return t
 end
 -- Frame components use fixed-size corners, stretched edges and a separate center.
-local function skin(frame,name)
+local function skin(frame,name,cornerOverride)
     frame.skinName=name
     local pieces={}
     for y=1,3 do for x=1,3 do
@@ -36,6 +36,7 @@ local function skin(frame,name)
         local sourceCorner=name:find('Classic') and 52 or 23
         local corner=name:find('Classic') and 10 or 7
         if name=='Toggle' or name=='ToggleRed' then sourceCorner=14;corner=4 end
+        corner=cornerOverride or corner
         local du=(u[2]-u[1])*sourceCorner/meta.width
         local dv=(u[4]-u[3])*sourceCorner/meta.height
         local xs={u[1],u[1]+du,u[2]-du,u[2]}
@@ -140,7 +141,7 @@ local function slider(parent,width,callback)
     s:SetMinMaxValues(0,100);s:SetValueStep(1)
     if s.SetObeyStepOnDrag then s:SetObeyStepOnDrag(true) end
     -- Decoration sits below the slider frame so it cannot cover its thumb.
-    local track=CreateFrame('Frame',nil,parent);track:SetPoint('LEFT',s,'LEFT');track:SetPoint('RIGHT',s,'RIGHT');track:SetHeight(8);skin(track,'Toggle')
+    local track=CreateFrame('Frame',nil,parent);track:SetPoint('LEFT',s,'LEFT');track:SetPoint('RIGHT',s,'RIGHT');track:SetHeight(8);skin(track,'Toggle',2)
     local status=CreateFrame('StatusBar',nil,parent);status:SetPoint('LEFT',s,'LEFT',3,0);status:SetPoint('RIGHT',s,'RIGHT',-3,0);status:SetHeight(3)
     track:SetFrameLevel(parent:GetFrameLevel()+1);status:SetFrameLevel(parent:GetFrameLevel()+2);s:SetFrameLevel(parent:GetFrameLevel()+3)
     status:SetStatusBarTexture(WHITE);status:SetStatusBarColor(1,.69,.13);status:SetMinMaxValues(0,100)
@@ -165,8 +166,8 @@ function UI:CreatePanel()
     self.rows={}
     for i,ch in ipairs(A.Audio.channels) do
         local row=CreateFrame('Frame',nil,p);row:SetSize(276,42);row:SetPoint('TOPLEFT',12,-29-(i-1)*42)
-        row.iconButton=CreateFrame('Button',nil,row);row.iconButton:SetSize(25,32);row.iconButton:SetPoint('LEFT')
-        if not C.IsRetail() then skin(row.iconButton,'ClassicPanel') end
+        row.iconButton=CreateFrame('Button',nil,row);row.iconButton:SetSize(25,25);row.iconButton:SetPoint('LEFT')
+        if not C.IsRetail() then skin(row.iconButton,'ClassicPanel',3) end
         row.icon=icon(row.iconButton,ch.id,24);row.icon:SetPoint('CENTER');wire(row.iconButton,ch.id,true)
         row.name=font(row,L[ch.label],10);row.name:SetPoint('LEFT',30,0);row.name:SetWidth(69);row.name:SetJustifyH('LEFT')
         row.toggle=textureButton(row,'Toggle',34,18,'',function() A:Toggle(ch.id) end);row.toggle:SetPoint('LEFT',99,0);wire(row.toggle,ch.id,true)
