@@ -19,7 +19,7 @@ Includes the internal 0.3.1 test builds; 0.3.1 was not published as a release.
 - Pending placement work is cancelled on a new drag, hide, scale/view changes or position reset. It never applies an outdated result after those actions.
 - Switching from compact to expanded now checks the larger footprint and moves to the nearest free position. If the check fails or no space is available, the compact view and prior position are restored. Routine audio refreshes preserve pending placement work.
 
-Retail feedback confirms dragging no longer freezes and avoidance moves the addon clear of action icons on release. TBC Anniversary also passed the follow-up functionality test. Final 0.3.2 package verification follows the minimap adjustment; historical 0.3.0 packages and acceptance remain unchanged.
+Retail feedback confirms dragging no longer freezes and avoidance moves the addon clear of action icons on release. TBC Anniversary also passed the follow-up functionality test. The final 0.3.2 release ZIP and smaller minimap logo are confirmed in Retail and TBC Anniversary; historical 0.3.0 packages and acceptance remain unchanged.
 
 ### Removed
 

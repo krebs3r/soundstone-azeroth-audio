@@ -6,11 +6,11 @@
 
 A compact World of Warcraft addon for **master volume, sound effects and music**. Switch between a quick bar and an expanded mixer, select WoW's output device and keep audio controls within reach. English and German UI; no other addon required.
 
-**[Download Soundstone 0.3.0](https://github.com/krebs3r/soundstone-azeroth-audio/releases/download/v0.3.0/Soundstone-0.3.0.zip)** · [Release notes](https://github.com/krebs3r/soundstone-azeroth-audio/releases/tag/v0.3.0) · [Deutsche Anleitung](docs/ANLEITUNG-DE.md)
+**[Download Soundstone 0.3.2](https://github.com/krebs3r/soundstone-azeroth-audio/releases/download/v0.3.2/Soundstone-0.3.2.zip)** · [Release notes](https://github.com/krebs3r/soundstone-azeroth-audio/releases/tag/v0.3.2) · [Deutsche Anleitung](docs/ANLEITUNG-DE.md)
 
 ![Soundstone 0.3.0: Retail and Classic mixers and compact bars, captured from the UI preview](docs/screenshots/soundstone-0.3-overview.png)
 
-*Current UI-preview captures using the actual addon textures. Blizzard widgets and fonts are approximated in the browser; these are not in-game screenshots.*
+*Historical 0.3.0 UI-preview captures using the actual addon textures. Blizzard widgets and fonts are approximated in the browser; these are not in-game screenshots.*
 
 ## Why I created Soundstone
 

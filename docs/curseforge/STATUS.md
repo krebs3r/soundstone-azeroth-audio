@@ -1,10 +1,10 @@
 # Einrichtungsstand am 15.09.2026
 
-## Update: Vorbereitung 0.3.2
+## Update: Freigabe 0.3.2
 
 Der bisherige Stand weiter unten dokumentiert den ersten Upload von 0.3.0. Inzwischen wurden Retail und TBC Anniversary auf die interne Testversion 0.3.1 aktualisiert (38 geprüfte Dateien). Der Nutzer hat beide Clients als funktionsfähig bestätigt; siehe [Folgetests](acceptance/0.3.1-followup.md).
 
-0.3.2 fasst die Platzierungs-/Tooltip-Korrekturen, den entfernten Ingame-Changelog und das kleinere Minimap-Logo zusammen. 781 Lua-Szenarien und 24 lokale Installations-/Release-Tests bestehen; ein Symlink-Test ist unter Windows übersprungen. Ziel ist die Freigabe für Retail 12.1.0 und TBC Anniversary 2.5.6 nach der abschließenden Sichtprüfung des Release-ZIPs. [PR #3](https://github.com/krebs3r/soundstone-azeroth-audio/pull/3) ist übernommen. [v0.3.2](https://github.com/krebs3r/soundstone-azeroth-audio/releases/tag/v0.3.2) ist als GitHub-Prerelease erstellt, Commit `254b6b6ab103421c85773df8f6c02a0af461c5c5`. Das originale GitHub-ZIP mit SHA256 `02cfe105da5fc6ea2e59e40fb830195ed05da3e6562a03c3446fdb6d89f48277` ist in Retail und TBC Anniversary installiert und vollständig verifiziert. Die finalen Freigabedaten stehen bis zur Rückmeldung zum Minimap-Icon auf `pending`; noch kein 0.3.2-Upload erfolgt.
+0.3.2 fasst die Platzierungs-/Tooltip-Korrekturen, den entfernten Ingame-Changelog und das kleinere Minimap-Logo zusammen. 781 Lua-Szenarien und 24 lokale Installations-/Release-Tests bestehen; ein Symlink-Test ist unter Windows übersprungen. Ziel ist die Freigabe für Retail 12.1.0 und TBC Anniversary 2.5.6 nach der abschließenden Sichtprüfung des Release-ZIPs. [PR #3](https://github.com/krebs3r/soundstone-azeroth-audio/pull/3) ist übernommen. [v0.3.2](https://github.com/krebs3r/soundstone-azeroth-audio/releases/tag/v0.3.2) ist als GitHub-Prerelease erstellt, Commit `254b6b6ab103421c85773df8f6c02a0af461c5c5`. Das originale GitHub-ZIP mit SHA256 `02cfe105da5fc6ea2e59e40fb830195ed05da3e6562a03c3446fdb6d89f48277` ist in Retail und TBC Anniversary installiert und vollständig verifiziert. Der Nutzer hat das finale Paket einschließlich Minimap-Icon in beiden Clients bestätigt. Die Freigabedaten stehen auf `passed`. Reguläre GitHub-Freigabe und CurseForge-Upload werden anschließend durchgeführt.
 
 ## Erledigt (0.3.0)
 

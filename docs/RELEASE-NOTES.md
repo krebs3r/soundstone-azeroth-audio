@@ -15,7 +15,7 @@ This release includes changes from the internal 0.3.1 test builds. No separate 0
 
 Download **Soundstone-0.3.2.zip** from this release's assets and replace the **Soundstone** folder in your client's **Interface/AddOns** directory. Keep your **WTF** folder to preserve settings. Reload the UI after updating; restart WoW if new files are not detected.
 
-781 simulated Lua scenarios plus installer/release and package checks. Retail 12.1.0 and TBC Anniversary 2.5.6 are the release candidates based on user testing; final acceptance is recorded against this release's ZIP before CurseForge submission. Mists and Classic Era are not approved for this CurseForge file.
+781 simulated Lua scenarios plus installer/release and package checks. Retail 12.1.0 and TBC Anniversary 2.5.6 passed user testing, including the final release ZIP and smaller minimap logo. Acceptance is recorded against this exact release package. Mists and Classic Era are not approved for this CurseForge file.
 
 ## Deutsch
 
@@ -26,4 +26,4 @@ Download **Soundstone-0.3.2.zip** from this release's assets and replace the **S
 - Ingame-Changelog entfernt; Versionsnummer und Autorenzeile bleiben erhalten.
 - Die Installationshilfe unterstützt ausdrücklich erlaubte Updates bei laufendem WoW mit Sicherung und Dateiprüfung. Anschließend `/reload` ausführen.
 
-**Installation:** Den enthaltenen Ordner **Soundstone** im jeweiligen **Interface/AddOns**-Verzeichnis ersetzen. **WTF** mit den Einstellungen behalten. Retail und TBC Anniversary erhalten nach der abschließenden Prüfung dieses ZIPs die CurseForge-Zuordnung; andere Clients werden damit nicht freigegeben.
+**Installation:** Den enthaltenen Ordner **Soundstone** im jeweiligen **Interface/AddOns**-Verzeichnis ersetzen. **WTF** mit den Einstellungen behalten. Dieses Release-ZIP ist für Retail 12.1.0 und TBC Anniversary 2.5.6 vom Nutzer abgenommen; andere Clients werden damit nicht freigegeben.
