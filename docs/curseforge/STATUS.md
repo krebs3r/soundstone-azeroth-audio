@@ -2,9 +2,25 @@
 
 ## Update: Freigabe 0.3.2
 
-Der bisherige Stand weiter unten dokumentiert den ersten Upload von 0.3.0. Inzwischen wurden Retail und TBC Anniversary auf die interne Testversion 0.3.1 aktualisiert (38 geprüfte Dateien). Der Nutzer hat beide Clients als funktionsfähig bestätigt; siehe [Folgetests](acceptance/0.3.1-followup.md).
+0.3.2 fasst die Platzierungs-/Tooltip-Korrekturen, den entfernten Ingame-Changelog und das kleinere Minimap-Logo zusammen. 781 Lua-Szenarien und 24 lokale Installations-/Release-Tests bestehen; ein Symlink-Test ist unter Windows übersprungen und besteht in der Linux-CI. [PR #3](https://github.com/krebs3r/soundstone-azeroth-audio/pull/3) ist übernommen.
 
-0.3.2 fasst die Platzierungs-/Tooltip-Korrekturen, den entfernten Ingame-Changelog und das kleinere Minimap-Logo zusammen. 781 Lua-Szenarien und 24 lokale Installations-/Release-Tests bestehen; ein Symlink-Test ist unter Windows übersprungen. Ziel ist die Freigabe für Retail 12.1.0 und TBC Anniversary 2.5.6 nach der abschließenden Sichtprüfung des Release-ZIPs. [PR #3](https://github.com/krebs3r/soundstone-azeroth-audio/pull/3) ist übernommen. [v0.3.2](https://github.com/krebs3r/soundstone-azeroth-audio/releases/tag/v0.3.2) ist als GitHub-Prerelease erstellt, Commit `254b6b6ab103421c85773df8f6c02a0af461c5c5`. Das originale GitHub-ZIP mit SHA256 `02cfe105da5fc6ea2e59e40fb830195ed05da3e6562a03c3446fdb6d89f48277` ist in Retail und TBC Anniversary installiert und vollständig verifiziert. Der Nutzer hat das finale Paket einschließlich Minimap-Icon in beiden Clients bestätigt. Die Freigabedaten stehen auf `passed`. Reguläre GitHub-Freigabe und CurseForge-Upload werden anschließend durchgeführt.
+- [v0.3.2](https://github.com/krebs3r/soundstone-azeroth-audio/releases/tag/v0.3.2) ist als reguläres GitHub-Release (Latest) veröffentlicht, Commit `254b6b6ab103421c85773df8f6c02a0af461c5c5`.
+- Das originale GitHub-ZIP ist mit 38 Dateien in Retail und TBC Anniversary installiert und vollständig verifiziert. Der Nutzer hat das finale Paket einschließlich Minimap-Icon in beiden Clients bestätigt: [Retail](acceptance/v0.3.2-retail.md), [TBC Anniversary](acceptance/v0.3.2-anniversary.md). Beide Freigabedaten stehen auf `passed`.
+- Der durch die reguläre GitHub-Freigabe ausgelöste [CurseForge-Workflow](https://github.com/krebs3r/soundstone-azeroth-audio/actions/runs/34964191044) ist erfolgreich: Datei **8885767**, Typ **Release**, Upload am 15.09.2026 um 11:36 UTC.
+- Spielversionen im Autoren-Dashboard bestätigt: **Retail 12.1.0** (API-ID **16519**) und **TBC Anniversary 2.5.6** (API-ID **16533**).
+- Der endgültige [Upload-Beleg](https://github.com/krebs3r/soundstone-azeroth-audio/releases/download/v0.3.2/curseforge-upload.json) ist am GitHub-Release gespeichert. Er hat Vorrang vor dem historischen Pending-Beleg und verhindert erneute Uploads desselben Pakets.
+- Das ZIP wurde vom CurseForge-CDN zurückgeladen. SHA256 stimmt mit dem getesteten GitHub-Paket überein: `02cfe105da5fc6ea2e59e40fb830195ed05da3e6562a03c3446fdb6d89f48277`.
+- Moderationsstatus im [Autoren-Dashboard](https://authors.curseforge.com/#/projects/1696875/files/8885767): **Under Review**. Das Projekt ist bis zur Genehmigung noch nicht öffentlich sichtbar; nach Genehmigung soll die Datei automatisch veröffentlicht werden.
+
+## Noch offen
+
+Nach der Moderationsfreigabe:
+
+1. [Öffentliche Projektseite](https://www.curseforge.com/wow/addons/soundstone-azeroth-audio), Galerie und Zuordnung zu Retail 12.1.0 sowie TBC Anniversary 2.5.6 prüfen.
+2. Installation von 0.3.2 über die CurseForge-App in beiden Clients kontrollieren. Paketidentität und direkte lokale Installation sind bereits geprüft; die Verteilung durch die App ist noch offen.
+3. Diesen Status aktualisieren und gegebenenfalls Moderationsrückfragen im bestehenden Projekt bearbeiten.
+
+Historische Tags und GitHub-ZIPs bleiben unverändert. Künftige Addon-Korrekturen bekommen eine neue Version. Galerie und Beschreibung werden separat gepflegt; der Release-Workflow überträgt ZIP und Changelog sowie ausschließlich dokumentierte, bestätigte Spielversionen.
 
 ## Erledigt (0.3.0)
 
@@ -20,15 +36,8 @@ Der bisherige Stand weiter unten dokumentiert den ersten Upload von 0.3.0. Inzwi
 - [Erster Upload erfolgreich](https://github.com/krebs3r/soundstone-azeroth-audio/actions/runs/34953150511): Datei **8885266**, Typ **Release**, Spielversion **2.5.6**, CurseForge-Versions-ID **16533**.
 - Der endgültige Upload-Beleg `curseforge-upload.json` ist am [GitHub-Release v0.3.0](https://github.com/krebs3r/soundstone-azeroth-audio/releases/tag/v0.3.0) gespeichert. Ein vorhandener Pending-Beleg bleibt als Historie erhalten; der endgültige Beleg hat Vorrang.
 
-## Noch offen
+## Historischer Prüfstand 0.3.0
 
 Im [Autoren-Dashboard](https://authors.curseforge.com/#/projects/1696875/files) steht die Datei auf **Under Review** (geprüft nach dem Upload am 15.09.2026). Das neue Projekt ist bis zur Moderationsfreigabe noch nicht öffentlich verfügbar. Die Datei soll nach Genehmigung automatisch veröffentlicht werden.
 
-Nach der Freigabe:
-
-1. [Öffentliche Projektseite](https://www.curseforge.com/wow/addons/soundstone-azeroth-audio), Galerie und Zuordnung ausschließlich zu TBC Anniversary 2.5.6 prüfen.
-2. Das von CurseForge heruntergeladene ZIP auf SHA256 `ad31660d4a96594dec59431d2586046e23afa27b0372263a4935dfc1d8b19482` prüfen. Die Prüfsumme des tatsächlich übertragenen GitHub-ZIPs ist bestätigt; der Rückdownload vom CurseForge-CDN konnte lokal wegen Verbindungsabbrüchen noch nicht geprüft werden.
-3. Installation über die CurseForge-App in TBC Anniversary kontrollieren; zuvor WoW schließen. Das ist zusätzlich zu den bereits geprüften lokalen Testinstallationen nötig.
-4. Diesen Status aktualisieren. Moderationsrückfragen im bestehenden Projekt bearbeiten.
-
-Historischer Tag und GitHub-ZIP bleiben unverändert. Künftige Addon-Korrekturen bekommen eine neue Version. Galerie und Beschreibung werden separat gepflegt; der Release-Workflow überträgt ZIP und Changelog sowie ausschließlich dokumentierte, bestätigte Spielversionen.
+Die Prüfsumme des übertragenen GitHub-ZIPs 0.3.0 ist `ad31660d4a96594dec59431d2586046e23afa27b0372263a4935dfc1d8b19482`; dessen Rückdownload war beim ersten Upload wegen Verbindungsabbrüchen nicht prüfbar. Für die aktuelle Version 0.3.2 ist der Rückdownload inzwischen erfolgreich geprüft (siehe oben).
