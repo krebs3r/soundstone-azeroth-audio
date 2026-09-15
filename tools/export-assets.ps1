@@ -1,4 +1,4 @@
-param([string]$Root = (Join-Path $PSScriptRoot '..'), [string]$Python = 'python')
+param([string]$Root = (Join-Path $PSScriptRoot '..'), [string]$Python = 'python', [switch]$CurseForgeLogoOnly)
 $ErrorActionPreference = 'Stop'
 [Threading.Thread]::CurrentThread.CurrentCulture = [Globalization.CultureInfo]::InvariantCulture
 Add-Type -AssemblyName System.Drawing
@@ -117,6 +117,15 @@ $preview = Join-Path $repo 'docs\assets'
 [IO.Directory]::CreateDirectory($preview) | Out-Null
 $skin = Join-Path $repo 'docs\skin-source-v02.png'
 $icons = Join-Path $repo 'docs\icons-source.png'
+if ($CurseForgeLogoOnly) {
+ $cf = Join-Path $repo 'docs\curseforge'
+ $scratch = Join-Path $repo '.local-history'
+ [IO.Directory]::CreateDirectory($cf) | Out-Null
+ [IO.Directory]::CreateDirectory($scratch) | Out-Null
+ [SoundstoneSprites]::Export($icons,(Join-Path $scratch 'curseforge-logo.tga'),(Join-Path $cf 'logo-400.png'),34,108,583,473,400,0,'black')
+ Write-Output (Join-Path $cf 'logo-400.png')
+ return
+}
 $entries = @(
  @('RetailPanel',$skin,34,158,711,379,512,22,'frame'),
  @('ClassicPanel',$skin,792,158,710,384,512,23,'frame'),

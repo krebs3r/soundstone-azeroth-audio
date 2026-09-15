@@ -113,6 +113,10 @@ Serve `docs/` locally to inspect `ui-preview.html`, `readme-gallery.html` and `r
 
 GitHub Actions validates pushes and pull requests. A matching version tag builds and publishes a prerelease using the GitHub CLI; promoting a tested release is an explicit publication step.
 
+## CurseForge publication and local installation
+
+See the [CurseForge setup and release guide](docs/curseforge/README.md) for automatic uploads after a regular GitHub release is approved, the in-game acceptance checklist, and the local multi-client installer. Use `python tools/install-local.py --all --status` to compare installed copies and `--all --install` to install the validated ZIP with backups (close WoW first).
+
 ## License
 
 MIT-licensed code. See [LICENSE](LICENSE) and [artwork provenance](docs/ARTWORK.md). Soundstone is an independent community addon, not an official Blizzard product.
