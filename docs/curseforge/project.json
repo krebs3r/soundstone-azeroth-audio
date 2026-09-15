@@ -1,0 +1,13 @@
+{
+  "name": "Soundstone – Azeroth Audio",
+  "summary": "Control master volume, sound effects, music and your audio output device from a compact, movable mixer.",
+  "game": "World of Warcraft",
+  "class": "Addons",
+  "category": "Audio & Video",
+  "license": "MIT License",
+  "source": "https://github.com/krebs3r/soundstone-azeroth-audio",
+  "issues": "https://github.com/krebs3r/soundstone-azeroth-audio/issues",
+  "project_id": 1696875,
+  "project_url": "https://www.curseforge.com/wow/addons/soundstone-azeroth-audio",
+  "allow_third_party_distribution": true
+}
