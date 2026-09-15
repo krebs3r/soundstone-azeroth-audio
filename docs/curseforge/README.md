@@ -1,5 +1,7 @@
 # CurseForge-Veröffentlichung
 
+Aktueller Einrichtungs- und Moderationsstand: [STATUS.md](STATUS.md).
+
 ## Ablauf
 
 Ein Tag `vX.Y.Z` baut und testet ein GitHub-Prerelease. Nach dokumentierter Ingame-Abnahme wird es **in der GitHub-Oberfläche** zum regulären Release hochgestuft. Der Workflow **Publish approved release to CurseForge** überträgt dessen unverändertes ZIP. Das Generieren des Prereleases mit `GITHUB_TOKEN` löst absichtlich keine weiteren Workflows aus; die persönliche Freigabe in der Oberfläche tut dies.
