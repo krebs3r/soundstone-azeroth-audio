@@ -1,0 +1,26 @@
+{
+  "tag": "v0.3.2",
+  "commit": "254b6b6ab103421c85773df8f6c02a0af461c5c5",
+  "sha256": "02cfe105da5fc6ea2e59e40fb830195ed05da3e6562a03c3446fdb6d89f48277",
+  "changelog": "v0.3.2.md",
+  "confirmed_clients": [
+    {
+      "client": "retail",
+      "game_version": "12.1.0",
+      "build": "12.1.0.69814",
+      "status": "pending",
+      "tested_by": "krebs3r",
+      "tested_at": "2026-09-15",
+      "evidence": "acceptance/v0.3.2-retail.md"
+    },
+    {
+      "client": "anniversary",
+      "game_version": "2.5.6",
+      "build": "2.5.6.69795",
+      "status": "pending",
+      "tested_by": "krebs3r",
+      "tested_at": "2026-09-15",
+      "evidence": "acceptance/v0.3.2-anniversary.md"
+    }
+  ]
+}
