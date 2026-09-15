@@ -1,4 +1,8 @@
-# Soundstone – Azeroth Audio
+<p align="center">
+  <img src="docs/assets/Logo.png" width="128" alt="Soundstone logo: a teleportation stone with a blue rune and golden sound waves">
+</p>
+
+<h1 align="center">Soundstone – Azeroth Audio</h1>
 
 A compact World of Warcraft addon for **master volume, sound effects and music**. Switch between a quick bar and an expanded mixer, select WoW's output device and keep audio controls within reach. English and German UI; no other addon required.
 
