@@ -170,29 +170,41 @@ local function wire(target,id,click,context)
     target:HookScript('OnEnter',function(self) UI:ChannelTip(self,id,context or (click and 'expanded' or 'slider')) end)
     target:HookScript('OnLeave',hideTip)
 end
+function UI:CancelPlacement()
+    if self.placementJob then
+        if A.db.position==self.placementJob.requested then A.db.position=self.placementJob.origin end
+        self.placementJob=nil;self.root:SetScript('OnUpdate',nil)
+    end
+end
 function UI:FinishDrag()
+    self:CancelPlacement()
     A:SavePosition(self.root)
-    if A.db.avoidOverlap then
-        local obstacles=A.Placement.Collect(self.root)
-        local sw,sh=UIParent:GetWidth(),UIParent:GetHeight()
-        local scale=A.db.uiScale
-        local x,y
-        if obstacles then
-            x,y=A.Placement.Find(A.db.position.x+sw/2,A.db.position.y+sh/2,
-                self.root:GetWidth()*scale,self.root:GetHeight()*scale,sw,sh,obstacles,2)
-        end
+    local origin=self.dragOrigin or A.db.position
+    self.dragOrigin=nil;self.dragging=false;self.suppressUntil=C.Now()+.15;self:ApplyLayout()
+    if not A.db.avoidOverlap or not self.root:IsShown() then return end
+    local sw,sh=UIParent:GetWidth(),UIParent:GetHeight()
+    local scale=A.db.uiScale
+    local job=A.Placement.Start(self.root,A.db.position.x+sw/2,A.db.position.y+sh/2,
+        self.root:GetWidth()*scale,self.root:GetHeight()*scale,sw,sh)
+    job.origin=origin;job.requested=A.db.position
+    self.placementJob=job
+    self.root:SetScript('OnUpdate',function()
+        if UI.placementJob~=job then return end
+        local done,x,y,status=job:Step()
+        if not done then return end
+        UI:CancelPlacement();A.Placement.lastStats=job.stats
         if x then A.db.position={x=x-sw/2,y=y-sh/2}
         else
-            A.db.position=self.dragOrigin or A.db.position
-            A:Print(obstacles and L.NO_FREE_SPACE or L.PLACEMENT_UNAVAILABLE)
+            A.db.position=origin
+            A:Print(status=='no-space' and L.NO_FREE_SPACE or L.PLACEMENT_UNAVAILABLE)
         end
-    end
-    self.dragOrigin=nil;self.dragging=false;self.suppressUntil=C.Now()+.15;self:ApplyLayout()
+        UI:ApplyLayout()
+    end)
 end
 local function movable(handle,menuClick)
     handle:EnableMouse(true);handle:RegisterForDrag('LeftButton')
     handle:SetScript('OnDragStart',function()
-        if not A.db.locked then UI:CloseMenus();UI.dragOrigin={x=A.db.position.x,y=A.db.position.y};UI.root:StartMoving();UI.dragging=true;hideTip() end
+        if not A.db.locked then UI:CancelPlacement();UI:ApplyLayout();UI:CloseMenus();UI.dragOrigin={x=A.db.position.x,y=A.db.position.y};UI.root:StartMoving();UI.dragging=true;hideTip() end
     end)
     handle:SetScript('OnDragStop',function()
         UI.root:StopMovingOrSizing()
@@ -425,6 +437,7 @@ function UI:RefreshDevices()
 end
 function UI:ApplyLayout()
     if not self.root then return end
+    self:CancelPlacement()
     local view=Layout.View(A.db.viewMode)
     self.root:SetScale(A.db.uiScale);self.root:SetSize(view.width,view.height)
     local x,y=Layout.Clamp(A.db.position.x,A.db.position.y,view.width*A.db.uiScale,view.height*A.db.uiScale,UIParent:GetWidth(),UIParent:GetHeight())
@@ -505,6 +518,7 @@ function UI:Create()
     table.insert(UISpecialFrames,'SoundstoneEscapeHandler')
     self.escape:SetScript('OnHide',function() if not UI.syncEscape then UI:Escape() end end)
     self.root:HookScript('OnHide',function()
+        UI:CancelPlacement()
         if UI.dragging then UI.root:StopMovingOrSizing();UI:FinishDrag() end
         UI:CloseMenus()
     end)

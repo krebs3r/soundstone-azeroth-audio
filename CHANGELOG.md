@@ -2,6 +2,17 @@
 
 User-facing changes are grouped by version. Unreleased entries describe local work and do not imply a GitHub release or verified support for every WoW client.
 
+## 0.3.1 — Unreleased
+
+### Fixed
+
+- Placement avoidance now traverses visible UI trees in small batches instead of scanning every client frame synchronously. Hidden pooled frames and Soundstone's own controls are excluded early.
+- Free drop positions return immediately; blocked positions use a yielding search and sort so larger layouts can be processed across rendered frames.
+- Visible Blizzard action-bar containers are reserved even when their mouse-input flags are disabled or inaccessible. Forbidden or secret geometry remains excluded.
+- Pending placement work is cancelled on a new drag, hide, scale/view changes or position reset. It never applies an outdated result after those actions.
+
+Retail in-game verification remains pending. Historical 0.3.0 packages and its TBC acceptance are unchanged.
+
 ## 0.3.0 — 2026-09-15
 
 This version collects the changes made after the 0.2.0 baseline.

@@ -5,7 +5,8 @@ local methods = {}
 local coordinates
 local function object(kind, name, parent)
     local o = setmetatable({ kind=kind, name=name, parent=parent, scripts={}, points={}, shown=true,
-        width=0, height=0, level=parent and parent.level+1 or 1, enabled=true, alpha=1 }, { __index = methods })
+        width=0, height=0, level=parent and parent.level+1 or 1, enabled=true, alpha=1, children={} }, { __index = methods })
+    if parent and kind~='Texture' and kind~='FontString' then table.insert(parent.children,o) end
     table.insert(Mock.objects, o)
     if name then _G[name] = o end
     return o
@@ -21,6 +22,14 @@ function methods:ClearAllPoints() self.points={} end
 function methods:SetAllPoints(...) self.allPoints={...} end
 function methods:SetScale(v) self.scale=v end
 function methods:GetParent() return self.parent end
+function methods:GetChildren() return unpack(self.children) end
+function Mock.finishPlacement()
+    for i=1,10000 do
+        if not Soundstone.UI.placementJob then return end
+        Soundstone.UI.root:Fire('OnUpdate',1/60)
+    end
+    error('Placement did not finish')
+end
 function methods:IsForbidden() return self.forbidden or false end
 function methods:IsMouseEnabled() return self.mouse==true or self.mouse==nil and (self.kind=='Button' or self.kind=='CheckButton' or self.kind=='Slider') end
 function methods:IsMovable() return self.movable or false end
@@ -155,7 +164,7 @@ SlashCmdList={}
 WOW_PROJECT_MAINLINE=1
 WOW_PROJECT_ID=1
 function GetLocale() return Mock.locale end
-function GetAddOnMetadata(_,key) if key=='Version' then return '0.3.0' end end
+function GetAddOnMetadata(_,key) if key=='Version' then return '0.3.1' end end
 function GetTime() return Mock.time end
 function IsShiftKeyDown() return Mock.shift or false end
 function IsMouseButtonDown() return Mock.leftMouseDown or false end

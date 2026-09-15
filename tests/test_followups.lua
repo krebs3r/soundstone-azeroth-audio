@@ -36,7 +36,8 @@ test('frame collection ignores own, invisible, forbidden, inaccessible and full-
     parent:Hide()
     local overlay=CreateFrame('Frame',nil,UIParent);overlay:SetSize(UIParent:GetWidth(),UIParent:GetHeight());overlay:SetPoint('CENTER');overlay:EnableMouse(true)
     local n=#A.Placement.Collect(A.UI.root);overlay:Hide();eq(#A.Placement.Collect(A.UI.root),n)
-    local oldEnum=EnumerateFrames;EnumerateFrames=nil;eq(A.Placement.Collect(A.UI.root),nil);EnumerateFrames=oldEnum
+    local oldChildren=UIParent.GetChildren;UIParent.GetChildren=function() error('unavailable') end
+    eq(A.Placement.Collect(A.UI.root),nil);UIParent.GetChildren=oldChildren
     local protected=CreateFrame('Button',nil,UIParent);protected:SetSize(40,40);protected:SetPoint('CENTER')
     local secret={};protected.IsVisible=function() return secret end
     local oldSecret=issecretvalue;issecretvalue=function(value) return value==secret end
@@ -59,6 +60,7 @@ test('dropping avoids UI buttons across both views and all screen/addon scales',
                 handle:Fire('OnDragStart')
                 A.UI.root:ClearAllPoints();A.UI.root:SetPoint('TOPLEFT',UIParent,'CENTER',-40,20)
                 handle:Fire('OnDragStop')
+                Mock.finishPlacement()
                 local root=A.UI.root;local x,y=root:GetLeft()*scale,root:GetTop()*scale
                 local rect={left=obstacle:GetLeft(),right=obstacle:GetLeft()+140,top=obstacle:GetTop(),bottom=obstacle:GetTop()-60}
                 assert(clear(x,y,root:GetWidth()*scale,root:GetHeight()*scale,{rect},0))
@@ -76,12 +78,15 @@ test('placement option, locked position and no-room rollback preserve user contr
     A:SetView('compact');A.db.locked=false;A.db.avoidOverlap=false
     local old=A.Placement.Collect;A.Placement.Collect=function() error('disabled option must not enumerate UI') end
     A.UI.grip:Fire('OnDragStart');A.UI.root:ClearAllPoints();A.UI.root:SetPoint('TOPLEFT',UIParent,'CENTER',77,88);A.UI.grip:Fire('OnDragStop')
+    Mock.finishPlacement()
     near(A.db.position.x,77);near(A.db.position.y,88)
     A.db.avoidOverlap=true;A.Placement.Collect=function() return {{left=0,right=1920,bottom=0,top=1080}} end
     A.UI.grip:Fire('OnDragStart');A.UI.root:ClearAllPoints();A.UI.root:SetPoint('TOPLEFT',UIParent,'CENTER',20,30);A.UI.grip:Fire('OnDragStop')
+    Mock.finishPlacement()
     near(A.db.position.x,77);near(A.db.position.y,88);assert(Mock.messages[#Mock.messages]:find(A.L.NO_FREE_SPACE,1,true))
     A.Placement.Collect=function() return nil end
     A.UI.grip:Fire('OnDragStart');A.UI.root:ClearAllPoints();A.UI.root:SetPoint('TOPLEFT',UIParent,'CENTER',44,55);A.UI.grip:Fire('OnDragStop')
+    Mock.finishPlacement()
     near(A.db.position.x,77);assert(Mock.messages[#Mock.messages]:find(A.L.PLACEMENT_UNAVAILABLE,1,true))
     A.Placement.Collect=old;A.db.locked=true;A.UI.grip:Fire('OnDragStart');eq(A.UI.dragging,false)
     A.db.locked=false;A:ResetPositions()
@@ -110,8 +115,8 @@ test('long title fits and the version opens readable translated release notes wi
     A.UI:ToggleMenu();A.UI.scaleSlider:SetValue(130);assert(A.UI.pendingScale)
     A.UI.footer:Fire('OnClick','LeftButton');eq(A.UI.news:IsShown(),true);eq(A.UI.menu:IsShown(),false);eq(A.UI.pendingScale,nil)
     eq(A.UI.newsPage,1);eq(A.UI.newsPrevious:IsEnabled(),false);eq(A.UI.newsBody.fontSize,11)
-    eq(A.UI.newsBody.textValue,A.ReleaseNotes[1].text);assert(A.UI.newsTitle.textValue:find('v0.3.0',1,true))
-    A.UI.newsNext:Fire('OnClick');eq(A.UI.newsPage,2);eq(A.UI.newsNext:IsEnabled(),false)
+    eq(A.UI.newsBody.textValue,A.ReleaseNotes[1].text);assert(A.UI.newsTitle.textValue:find('v0.3.1',1,true))
+    A.UI.newsNext:Fire('OnClick');eq(A.UI.newsPage,2);eq(A.UI.newsNext:IsEnabled(),true)
     A.UI.newsPrevious:Fire('OnClick');eq(A.UI.newsPage,1)
     Mock.pressEscape();eq(A.UI.news:IsShown(),false);eq(A.db.viewMode,'expanded')
     Mock.pressEscape();eq(A.db.viewMode,'compact')
@@ -133,8 +138,8 @@ test('release notes use one card per version with the same dimensions as the mix
         assert(body:GetTop()-body:GetHeight()>A.UI.newsPrevious:GetTop())
         assert(body:GetTop()<A.UI.newsTitle:GetTop()-12)
     end
-    assert(versions['0.3.0'] and versions['0.2.0']);eq(#A.ReleaseNotes,2)
-    A.UI:ShowNewsPage(99);eq(A.UI.newsPage,2);A.UI:ShowNewsPage(-1);eq(A.UI.newsPage,1)
+    assert(versions['0.3.1'] and versions['0.3.0'] and versions['0.2.0']);eq(#A.ReleaseNotes,3)
+    A.UI:ShowNewsPage(99);eq(A.UI.newsPage,3);A.UI:ShowNewsPage(-1);eq(A.UI.newsPage,1)
 end)
 
 test('release notes remain on screen at corners throughout the scale matrix',function()

@@ -48,6 +48,7 @@ for variant, project, locale, legacy, backdrop, native in [(*config, native) for
     total += lua.execute((ROOT / 'tests/test_audio_logic.lua').read_text(encoding='utf-8'))
     total += lua.execute((ROOT / 'tests/test_ui03.lua').read_text(encoding='utf-8-sig'))
     total += lua.execute((ROOT / 'tests/test_followups.lua').read_text(encoding='utf-8'))
+    total += lua.execute((ROOT / 'tests/test_placement.lua').read_text(encoding='utf-8'))
     reload_mode = 'expanded' if project % 2 else 'compact'
     ns.SetView(ns, reload_mode)
     ns.Command(ns, 'hide')
