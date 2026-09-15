@@ -14,9 +14,13 @@ function A:Toggle(id) if self.audio then return self:Result(self.audio:Toggle(id
 function A:SetVolume(id,value) if self.audio then return self:Result(self.audio:SetVolume(id,value)) end end
 function A:Step(id,delta) if self.audio then return self:Result(self.audio:Step(id,delta,IsShiftKeyDown and IsShiftKeyDown())) end end
 function A:SetView(mode)
+    self.UI:CancelPlacement()
+    local previous=self.db.viewMode
+    local origin=self.db.position
     self.db.viewMode=mode=='expanded' and 'expanded' or 'compact'
     self.db.showBar=true
     self.UI:CloseMenus(); self.UI:Refresh()
+    if previous=='compact' and self.db.viewMode=='expanded' then self.UI:BeginPlacement(origin,previous) end
 end
 function A:TogglePanel()
     if not self.db.showBar then self:SetVisible(true)

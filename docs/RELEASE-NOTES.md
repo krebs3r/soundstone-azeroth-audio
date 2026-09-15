@@ -1,42 +1,29 @@
-# Soundstone 0.3.0 – Azeroth Audio
+# Soundstone 0.3.2 – Azeroth Audio
 
-Compact audio controls for World of Warcraft, with English and German UI.
+## What's changed
 
-## Install / Installation
+- Smaller, centered minimap logo with more space inside the existing button.
+- Fixed long pauses when placing Soundstone with overlap avoidance enabled.
+- Check the expanded mixer's full area when switching from the compact bar; move clear of visible action bars or return to compact if no safe position can be found.
+- Shorter German tooltips keep percentage signs attached to their numbers.
+- Removed the in-game changelog window and its data. Version and author remain in the footer.
+- The local installer supports explicit updates while WoW runs, with backup and file verification; use `/reload` after it finishes.
 
-1. Download **`Soundstone-0.3.0.zip`** from **Assets** below. Use this file, not **Source code (zip/tar.gz)**.
-2. Close WoW and extract the archive. Copy the contained **`Soundstone`** folder into your client's **`Interface/AddOns`** directory:
+This release includes changes from the internal 0.3.1 test builds. No separate 0.3.1 release was published.
 
-   | Client | Folder inside your World of Warcraft installation |
-   | --- | --- |
-   | Retail | `_retail_/Interface/AddOns/` |
-   | MoP Classic | `_classic_/Interface/AddOns/` |
-   | TBC Anniversary | `_anniversary_/Interface/AddOns/` |
-   | Classic Era / Hardcore / Season of Discovery | `_classic_era_/Interface/AddOns/` |
+## Installation and validation
 
-3. Verify **`Interface/AddOns/Soundstone/Soundstone.toc`** exists. Avoid an extra parent or nested `Soundstone` folder.
-4. Start WoW, enable **Soundstone – Azeroth Audio** in **AddOns**, and type **`/soundstone`** in game.
+Download **Soundstone-0.3.2.zip** from this release's assets and replace the **Soundstone** folder in your client's **Interface/AddOns** directory. Keep your **WTF** folder to preserve settings. Reload the UI after updating; restart WoW if new files are not detected.
 
-**Deutsch:** WoW schließen, **Soundstone-0.3.0.zip** unter **Assets** herunterladen und entpacken. Den Ordner **Soundstone** in den oben genannten `Interface/AddOns`-Ordner deines Clients kopieren. WoW starten, das Addon aktivieren und **`/soundstone`** eingeben. Beim Aktualisieren den bisherigen Addon-Ordner ersetzen; den `WTF`-Ordner mit den gespeicherten Einstellungen behalten. Nach einem Austausch während des Spielens `/reload` verwenden; falls das neue Addon fehlt, WoW neu starten.
+781 simulated Lua scenarios plus installer/release and package checks. Retail 12.1.0 and TBC Anniversary 2.5.6 are the release candidates based on user testing; final acceptance is recorded against this release's ZIP before CurseForge submission. Mists and Classic Era are not approved for this CurseForge file.
 
-[Full installation guide / vollständige Anleitung](https://github.com/krebs3r/soundstone-azeroth-audio/blob/v0.3.0/docs/ANLEITUNG-DE.md)
+## Deutsch
 
-## What's new
+- Kleineres Minimap-Logo mit mehr Abstand zum vorhandenen Rahmen.
+- Keine langen Pausen mehr bei der Platzsuche nach dem Ablegen.
+- Beim Wechsel zur großen Ansicht wird deren gesamte Fläche geprüft und neben sichtbaren Aktionsleisten platziert. Ist kein freier Platz verfügbar, kehrt Soundstone zur kleinen Ansicht zurück.
+- Kürzere Hilfetexte; Prozentzeichen bleiben bei ihrer Zahl.
+- Ingame-Changelog entfernt; Versionsnummer und Autorenzeile bleiben erhalten.
+- Die Installationshilfe unterstützt ausdrücklich erlaubte Updates bei laufendem WoW mit Sicherung und Dateiprüfung. Anschließend `/reload` ausführen.
 
-- Smaller compact bar and options, direct view/hide controls and matching red header buttons.
-- Attached output-device dropdown; fixed native menu Lua font errors.
-- Consistent master/music/effects activation and restoration of the last positive volume at 0%.
-- Sound effects groups effects, ambience and dialogue; voice chat stays separate.
-- Optional avoidance of visible UI controls when placing Soundstone, and shorter contextual tooltips.
-- **300 × 160 changelog**, matching the mixer, with **one card per version**. Open it by clicking the version footer.
-- Updated README with current UI-preview captures and installation instructions.
-
-![Soundstone 0.3.0 UI preview: Retail and Classic](https://raw.githubusercontent.com/krebs3r/soundstone-azeroth-audio/v0.3.0/docs/screenshots/soundstone-0.3-overview.png)
-
-*Captured from the production-asset browser preview, not from the game. Blizzard widgets and fonts are approximated.*
-
-## Validation and clients
-
-**711 simulated Lua scenarios** plus package/texture checks. Targets: Retail 12.1.0, MoP Classic 5.5.4, TBC Anniversary 2.5.6 and Classic Era 1.15.9. In-game acceptance is not complete for every client/game mode; **WoW: Forever remains unconfirmed**.
-
-[Full changelog](https://github.com/krebs3r/soundstone-azeroth-audio/blob/v0.3.0/CHANGELOG.md) · [Compatibility](https://github.com/krebs3r/soundstone-azeroth-audio/blob/v0.3.0/docs/COMPATIBILITY.md)
+**Installation:** Den enthaltenen Ordner **Soundstone** im jeweiligen **Interface/AddOns**-Verzeichnis ersetzen. **WTF** mit den Einstellungen behalten. Retail und TBC Anniversary erhalten nach der abschließenden Prüfung dieses ZIPs die CurseForge-Zuordnung; andere Clients werden damit nicht freigegeben.

@@ -12,7 +12,7 @@ if os.environ.get('SOUNDSTONE_TEST_DEPS'):
 from lupa.lua51 import LuaRuntime
 
 ROOT = Path(__file__).resolve().parents[1]
-FILES = ['Locale.lua', 'Compat.lua', 'Assets.lua', 'Layout.lua', 'Placement.lua', 'ReleaseNotes.lua', 'Audio.lua', 'Devices.lua', 'Dropdown.lua', 'UI.lua', 'Core.lua']
+FILES = ['Locale.lua', 'Compat.lua', 'Assets.lua', 'Layout.lua', 'Placement.lua', 'Audio.lua', 'Devices.lua', 'Dropdown.lua', 'UI.lua', 'Core.lua']
 total = 0
 configs = [
     ('Retail', 1, 'deDE', False, True),
@@ -48,6 +48,7 @@ for variant, project, locale, legacy, backdrop, native in [(*config, native) for
     total += lua.execute((ROOT / 'tests/test_audio_logic.lua').read_text(encoding='utf-8'))
     total += lua.execute((ROOT / 'tests/test_ui03.lua').read_text(encoding='utf-8-sig'))
     total += lua.execute((ROOT / 'tests/test_followups.lua').read_text(encoding='utf-8'))
+    total += lua.execute((ROOT / 'tests/test_placement.lua').read_text(encoding='utf-8'))
     reload_mode = 'expanded' if project % 2 else 'compact'
     ns.SetView(ns, reload_mode)
     ns.Command(ns, 'hide')

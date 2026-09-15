@@ -1,7 +1,7 @@
 local _, A = ...
 local Layout = {
     compact={width=276,height=36}, expanded={width=300,height=160},
-    options={width=276,height=236}, news={width=300,height=160}, menuGap=4, headerButton=20, headerGap=2, minScale=.75, maxScale=1.5,
+    options={width=276,height=236}, menuGap=4, headerButton=20, headerGap=2, minScale=.75, maxScale=1.5,
 }
 A.Layout = Layout
 function Layout.View(mode)

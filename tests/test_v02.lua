@@ -17,7 +17,7 @@ test('Escape closes one layer and then returns to compact view',function()
 end)
 test('six grip dots and unstretched icon dimensions',function()
     eq(#A.UI.gripDots,6)
-    eq(#A.UI.panelGripDots,6);eq(A.UI.version.textValue,'v0.3.0')
+    eq(#A.UI.panelGripDots,6);eq(A.UI.version.textValue,'v0.3.2')
     for _,id in ipairs({'master','sfx','music'}) do
         local names={master='Master',sfx='Sfx',music='Music'}
         local t=A.UI.barControls[id].icon.texture;local asset=A.Assets[names[id]]
@@ -30,7 +30,7 @@ test('six grip dots and unstretched icon dimensions',function()
 end)
 test('dragging does not click menu and position survives scaling',function()
     A.db.locked=false;A:SetView('compact');A.UI.grip:Fire('OnDragStart');eq(A.UI.dragging,true)
-    A.UI.grip:Fire('OnDragStop');local x,y=A.db.position.x,A.db.position.y
+    A.UI.grip:Fire('OnDragStop');Mock.finishPlacement();local x,y=A.db.position.x,A.db.position.y
     A.UI.grip:Fire('OnClick');eq(A.UI.menu:IsShown(),false)
     A:SetScale(1.25);near(A.db.position.x,x);near(A.db.position.y,y)
     Mock.time=Mock.time+1;A.UI.grip:Fire('OnClick');eq(A.UI.menu:IsShown(),false)

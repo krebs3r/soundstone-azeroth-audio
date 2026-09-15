@@ -49,10 +49,17 @@ def running_clients(wow_root):
     return active
 
 
-def install(wow_root, client, payload, backup_root, process_check=running_clients):
+def install(wow_root, client, payload, backup_root, process_check=running_clients, *, allow_running=False):
     destination = target_for(wow_root, client)
     result = {'client': client, 'destination': str(destination)}
-    if client in process_check(wow_root):
+    if allow_running and not (destination / 'Soundstone.toc').is_file():
+        raise ValueError('--allow-running is only supported for an existing Soundstone installation')
+    def must_defer():
+        running = client in process_check(wow_root)
+        if running and allow_running:
+            result['reload_required'] = True
+        return running and not allow_running
+    if must_defer():
         return {**result, 'status': 'deferred-running'}
     if compare_folder(destination, payload)['identical']:
         return {**result, 'status': 'already-current'}
@@ -68,7 +75,7 @@ def install(wow_root, client, payload, backup_root, process_check=running_client
             target.write_bytes(data)
         if not compare_folder(stage, payload)['identical']:
             raise RuntimeError('Staged installation verification failed')
-        if client in process_check(wow_root):
+        if must_defer():
             return {**result, 'status': 'deferred-running'}
         target_for(wow_root, client)
         if destination.exists():
@@ -81,7 +88,7 @@ def install(wow_root, client, payload, backup_root, process_check=running_client
                         for p in tree_paths(destination) if p.is_file()}
             if not compare_folder(backup, original)['identical']:
                 raise RuntimeError('Backup verification failed')
-            if client in process_check(wow_root):
+            if must_defer():
                 return {**result, 'status': 'deferred-running', 'backup': str(backup)}
             target_for(wow_root, client)
             destination.rename(previous)
@@ -123,7 +130,11 @@ def main():
     mode.add_argument('--dry-run', action='store_true')
     mode.add_argument('--status', action='store_true')
     parser.add_argument('--archive', type=Path)
+    parser.add_argument('--allow-running', action='store_true',
+                        help='Update an existing addon while WoW runs; use /reload only after installation finishes')
     args = parser.parse_args()
+    if args.allow_running and not args.install:
+        parser.error('--allow-running requires --install')
     if args.destination:
         target = args.destination.absolute()
         if target.parts[-3:] != ('Interface', 'AddOns', 'Soundstone'):
@@ -142,7 +153,8 @@ def main():
     results = []
     for client in clients:
         if args.install:
-            result = install(args.root, client, payload, ROOT/'.local-history/install-backups')
+            result = install(args.root, client, payload, ROOT/'.local-history/install-backups',
+                             allow_running=args.allow_running)
         else:
             target = target_for(args.root, client)
             result = {'client': client, 'destination': str(target), **compare_folder(target, payload)}

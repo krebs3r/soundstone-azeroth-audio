@@ -100,6 +100,25 @@ class InstallTests(unittest.TestCase):
         self.assertEqual(self.install(lambda root: {'retail'})['status'], 'deferred-running')
         self.assertFalse(self.target.exists())
 
+    def test_explicit_running_update_verifies_and_backs_up(self):
+        self.install()
+        original = self.payload['Core.lua']
+        (self.target/'obsolete.lua').write_text('old')
+        self.payload['Core.lua'] = b'return false'
+        result = installer.install(self.root, 'retail', self.payload, self.backup,
+                                   lambda root: {'retail'}, allow_running=True)
+        self.assertEqual(result['status'], 'installed')
+        self.assertTrue(result['reload_required'])
+        self.assertTrue(compare_folder(self.target, self.payload)['identical'])
+        self.assertEqual((Path(result['backup'])/'Core.lua').read_bytes(), original)
+        self.assertEqual((Path(result['backup'])/'obsolete.lua').read_text(), 'old')
+
+    def test_running_override_rejects_new_installation(self):
+        with self.assertRaisesRegex(ValueError, 'existing Soundstone'):
+            installer.install(self.root, 'retail', self.payload, self.backup,
+                              lambda root: {'retail'}, allow_running=True)
+        self.assertFalse(self.target.exists())
+
     def test_running_at_commit_is_deferred(self):
         with patch.object(installer, 'running_clients'):
             check = unittest.mock.Mock(side_effect=[set(), {'retail'}])

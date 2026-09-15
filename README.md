@@ -47,7 +47,6 @@ I sometimes watch Netflix, YouTube or another streaming service on my second mon
 | Gear / view arrows | Open options / switch compact and expanded views |
 | Crossed-out eye | Hide Soundstone; restore with `/soundstone` |
 | Red X / Escape | Close the current popup, then return from mixer to compact view |
-| Click the version footer | Read one short changelog card per version |
 | Drag the six-dot grip or mixer title | Move Soundstone unless positions are locked |
 | Minimap left-click / right-click | Restore or switch view / show or hide Soundstone |
 
@@ -59,7 +58,7 @@ Enabling at **0%** restores the last positive volume. Muting preserves volume le
 
 ### Layout and options
 
-The compact bar is **276 × 36**, the mixer **300 × 160**, options **276 × 236**, and the changelog **300 × 160** UI units. The changelog has **one card per version**, with readable 11-point text and Previous/Next navigation. The full history is in [CHANGELOG.md](CHANGELOG.md).
+The compact bar is **276 × 36**, the mixer **300 × 160**, and options **276 × 236** UI units. The footer displays the version. Starting with 0.3.2, release notes are kept outside the addon in [CHANGELOG.md](CHANGELOG.md) and on the release page.
 
 Soundstone follows WoW's UI scale and adds its own **75–150%** size setting. Size changes apply when the slider is released. Options attach below the current view, or above near the bottom screen edge. The views share a saved position; minimap visibility is independent.
 
@@ -69,7 +68,7 @@ The device field opens an attached, scrollable dropdown. Selection is validated 
 
 ![Soundstone options and a single-version changelog card, captured from the UI preview](docs/screenshots/soundstone-0.3-details.png)
 
-*Options and changelog preview; the changelog has the same outer dimensions as the expanded mixer.*
+*Historical 0.3.0 browser preview of options and release notes. The release-notes window is removed in 0.3.2.*
 
 ### Commands and bindings
 
