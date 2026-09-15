@@ -19,9 +19,17 @@ function A:SetView(mode)
     self.UI:CloseMenus(); self.UI:Refresh()
 end
 function A:TogglePanel()
-    self:SetView(self.db.showBar and self.db.viewMode=='expanded' and 'compact' or 'expanded')
+    if not self.db.showBar then self:SetVisible(true)
+    else self:SetView(self.db.viewMode=='expanded' and 'compact' or 'expanded') end
+end
+function A:SetVisible(visible)
+    local wasVisible=self.db.showBar
+    self.db.showBar=visible and true or false
+    self.UI:CancelScale();self.UI:CloseMenus();self.UI:Refresh()
+    if wasVisible and not self.db.showBar then self:Print(L.HIDDEN) end
 end
 function A:SetScale(value)
+    self.UI.pendingScale=nil
     self.db.uiScale=Layout.Scale(value); self.UI:ApplyLayout(); self.UI:Refresh()
 end
 function A:SavePosition(frame)
@@ -38,7 +46,8 @@ function A:Command(message)
     local cmd,arg=(message or ''):lower():match('^%s*(%S*)%s*(.-)%s*$')
     if cmd=='' then self:TogglePanel()
     elseif cmd=='compact' or cmd=='expand' then self:SetView(cmd=='expand' and 'expanded' or 'compact')
-    elseif cmd=='bar' then self.db.showBar=not self.db.showBar; self.UI:CloseMenus(); self.UI:Refresh()
+    elseif cmd=='hide' or cmd=='show' then self:SetVisible(cmd=='show')
+    elseif cmd=='bar' then self:SetVisible(not self.db.showBar)
     elseif cmd=='minimap' then self.db.showMinimap=not self.db.showMinimap; self.UI:Refresh()
     elseif cmd=='lock' then self.db.locked=not self.db.locked; self.UI:Refresh()
     elseif cmd=='reset' then self:ResetPositions()
@@ -57,7 +66,7 @@ function A:Initialize()
     if type(SoundstoneDB)~='table' then SoundstoneDB={} end
     self.db=SoundstoneDB
     local db=self.db
-    for key,value in pairs({showBar=true,showMinimap=true,locked=false}) do
+    for key,value in pairs({showBar=true,showMinimap=true,locked=false,avoidOverlap=true}) do
         if type(db[key])~='boolean' then db[key]=value end
     end
     if db.schema~=2 or type(db.position)~='table' then
@@ -69,7 +78,8 @@ function A:Initialize()
     db.uiScale=Layout.Scale(db.uiScale)
     db.minimapAngle=Layout.Number(db.minimapAngle,225)%360
     db.schema=2; db.positions=nil
-    self.audio=self.Audio.New(C,function() self.UI:Refresh() end)
+    self.audio=self.Audio.New(C,function() self.UI:Refresh() end,db.lastVolumes)
+    db.lastVolumes=self.audio.history
     self.devices=self.Devices.New(C,function() self.UI:RefreshDevices() end)
     self.UI:Create()
     SLASH_SOUNDSTONE1,SLASH_SOUNDSTONE2='/soundstone','/azeraudio'

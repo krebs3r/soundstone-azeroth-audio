@@ -1,6 +1,12 @@
 local _, A = ...
-local Layout = {width=300, compactHeight=45, expandedHeight=160, minScale=.75, maxScale=1.5}
+local Layout = {
+    compact={width=276,height=36}, expanded={width=300,height=160},
+    options={width=276,height=236}, news={width=300,height=160}, menuGap=4, headerButton=20, headerGap=2, minScale=.75, maxScale=1.5,
+}
 A.Layout = Layout
+function Layout.View(mode)
+    return mode=='expanded' and Layout.expanded or Layout.compact
+end
 function Layout.Number(value, fallback)
     local n=tonumber(value)
     if not n or n~=n or n==math.huge or n==-math.huge then return fallback end
@@ -13,6 +19,17 @@ function Layout.Clamp(x,y,width,height,screenWidth,screenHeight)
     local left,right=-screenWidth/2,screenWidth/2-width
     local bottom,top=-screenHeight/2+height,screenHeight/2
     return math.max(left,math.min(math.max(left,right),x)),math.min(top,math.max(math.min(bottom,top),y))
+end
+-- All arguments use UIParent units. Temporarily fit the pair without saving a new position.
+function Layout.MenuPlacement(y,viewHeight,menuHeight,gap,screenHeight)
+    local top,bottom=screenHeight/2,-screenHeight/2
+    if y-viewHeight-gap-menuHeight>=bottom then return y,false end
+    if y+gap+menuHeight<=top then return y,true end
+    local above=top-y>y-viewHeight-bottom
+    if viewHeight+gap+menuHeight<=screenHeight then
+        y=above and top-gap-menuHeight or bottom+viewHeight+gap+menuHeight
+    end
+    return y,above
 end
 function Layout.LegacyPosition(pos, width, height)
     pos=type(pos)=='table' and pos or {point='CENTER',x=0,y=-180}

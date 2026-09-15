@@ -1,40 +1,37 @@
 # Validation status
 
-Version: 0.2.0 validation build. Client metadata baseline checked on 2026-09-14; automated checks on 2026-09-15.
+Version: 0.3.0. Client metadata rechecked against installed builds and UI sources on 2026-09-15; automated checks on 2026-09-15. Publication was explicitly requested on 2026-09-15; this does not certify in-game coverage for every client.
 
 ## Automated
 
-**126 passing scenario checks** in real Lua 5.1, running the actual addon source against bounded frame/CVar test doubles. Five configurations: Retail, Mists Classic, TBC Anniversary, Classic Era and an unknown-client/global-API fallback. These labels select simulated APIs and locale; they do not run or emulate the game engine.
+The latest extension adds seven scenarios per API/backend configuration: an independent exhaustive-grid oracle for nearest free placement; frame filtering and unavailable/secret API values; drag placement throughout the scale matrix; opt-out, locking and no-space rollback; distinct short tooltips; title fitting and paged release-note behavior; and release-note screen containment. Reload also preserves the new overlap preference. UTF-8 font metrics in the mock count characters instead of bytes; real client glyph widths still require in-game inspection.
 
-Original audio coverage is retained: startup without CVar writes, initialization once, master/channel independence, mute preservation, zero/100% boundaries, rounding, invalid input, sliders, wheel and Shift-wheel, external changes without feedback writes, missing APIs, rejected/ignored/throwing writes, commands, minimap interactions, no idle update loop, reload persistence and corrupt settings recovery. View assertions reflect 0.2's mutually exclusive views.
+**711 passing scenario checks** execute the actual addon in Lua 5.1 against bounded frame/CVar doubles. Five configurations represent Retail, Mists Classic, TBC Anniversary, Classic Era and an unknown-client/global-API fallback; each runs with native and fallback dropdown menus. These are API simulations, not the game engine.
 
-New coverage: device selection and exactly one restart, unchanged selections, missing/reordered/unplugged devices, unavailable APIs, rejected writes and restart failure, external device changes and long lists, six grip dots, proportional icons, shared anchors, layered Escape, drag/click suppression, hidden state and legacy position migration.
+Audio checks cover startup without writes, mute preservation, zero/100% boundaries, rounding, sliders and wheel steps, external changes, missing APIs, rejected/ignored/throwing writes, slash commands, bindings, minimap behavior, reload and corrupt saved settings. The audio matrix runs 192 switch/zero-volume transitions per configuration/backend. Additional cases cover effects/ambience/dialogue grouping, music-only activation while master is blocked, mixed external settings, positive-volume history, first-use fallbacks, readback, every write-failure position and failed rollback. Voice/pet/error-speech settings remain untouched. Synchronous CVar callbacks cannot display intermediate group states.
 
-The geometry test exercises **36 combinations per API configuration**: 1920 × 1080 and 2560 × 1440, WoW scales 65/85/100%, Soundstone sizes 75/100/150%, and both views. It verifies inherited scale, screen clamping and pixel alignment. It cannot establish readable text, texture rendering or correct physical hit targets inside WoW.
+The existing geometry matrix covers 1080p/1440p, WoW scale 65/85/100%, addon scale 75/100/150% and both views. It checks inherited scale, all four screen corners, icon clearance, equal grip dots, dropdown alignment and pixel positioning. The new options matrix additionally tests four corners plus the center in every combination: matching left edges, 276-unit width, a four-unit gap, above/below selection, no overlap, screen containment, 256-unit dropdown width and restoration of the saved position. It verifies all three header click areas remain 20 × 20 with aligned tops. A dedicated case covers temporary repositioning when neither side initially has room, including a pending size change that is cancelled on close.
 
-Package validation checks TOC entries, binding XML, all fourteen textures' dimensions and real alpha, ZIP integrity and the single installable folder. The HTML preview displays the same exported texture pixels with approximate browser fonts.
+Header-control tests cover common normal/hover/pressed colors, right-button suppression, release/re-entry, mouse release outside, hide cleanup, tooltips, title clearance and order **hide → compact view → X**. Existing direct view/hide actions, layered Escape, shared position, minimap independence, pending-size cancellation and reload restoration remain covered. The compact button keeps its existing geometry and plate states.
 
-## In-game
+Device cases include one restart per successful change, unchanged/rejected selections, unavailable APIs, restart failure, unplugged/reordered devices, stale index/name checks, external changes, long names, six-row scrolling, outside clicks, second clicks and menu closure on view changes. Native frames are simulated outside UIParent with independent menu-manager Escape ownership.
 
-| Client | Build baseline | Version 0.2 status |
-| --- | --- | --- |
-| Retail | 12.1.0.69814 | Pending |
-| Mists Classic | 5.5.4.69585 | Pending |
-| TBC Anniversary | 2.5.6.69795 | Initial 0.2 mixer/options rendering observed at 2560 × 1440; final corrections awaiting reload |
-| Classic Era / Hardcore / SoD | 1.15.9.69722 | Pending |
-| WoW: Forever | Not available for this test | Unverified |
+The reported native `SetFont` error was reproduced by rejecting even a method lookup on compositor-managed labels. The corrected code creates one shared Font object outside the initializer and uses `SetFontObject`, following the [menu guide](https://raw.githubusercontent.com/Gethe/wow-ui-source/live/Interface/AddOns/Blizzard_Menu/11_0_0_MenuImplementationGuide.lua) and [compositor restrictions](https://raw.githubusercontent.com/Gethe/wow-ui-source/live/Interface/AddOns/Blizzard_Menu/Compositor.lua). Repeated opening, selection and regeneration are tested. The prior unrestricted FontString mock missed this bug.
 
-Earlier 0.1 Anniversary checks confirmed loading, visible audio values and synchronization with changes in Blizzard's Audio menu. They do not validate the replaced 0.2 renderer or device selection.
+Package validation checks TOC entries, XML, 24 runtime textures, real alpha, atlas agreement, ZIP integrity and one installable folder. HeaderHide, HeaderCompact and HeaderClose must have identical dimensions, byte-identical alpha silhouettes and matching outer-frame pixels. Their PNG previews come from the same export as the TGA files.
 
-The first 0.2 observation showed the new Classic mixer, options and the client's system-default device name. It caught stretched borders on wide menu buttons and a slider fill covering the thumb. The source now uses sliced button corners and explicit frame ordering for slider decorations; this correction still needs a fresh live check. No audible output-device test or final visual approval has been recorded.
+The scenario count counts test invocations, not every assertion inside the matrices. Approximate font metrics and API doubles cannot establish in-game font rendering, physical hit targets or audible device switching.
 
-## Remaining acceptance checks
+## Release UI and screenshots
 
-- Capture each design in the game at the reference's comparison size. Overlay the captures with `design-concept.png` and inspect enlarged frame, corner, grip, icon and close-button crops. Transparent corners, six dots, correct icon proportions, aligned click targets and no clipped or overlapping text are required.
-- Repeat the 1080p/1440p, WoW 65/85/100% and Soundstone 75/100/150% matrix in actual clients. The automated matrix is supplementary evidence only.
-- Test speakers and headset by listening, restore the original device, and verify unchanged volumes and mute switches. Test external changes in Blizzard's menu and unplugging the selected device.
-- Test switching views, device/menu/panel Escape order, grip click versus drag, minimap controls, screen edges, `/reload`, relog and combat use without protected-action errors.
-- Check Retail, MoP Classic, TBC Anniversary and Classic Era individually. Check Hardcore and SoD separately even though they share a client family.
-- Add genuine in-game screenshots after these checks. Do not label generated art or browser previews as in-game captures.
+The release-note window is **300 × 160**, identical to the expanded mixer. A new scenario in each backend/configuration verifies unique version cards, boundaries, counter text, navigation clamping and separation between text and navigation buttons. There are two cards: 0.3.0 and 0.2.0. Existing Escape, screen-edge and scale-matrix cases still pass.
 
-Device enumeration and the output CVar follow the client UI's [Audio.lua](https://raw.githubusercontent.com/Gethe/wow-ui-source/live/Interface/AddOns/Blizzard_SettingsDefinitions_Shared/Audio.lua). For future patches, verify `GetBuildInfo()` and public APIs, update the TOC Interface list, run tests and repeat client smoke tests. Loading successfully alone does not establish future-client compatibility.
+The README images are full-page screenshots of `readme-gallery.html` and `readme-details.html`, using the production-asset renderer. They show current Retail/Classic views, options and the resized changelog. They are explicitly labeled browser previews; actual Blizzard widgets and font rendering may differ.
+
+The installable package is validated locally and in GitHub Actions. The release uploads its ZIP and corresponding SHA-256 file. Source archives are not the recommended installation artifact.
+
+## Remaining in-game acceptance
+
+Load this build in each target client, check game/headset output, combat, external Blizzard audio changes and `/reload`. Compare both skins at 1080p/1440p, WoW scale 65/85/100% and Soundstone scale 75/100/150%. Check German/English card text, the version footer, frame edges and device dropdown near screen corners.
+
+The simulated configurations are not live client runs. See [COMPATIBILITY.md](COMPATIBILITY.md) for verified client build numbers and outstanding coverage. Forever remains unconfirmed.

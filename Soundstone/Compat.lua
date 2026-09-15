@@ -29,6 +29,12 @@ function C.Now()
     return GetTime and GetTime() or 0
 end
 
+function C.Version()
+    local read=C_AddOns and C_AddOns.GetAddOnMetadata or GetAddOnMetadata
+    if read then local ok,value=pcall(read,'Soundstone','Version');if ok and value then return value end end
+    return 'dev'
+end
+
 function C.OutputDevices()
     if type(Sound_GameSystem_GetNumOutputDrivers)~='function' or type(Sound_GameSystem_GetOutputDriverNameByIndex)~='function' then return nil end
     local ok,count=pcall(Sound_GameSystem_GetNumOutputDrivers)

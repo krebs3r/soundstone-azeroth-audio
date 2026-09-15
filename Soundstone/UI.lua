@@ -41,7 +41,7 @@ local function skin(frame,name,cornerOverride)
         local dv=(u[4]-u[3])*sourceCorner/meta.height
         local xs={u[1],u[1]+du,u[2]-du,u[2]}
         local ys={u[3],u[3]+dv,u[4]-dv,u[4]}
-        local c=C.Pixel(corner,frame); local w,h=frame:GetWidth(),frame:GetHeight()
+        local c=C.Pixel(corner,frame);frame.skinCorner=c;local w,h=frame:GetWidth(),frame:GetHeight()
         for _,p in ipairs(pieces) do
             p.t:SetTexture(MEDIA..name..'.tga');p.t:SetTexCoord(xs[p.x],xs[p.x+1],ys[p.y],ys[p.y+1])
             local left=p.x==1 and 0 or (p.x==2 and c or w-c)
@@ -54,12 +54,14 @@ local function skin(frame,name,cornerOverride)
     frame:HookScript('OnSizeChanged',resize);frame.Reskin=resize;resize()
 end
 local function icon(parent,id,size)
-    local f=CreateFrame('Frame',nil,parent);f:SetSize(size,size)
+    local f=CreateFrame('Frame',nil,parent)
     local name=ids[id];local m=A.Assets[name];local max=math.max(m.width,m.height)
     f.texture=sprite(f,name);f.texture:SetPoint('CENTER')
-    f.texture:SetSize(size*m.width/max,size*m.height/max)
-    f.slash=flat(f,{.94,.14,.18,1},size*1.15,2.1);f.slash:SetPoint('CENTER');f.slash:SetRotation(math.pi/4);f.slash:Hide()
-    function f:SetMuted(value) self.texture:SetDesaturated(value);self.texture:SetAlpha(value and .66 or 1);self.slash:SetShown(value) end
+    function f:SetIconSize(value)
+        self:SetSize(value,value);self.texture:SetSize(value*m.width/max,value*m.height/max)
+    end
+    f:SetIconSize(size)
+    function f:SetMuted(value) self.texture:SetDesaturated(value);self.texture:SetAlpha(value and .66 or 1) end
     return f
 end
 local function hideTip() if GameTooltip then GameTooltip:Hide() end end
@@ -81,12 +83,82 @@ local function textureButton(parent,name,w,h,text,onClick)
     b:SetScript('OnMouseUp',function() b.image:SetVertexColor(1,1,1) end)
     b:SetScript('OnClick',onClick);return b
 end
-function UI:ChannelTip(owner,id)
-    local s=A.audio:Get(id)
-    local text=(s.percent and string.format(L.SAVED,s.percent)..'\n' or '')..(s.reason and L[s.reason]..'\n' or '')
-    tip(owner,L[s.channel.label],text..L[s.channel.help]..'\n'..L.TOGGLE_HELP..'\n'..L.WHEEL_HELP)
+-- Reuse the client's button states, typography and native red/gold treatment.
+local function nativeButton(parent,w,h,text,onClick)
+    local b=CreateFrame('Button',nil,parent,'UIPanelButtonTemplate');b:SetSize(w,h);b:SetText(text or '')
+    b.text=b:GetFontString();b.text:ClearAllPoints();b.text:SetPoint('CENTER')
+    b.text:SetFont(STANDARD_TEXT_FONT or 'Fonts\\FRIZQT__.TTF',10,'');b.text:SetWordWrap(false)
+    b:SetScript('OnClick',onClick);return b
 end
-local function wire(target,id,click)
+local function actionButton(parent,name,title,onClick)
+    local b=CreateFrame('Button',nil,parent);b:SetSize(19,19)
+    if name then
+        b.plate=sprite(b,'ActionNormal','BACKGROUND');b.plate:SetAllPoints()
+        b.image=sprite(b,name);b.image:SetSize(17,17)
+        local hovered,pressed=false,false
+        local function update()
+            local down=hovered and pressed
+            local state=down and 'ActionPressed' or (hovered and 'ActionHover' or 'ActionNormal')
+            b.plate:SetTexture(MEDIA..state..'.tga')
+            local brightness=down and .7 or (hovered and 1 or .9)
+            b.image:SetVertexColor(brightness,brightness,brightness)
+            b.image:ClearAllPoints();b.image:SetPoint('CENTER',0,down and -1 or 0)
+        end
+        update()
+        b:SetScript('OnEnter',function()
+            -- A release outside the button may not deliver its OnMouseUp script.
+            if pressed and IsMouseButtonDown and not IsMouseButtonDown('LeftButton') then pressed=false end
+            hovered=true;update();tip(b,title)
+        end)
+        b:SetScript('OnLeave',function() hovered=false;update();hideTip() end)
+        b:SetScript('OnMouseDown',function(_,button) if button=='LeftButton' then pressed=true;update() end end)
+        b:SetScript('OnMouseUp',function() pressed=false;update() end)
+        b:SetScript('OnHide',function() hovered=false;pressed=false;update();hideTip() end)
+    else
+        b.image=b:CreateTexture(nil,'ARTWORK');b.image:SetTexture('Interface\\WorldMap\\GEAR_64GREY');b.image:SetAllPoints()
+        local function normal() b.image:SetVertexColor(.9,.8,.57) end
+        normal()
+        b:SetScript('OnEnter',function() b.image:SetVertexColor(1,1,1);tip(b,title) end)
+        b:SetScript('OnLeave',function() normal();hideTip() end)
+        b:SetScript('OnMouseDown',function() b.image:SetVertexColor(.6,.55,.4) end)
+        b:SetScript('OnMouseUp',normal)
+    end
+    b:RegisterForClicks('LeftButtonUp')
+    b:SetScript('OnClick',onClick);return b
+end
+local function gearButton(parent)
+    return actionButton(parent,nil,L.SETTINGS,function() UI:ToggleMenu() end)
+end
+local function headerButton(parent,name,title,onClick,detail)
+    local b=CreateFrame('Button',nil,parent);b:SetSize(Layout.headerButton,Layout.headerButton)
+    b.image=sprite(b,name);b.image:SetAllPoints()
+    local hovered,pressed=false,false
+    local function update()
+        if hovered and pressed then b.image:SetVertexColor(.65,.65,.65)
+        elseif hovered then b.image:SetVertexColor(1,.94,.75)
+        else b.image:SetVertexColor(1,1,1) end
+    end
+    b:SetScript('OnEnter',function()
+        if pressed and IsMouseButtonDown and not IsMouseButtonDown('LeftButton') then pressed=false end
+        hovered=true;update();tip(b,title,detail)
+    end)
+    b:SetScript('OnLeave',function() hovered=false;update();hideTip() end)
+    b:SetScript('OnMouseDown',function(_,button) if button=='LeftButton' then pressed=true;update() end end)
+    b:SetScript('OnMouseUp',function() pressed=false;update() end)
+    b:SetScript('OnHide',function() hovered=false;pressed=false;update();hideTip() end)
+    b:RegisterForClicks('LeftButtonUp');b:SetScript('OnClick',onClick);update();return b
+end
+function UI:ChannelTip(owner,id,context)
+    local s=A.audio:Get(id)
+    local state=s.available and (s.audible and L.ON or L.OFF) or L.UNAVAILABLE
+    local lines={state..(s.percent and ' · '..s.percent..' %' or '')}
+    if s.reason and s.reason~='OFF' then lines[1]=lines[1]..' — '..L[s.reason] end
+    if id=='sfx' and context~='compact' then lines[#lines+1]=L.TIP_SFX end
+    lines[#lines+1]=context=='compact' and L.TIP_COMPACT or (context=='slider' and L.TIP_SLIDER or L.TIP_EXPANDED)
+    lines[#lines+1]=L.WHEEL_HELP
+    tip(owner,L[s.channel.label],table.concat(lines,'\n'))
+end
+local function wire(target,id,click,context)
     target:EnableMouseWheel(true)
     if click then
         target:RegisterForClicks('LeftButtonUp','RightButtonUp')
@@ -95,17 +167,36 @@ local function wire(target,id,click)
         end)
     end
     target:SetScript('OnMouseWheel',function(_,delta) A:Step(id,delta) end)
-    target:HookScript('OnEnter',function(self) UI:ChannelTip(self,id) end)
+    target:HookScript('OnEnter',function(self) UI:ChannelTip(self,id,context or (click and 'expanded' or 'slider')) end)
     target:HookScript('OnLeave',hideTip)
+end
+function UI:FinishDrag()
+    A:SavePosition(self.root)
+    if A.db.avoidOverlap then
+        local obstacles=A.Placement.Collect(self.root)
+        local sw,sh=UIParent:GetWidth(),UIParent:GetHeight()
+        local scale=A.db.uiScale
+        local x,y
+        if obstacles then
+            x,y=A.Placement.Find(A.db.position.x+sw/2,A.db.position.y+sh/2,
+                self.root:GetWidth()*scale,self.root:GetHeight()*scale,sw,sh,obstacles,2)
+        end
+        if x then A.db.position={x=x-sw/2,y=y-sh/2}
+        else
+            A.db.position=self.dragOrigin or A.db.position
+            A:Print(obstacles and L.NO_FREE_SPACE or L.PLACEMENT_UNAVAILABLE)
+        end
+    end
+    self.dragOrigin=nil;self.dragging=false;self.suppressUntil=C.Now()+.15;self:ApplyLayout()
 end
 local function movable(handle,menuClick)
     handle:EnableMouse(true);handle:RegisterForDrag('LeftButton')
     handle:SetScript('OnDragStart',function()
-        if not A.db.locked then UI:CloseMenus();UI.root:StartMoving();UI.dragging=true;hideTip() end
+        if not A.db.locked then UI:CloseMenus();UI.dragOrigin={x=A.db.position.x,y=A.db.position.y};UI.root:StartMoving();UI.dragging=true;hideTip() end
     end)
     handle:SetScript('OnDragStop',function()
         UI.root:StopMovingOrSizing()
-        if UI.dragging then A:SavePosition(UI.root);UI.dragging=false;UI.suppressUntil=C.Now()+.15;UI:ApplyLayout() end
+        if UI.dragging then UI:FinishDrag() end
     end)
     if menuClick then
         handle:SetScript('OnClick',function()
@@ -116,24 +207,36 @@ end
 local function dots(parent,size,gap)
     local result={}
     for row=0,2 do for col=0,1 do
-        local t=sprite(parent,'Rivet');t:SetSize(size,size);t:SetPoint('CENTER',(col-.5)*gap,(1-row)*gap);result[#result+1]=t
+        result[#result+1]=sprite(parent,'Rivet')
     end end
+    function parent:AlignDots()
+        local d=C.Pixel(size,self);local step=C.Pixel(gap,self)
+        local x=C.Pixel((self:GetWidth()-step-d)/2,self)
+        local y=C.Pixel((self:GetHeight()-2*step-d)/2,self)
+        for i,t in ipairs(result) do
+            local col=(i-1)%2;local row=math.floor((i-1)/2)
+            t:ClearAllPoints();t:SetSize(d,d);t:SetPoint('TOPLEFT',x+col*step,-y-row*step)
+        end
+    end
+    parent:AlignDots()
     return result
 end
 function UI:CreateBar()
     local b=CreateFrame('Frame','SoundstoneBar',self.root);self.bar=b
-    b:SetSize(300,45);b:SetPoint('TOPLEFT');skin(b,self.theme..'Bar')
+    b:SetSize(Layout.compact.width,Layout.compact.height);b:SetPoint('TOPLEFT');skin(b,self.theme..'Bar')
     local grip=CreateFrame('Button',nil,b);self.grip=grip
-    grip:SetSize(21,35);grip:SetPoint('LEFT',3,0);self.gripDots=dots(grip,3.1,5.3)
-    movable(grip,true)
+    grip:SetSize(19,28);grip:SetPoint('LEFT',3,0);self.gripDots=dots(grip,3.1,5.3)
+    movable(grip)
+    self.barSettings=gearButton(b);self.barSettings:SetPoint('LEFT',24,0)
+    self.barMode=actionButton(b,'Expand',L.EXPAND,function() A:SetView('expanded') end);self.barMode:SetPoint('LEFT',45,0)
     grip:SetScript('OnEnter',function(self) tip(self,'Soundstone',L.DRAG_HELP) end);grip:SetScript('OnLeave',hideTip)
     self.barControls={}
     for i,ch in ipairs(A.Audio.channels) do
-        local c=CreateFrame('Button',nil,b);c:SetSize(90,35);c:SetPoint('LEFT',23+(i-1)*90,0)
-        c.icon=icon(c,ch.id,24);c.icon:SetPoint('LEFT',5,0)
-        c.value=font(c,'',12);c.value:SetPoint('RIGHT',-8,0)
+        local c=CreateFrame('Button',nil,b);c:SetSize(68,28);c:SetPoint('LEFT',66+(i-1)*68,0)
+        c.icon=icon(c,ch.id,22);c.icon:SetPoint('LEFT',4,0)
+        c.value=font(c,'',11);c.value:SetPoint('LEFT',31,0);c.value:SetWidth(34);c.value:SetJustifyH('RIGHT');c.value:SetWordWrap(false)
         if i>1 then local sep=flat(c,{.58,.43,.19,.65},.6,26);sep:SetPoint('LEFT',0,0) end
-        wire(c,ch.id,true);self.barControls[ch.id]=c
+        wire(c,ch.id,true,'compact');self.barControls[ch.id]=c
     end
 end
 local function slider(parent,width,callback)
@@ -147,138 +250,201 @@ local function slider(parent,width,callback)
     status:SetStatusBarTexture(WHITE);status:SetStatusBarColor(1,.69,.13);status:SetMinMaxValues(0,100)
     local name=C.IsRetail() and 'GoldThumb' or 'SilverThumb'
     s:SetThumbTexture(MEDIA..name..'.tga')
-    local thumb=s:GetThumbTexture();thumb:SetTexCoord(unpack(A.Assets[name].uv));thumb:SetSize(10,18)
+    local thumb=s:GetThumbTexture();thumb:SetTexCoord(unpack(A.Assets[name].uv));thumb:SetSize(10,18);thumb:SetDrawLayer('OVERLAY',7);thumb:SetBlendMode('BLEND')
     s:SetScript('OnValueChanged',function(_,value) if not UI.refreshing then callback(value) end end)
     s.fill=status;s.track=track;return s
 end
 function UI:CreatePanel()
     local p=CreateFrame('Frame','SoundstonePanel',self.root);self.panel=p
-    p:SetSize(300,160);p:SetPoint('TOPLEFT');skin(p,self.theme..'Panel')
-    local header=CreateFrame('Button',nil,p);header:SetPoint('TOPLEFT',25,-4);header:SetSize(246,21);movable(header)
-    local title=font(header,'Soundstone',14,true);title:SetPoint('CENTER')
-    local menu=CreateFrame('Button',nil,p);menu:SetSize(18,19);menu:SetPoint('TOPLEFT',7,-5);dots(menu,2.5,4.1)
-    menu:SetScript('OnClick',function() UI:ToggleMenu() end)
-    menu:SetScript('OnEnter',function(self) tip(self,L.SETTINGS) end);menu:SetScript('OnLeave',hideTip)
-    local close=textureButton(p,'Close',20,20,'',function() A:SetView('compact') end);self.close=close
+    p:SetSize(Layout.expanded.width,Layout.expanded.height);p:SetPoint('TOPLEFT');skin(p,self.theme..'Panel')
+    local header=CreateFrame('Button',nil,p);self.panelHeader=header;header:SetPoint('TOPLEFT',72,-4);header:SetSize(156,21);movable(header)
+    local title=font(header,'Soundstone – Azeroth Audio',14,true);self.panelTitle=title;title:SetPoint('CENTER')
+    local titleSize=14
+    while title:GetStringWidth()>152 and titleSize>10 do
+        titleSize=titleSize-.5;title:SetFont(STANDARD_TEXT_FONT or 'Fonts\\FRIZQT__.TTF',titleSize,'')
+    end
+    if title:GetStringWidth()>152 then title:SetText('Soundstone') end
+    title:SetWordWrap(false)
+    header:SetScript('OnEnter',function(self) tip(self,'Soundstone – Azeroth Audio',L.DRAG_HELP) end)
+    header:SetScript('OnLeave',hideTip)
+    self.panelGrip=CreateFrame('Button',nil,p);self.panelGrip:SetSize(16,21);self.panelGrip:SetPoint('TOPLEFT',7,-4)
+    self.panelGripDots=dots(self.panelGrip,3.1,5.3);movable(self.panelGrip)
+    self.panelGrip:SetScript('OnEnter',function(self) tip(self,'Soundstone',L.DRAG_HELP) end);self.panelGrip:SetScript('OnLeave',hideTip)
+    self.panelSettings=gearButton(p);self.panelSettings:SetPoint('TOPLEFT',25,-5)
+    local close=headerButton(p,'HeaderClose',L.COMPACT,function() A:SetView('compact') end,'Esc');self.close=close
     close:SetPoint('TOPRIGHT',-5,-4)
-    close:HookScript('OnEnter',function(self) tip(self,L.COMPACT,'Esc') end)
+    self.panelMode=headerButton(p,'HeaderCompact',L.COMPACT,function() A:SetView('compact') end)
+    self.panelMode:SetPoint('RIGHT',close,'LEFT',-Layout.headerGap,0)
+    self.panelHide=headerButton(p,'HeaderHide',L.HIDE,function() A:SetVisible(false) end)
+    self.panelHide:SetPoint('RIGHT',self.panelMode,'LEFT',-Layout.headerGap,0)
     local separator=flat(p,{.67,.64,.56,.55},286,1);separator:SetPoint('TOPLEFT',7,-27)
     self.rows={}
     for i,ch in ipairs(A.Audio.channels) do
         local row=CreateFrame('Frame',nil,p);row:SetSize(276,42);row:SetPoint('TOPLEFT',12,-29-(i-1)*42)
         row.iconButton=CreateFrame('Button',nil,row);row.iconButton:SetSize(25,25);row.iconButton:SetPoint('LEFT')
         if not C.IsRetail() then skin(row.iconButton,'ClassicPanel',3) end
-        row.icon=icon(row.iconButton,ch.id,24);row.icon:SetPoint('CENTER');wire(row.iconButton,ch.id,true)
+        row.icon=icon(row.iconButton,ch.id,18);row.icon:SetPoint('CENTER');wire(row.iconButton,ch.id,true)
         row.name=font(row,L[ch.label],10);row.name:SetPoint('LEFT',30,0);row.name:SetWidth(69);row.name:SetJustifyH('LEFT')
-        row.toggle=textureButton(row,'Toggle',34,18,'',function() A:Toggle(ch.id) end);row.toggle:SetPoint('LEFT',99,0);wire(row.toggle,ch.id,true)
+        row.toggle=nativeButton(row,34,20,'',function() A:Toggle(ch.id) end);row.toggle:SetPoint('LEFT',99,0);wire(row.toggle,ch.id,true)
         row.slider=slider(row,98,function(value) A:SetVolume(ch.id,value) end);row.slider:SetPoint('LEFT',143,0)
         row.fill=row.slider.fill;wire(row.slider,ch.id,false)
         row.value=font(row,'',10);row.value:SetPoint('RIGHT');row.value:SetWidth(32);row.value:SetJustifyH('RIGHT')
         if i<3 then local sep=flat(row,{.55,.52,.45,.3},272,.6);sep:SetPoint('BOTTOM',0,0) end
         self.rows[ch.id]=row
     end
+    local footer=CreateFrame('Button',nil,p);self.footer=footer;footer:SetPoint('BOTTOMRIGHT',-10,5);footer:SetAlpha(.55)
+    self.version=font(footer,'v'..C.Version(),7.5);self.version:SetSize(self.version:GetStringWidth(),8);self.version:SetPoint('LEFT')
+    self.footerHeart=sprite(footer,'Heart');self.footerHeart:SetSize(8,8);self.footerHeart:SetVertexColor(.95,.3,.38);self.footerHeart:SetPoint('LEFT',self.version,'RIGHT',3,0)
+    self.author=font(footer,'by krebs3r',7.5);self.author:SetSize(self.author:GetStringWidth(),8);self.author:SetPoint('LEFT',self.footerHeart,'RIGHT',3,0)
+    footer:SetSize(self.version:GetWidth()+self.author:GetWidth()+14,8)
+    footer:RegisterForClicks('LeftButtonUp');footer:SetScript('OnClick',function() UI:ToggleNews() end)
+    footer:SetScript('OnEnter',function() footer:SetAlpha(.9);tip(footer,L.CHANGES,L.CHANGES_HELP) end)
+    footer:SetScript('OnLeave',function() footer:SetAlpha(.55);hideTip() end)
+    footer:SetScript('OnHide',function() footer:SetAlpha(.55);hideTip() end)
 end
 function UI:SyncEscape()
+    if not self.escape then return end
     self.syncEscape=true
-    self.escape:SetShown(A.db.showBar and (A.db.viewMode=='expanded' or self.menu:IsShown() or self.deviceMenu:IsShown()))
+    -- The native menu manager consumes Escape itself before special frames.
+    local nativeOpen=self.outputDropdown.native and self.outputDropdown:IsOpen()
+    self.escape:SetShown(A.db.showBar and not nativeOpen and (A.db.viewMode=='expanded' or self.menu:IsShown() or (self.news and self.news:IsShown())))
     self.syncEscape=false
 end
 function UI:Escape()
-    if self.deviceMenu:IsShown() then self.deviceMenu:Hide()
+    if self.outputDropdown:IsOpen() then self.outputDropdown:Close()
+    elseif self.news and self.news:IsShown() then self.news:Hide()
     elseif self.menu:IsShown() then self.menu:Hide()
     else A:SetView('compact') end
     self:SyncEscape()
 end
 function UI:CloseMenus()
-    if self.menu then self.menu:Hide();self.deviceMenu:Hide();self:SyncEscape() end
+    if self.news then self.news:Hide() end
+    if self.menu then self.menu:Hide();self.outputDropdown:Close();self:SyncEscape() end
+    hideTip()
 end
 function UI:ToggleMenu()
+    if self.news then self.news:Hide() end
     if self.menu:IsShown() then self:CloseMenus() else
-        self.menu:Show();self:RefreshDevices();self:PositionMenus();self:SyncEscape()
+        self.menu:Show();self:Refresh();self:RefreshDevices();self:PositionMenus();self:SyncEscape()
     end
+end
+function UI:ActivePopup()
+    if self.news and self.news:IsShown() then return self.news end
+    return self.menu
 end
 function UI:PositionMenus()
     if not self.menu then return end
-    local scale=A.db.uiScale;local pw,ph=UIParent:GetWidth(),UIParent:GetHeight()
-    local x,y=self.anchorX or 0,self.anchorY or 0
-    local function place(frame,offset)
-        local left,top=Layout.Clamp(x+offset*scale,y,frame:GetWidth()*scale,frame:GetHeight()*scale,pw,ph)
-        frame:ClearAllPoints();frame:SetPoint('TOPLEFT',UIParent,'CENTER',C.Pixel(left/scale,frame),C.Pixel(top/scale,frame))
+    for _,popup in ipairs({self.menu,self.news}) do
+        popup:ClearAllPoints()
+        local gap=C.Pixel(Layout.menuGap,popup)
+        if self.menuOpensUp then popup:SetPoint('BOTTOMLEFT',self.root,'TOPLEFT',0,gap)
+        else popup:SetPoint('TOPLEFT',self.root,'BOTTOMLEFT',0,-gap) end
+        local scale=A.db.uiScale
+        if (self.root:GetHeight()+popup:GetHeight()+Layout.menuGap)*scale>UIParent:GetHeight() then
+            local px,py=UIParent:GetCenter()
+            local x,y=Layout.Clamp(popup:GetLeft()*scale-px,popup:GetTop()*scale-py,
+                popup:GetWidth()*scale,popup:GetHeight()*scale,UIParent:GetWidth(),UIParent:GetHeight())
+            popup:ClearAllPoints();popup:SetPoint('TOPLEFT',UIParent,'CENTER',C.Pixel(x/scale,popup),C.Pixel(y/scale,popup))
+        end
     end
-    local width=self.menu:GetWidth()*scale
-    place(self.menu,x+(304*scale)+width>pw/2 and -244 or 304)
-    -- Device list opens on top of the options popup; Escape returns to options.
-    place(self.deviceMenu,0)
+    if self.outputDropdown then self.outputDropdown:Position() end
+end
+function UI:ShowNewsPage(index)
+    self.newsPage=math.max(1,math.min(#A.ReleaseNotes,index))
+    local entry=A.ReleaseNotes[self.newsPage]
+    self.newsTitle:SetText(L.CHANGES..' · v'..entry.version)
+    self.newsBody:SetText(entry.text)
+    self.newsCounter:SetText(self.newsPage..' / '..#A.ReleaseNotes)
+    self.newsPrevious:SetEnabled(self.newsPage>1);self.newsNext:SetEnabled(self.newsPage<#A.ReleaseNotes)
+end
+function UI:ToggleNews()
+    if self.news:IsShown() then self:CloseMenus();return end
+    self:CloseMenus();self:ShowNewsPage(1);self.news:Show();self:ApplyLayout();self:SyncEscape()
+end
+function UI:CreateNews()
+    local frame=CreateFrame('Frame','SoundstoneNews',self.root);self.news=frame
+    frame:SetSize(Layout.news.width,Layout.news.height);frame:SetFrameStrata('DIALOG');frame:EnableMouse(true)
+    skin(frame,self.theme..'Panel');frame:Hide()
+    self.newsTitle=font(frame,'',12,true);self.newsTitle:SetPoint('TOPLEFT',10,-8)
+    local close=textureButton(frame,'Close',18,18,'',function() UI:CloseMenus() end);close:SetPoint('TOPRIGHT',-7,-6)
+    self.newsBody=font(frame,'',11);self.newsBody:SetPoint('TOPLEFT',12,-34)
+    self.newsBody:SetSize(Layout.news.width-24,Layout.news.height-68);self.newsBody:SetJustifyH('LEFT');self.newsBody:SetJustifyV('TOP');self.newsBody:SetWordWrap(true)
+    self.newsPrevious=nativeButton(frame,72,20,L.PREVIOUS,function() UI:ShowNewsPage(UI.newsPage-1) end);self.newsPrevious:SetPoint('BOTTOMLEFT',10,10)
+    self.newsNext=nativeButton(frame,72,20,L.NEXT,function() UI:ShowNewsPage(UI.newsPage+1) end);self.newsNext:SetPoint('BOTTOMRIGHT',-10,10)
+    self.newsCounter=font(frame,'',10);self.newsCounter:SetPoint('BOTTOM',0,15)
+    frame:SetScript('OnHide',function() UI:ApplyLayout();UI:SyncEscape() end)
+end
+function UI:ShowScaleValue(percent)
+    self.scaleValue:SetText(percent..' %');self.scaleSlider.fill:SetValue((percent-75)/75*100)
+end
+function UI:CommitScale()
+    local pending=self.pendingScale;self.pendingScale=nil
+    if pending then A:SetScale(pending/100) end
+end
+function UI:CancelScale()
+    self.pendingScale=nil
+    if self.scaleSlider then
+        local refreshing=self.refreshing;self.refreshing=true
+        self.scaleSlider:SetValue(A.db.uiScale*100);self:ShowScaleValue(math.floor(A.db.uiScale*100+.5));self.refreshing=refreshing
+    end
 end
 function UI:CreateMenu()
     local menu=CreateFrame('Frame','SoundstoneMenu',self.root);self.menu=menu;self.options=menu
-    menu:SetSize(240,224);menu:SetFrameStrata('DIALOG');menu:EnableMouse(true);skin(menu,self.theme..'Panel');menu:Hide()
-    self.modeButton=textureButton(menu,'Toggle',216,22,'',function() A:TogglePanel() end);self.modeButton:SetPoint('TOPLEFT',12,-12)
-    local outputLabel=font(menu,L.OUTPUT,10,true);outputLabel:SetPoint('TOPLEFT',12,-43)
-    self.deviceButton=textureButton(menu,'Toggle',216,24,'',function()
-        UI:RefreshDevices();UI.deviceMenu:Show();UI:PositionMenus();UI:SyncEscape()
-    end)
-    self.deviceButton:SetPoint('TOPLEFT',12,-58);self.deviceButton.text:SetWidth(196);self.deviceButton.text:SetWordWrap(false)
-    self.deviceButton:HookScript('OnEnter',function(self) tip(self,L.OUTPUT,UI.deviceState and UI.deviceState.selected and UI.deviceState.selected.name or L.DEVICE_UNAVAILABLE) end)
-    local scaleLabel=font(menu,L.SIZE,10,true);scaleLabel:SetPoint('TOPLEFT',12,-94)
-    self.scaleSlider=slider(menu,159,function(value) A:SetScale(math.floor(value+.5)/100) end)
-    self.scaleSlider:SetMinMaxValues(75,150);self.scaleSlider:SetPoint('TOPLEFT',14,-109)
-    self.scaleValue=font(menu,'',10);self.scaleValue:SetPoint('TOPRIGHT',-15,-114)
+    menu:SetSize(Layout.options.width,Layout.options.height);menu:SetFrameStrata('DIALOG');menu:EnableMouse(true);skin(menu,self.theme..'Panel');menu:Hide()
+    local width=Layout.options.width-20
+    local title=font(menu,L.SETTINGS,12,true);title:SetPoint('TOPLEFT',10,-8)
+    local close=textureButton(menu,'Close',18,18,'',function() UI:CloseMenus() end);close:SetPoint('TOPRIGHT',-7,-6)
+    local outputLabel=font(menu,L.OUTPUT,10,true);outputLabel:SetPoint('TOPLEFT',10,-31)
+    self.outputDropdown=A.Dropdown.New(menu,width,function() UI:SyncEscape() end,tip,hideTip)
+    self.deviceButton=self.outputDropdown.field
+    self.deviceButton:SetPoint('TOPLEFT',10,-44)
+    local scaleLabel=font(menu,L.SIZE,10,true);scaleLabel:SetPoint('TOPLEFT',10,-74)
+    self.scaleSlider=slider(menu,width-48,function(value) UI.pendingScale=math.floor(value+.5);UI:ShowScaleValue(UI.pendingScale) end)
+    self.scaleSlider:SetMinMaxValues(75,150);self.scaleSlider:SetPoint('TOPLEFT',10,-86)
+    self.scaleSlider:SetScript('OnMouseUp',function(_,button) if button=='LeftButton' then UI:CommitScale() end end)
+    self.scaleSlider:SetScript('OnHide',function() UI:CancelScale() end)
+    self.scaleValue=font(menu,'',10);self.scaleValue:SetPoint('TOPRIGHT',-10,-91)
+    self.scaleSlider:SetScript('OnEnter',function(self) tip(self,L.SIZE,L.SCALE_RELEASE) end)
+    self.scaleSlider:SetScript('OnLeave',hideTip)
+    menu:HookScript('OnHide',function() UI:CancelScale();if UI.root and UI.rows then UI:ApplyLayout() end end)
     self.checks={}
-    for i,entry in ipairs({{'showMinimap',L.SHOW_MINIMAP},{'locked',L.LOCK}}) do
+    for i,entry in ipairs({{'showMinimap',L.SHOW_MINIMAP},{'locked',L.LOCK},{'avoidOverlap',L.AVOID_OVERLAP}}) do
         local key=entry[1];local c=CreateFrame('CheckButton',nil,menu,'UICheckButtonTemplate')
-        c:SetSize(22,22);c:SetPoint('TOPLEFT',10,-137-(i-1)*23)
+        c:SetSize(24,24);c:SetPoint('TOPLEFT',10,-110-(i-1)*24)
         c.label=font(c,entry[2],10);c.label:SetPoint('LEFT',c,'RIGHT',2,0)
+        if key=='avoidOverlap' then
+            c:SetScript('OnEnter',function(self) tip(self,L.AVOID_OVERLAP,L.AVOID_HELP) end);c:SetScript('OnLeave',hideTip)
+        end
         c:SetScript('OnClick',function(self) A.db[key]=self:GetChecked() and true or false;UI:Refresh() end);self.checks[key]=c
     end
-    local reset=textureButton(menu,'Toggle',106,20,L.RESET_SIZE,function() A:SetScale(1) end);reset:SetPoint('BOTTOMLEFT',12,13)
-    local position=textureButton(menu,'Toggle',106,20,L.RESET,function() A:ResetPositions() end);position:SetPoint('BOTTOMRIGHT',-12,13)
-    reset.text:SetFont(STANDARD_TEXT_FONT or 'Fonts\\FRIZQT__.TTF',9,'');position.text:SetFont(STANDARD_TEXT_FONT or 'Fonts\\FRIZQT__.TTF',9,'')
-    local deviceMenu=CreateFrame('Frame','SoundstoneDevices',self.root);self.deviceMenu=deviceMenu
-    deviceMenu:SetSize(300,166);deviceMenu:SetFrameStrata('FULLSCREEN_DIALOG');deviceMenu:EnableMouse(true);skin(deviceMenu,self.theme..'Panel');deviceMenu:Hide()
-    local title=font(deviceMenu,L.OUTPUT,11,true);title:SetPoint('TOPLEFT',12,-10)
-    local back=textureButton(deviceMenu,'Close',17,17,'',function() deviceMenu:Hide();UI:SyncEscape() end);back:SetPoint('TOPRIGHT',-7,-6)
-    self.deviceRows={};self.deviceOffset=0
-    for i=1,6 do
-        local b=CreateFrame('Button',nil,deviceMenu);b:SetSize(274,19);b:SetPoint('TOPLEFT',13,-32-(i-1)*19)
-        b.text=font(b,'',10);b.text:SetPoint('LEFT',2,0);b.text:SetWidth(267);b.text:SetJustifyH('LEFT');b.text:SetWordWrap(false)
-        local hi=flat(b,{1,.75,.25,.12},274,19);hi:Hide()
-        b:SetScript('OnEnter',function(self) hi:Show();if self.item then tip(self,self.item.name) end end)
-        b:SetScript('OnLeave',function() hi:Hide();hideTip() end)
-        b:SetScript('OnClick',function(self)
-            if self.item then
-                local ok,err=A.devices:Select(self.item.index,self.item.name);A:Result(ok,err)
-                if ok then deviceMenu:Hide();UI:SyncEscape() else UI:RefreshDevices() end
-            end
-        end)
-        self.deviceRows[i]=b
-    end
-    self.deviceFoot=font(deviceMenu,'',9);self.deviceFoot:SetPoint('BOTTOM',0,8)
-    deviceMenu:EnableMouseWheel(true);deviceMenu:SetScript('OnMouseWheel',function(_,delta)
-        local count=UI.deviceState and #UI.deviceState.items or 0
-        UI.deviceOffset=math.max(0,math.min(math.max(0,count-6),UI.deviceOffset-delta));UI:RefreshDevices()
-    end)
+    self.resetSize=nativeButton(menu,width,20,L.RESET_SIZE,function() A:SetScale(1) end);self.resetSize:SetPoint('TOPLEFT',10,-186)
+    self.resetPosition=nativeButton(menu,width,20,L.RESET,function() A:ResetPositions() end);self.resetPosition:SetPoint('TOPLEFT',10,-210)
 end
 function UI:RefreshDevices()
-    if not self.deviceButton then return end
-    local state=A.devices:Get();self.deviceState=state
-    self.deviceButton.text:SetText(state.selected and state.selected.name or (state.available and L.DEVICE_GONE or L.DEVICE_UNAVAILABLE))
-    self.deviceButton:SetEnabled(state.available and #state.items>0)
-    self.deviceOffset=math.min(self.deviceOffset,math.max(0,#state.items-6))
-    for i,b in ipairs(self.deviceRows) do
-        b.item=state.items[i+self.deviceOffset];b:SetShown(b.item~=nil)
-        if b.item then b.text:SetText((b.item.index==state.current and '|cffffd04a> ' or '  ')..b.item.name..'|r') end
-    end
-    self.deviceFoot:SetText(#state.items==0 and (state.available and L.DEVICE_GONE or L.DEVICE_UNAVAILABLE) or (#state.items>6 and L.DEVICE_SCROLL or ''))
+    if self.outputDropdown then self.outputDropdown:Refresh() end
 end
 function UI:ApplyLayout()
     if not self.root then return end
-    local height=A.db.viewMode=='expanded' and 160 or 45
-    self.root:SetScale(A.db.uiScale);self.root:SetSize(300,height)
-    local x,y=Layout.Clamp(A.db.position.x,A.db.position.y,300*A.db.uiScale,height*A.db.uiScale,UIParent:GetWidth(),UIParent:GetHeight())
+    local view=Layout.View(A.db.viewMode)
+    self.root:SetScale(A.db.uiScale);self.root:SetSize(view.width,view.height)
+    local x,y=Layout.Clamp(A.db.position.x,A.db.position.y,view.width*A.db.uiScale,view.height*A.db.uiScale,UIParent:GetWidth(),UIParent:GetHeight())
+    self.menuOpensUp=false
+    local popup=self:ActivePopup()
+    if popup and popup:IsShown() then
+        y,self.menuOpensUp=Layout.MenuPlacement(y,view.height*A.db.uiScale,popup:GetHeight()*A.db.uiScale,
+            C.Pixel(Layout.menuGap,self.menu)*A.db.uiScale,UIParent:GetHeight())
+    end
     self.anchorX,self.anchorY=x,y
     self.root:ClearAllPoints();self.root:SetPoint('TOPLEFT',UIParent,'CENTER',C.Pixel(x/A.db.uiScale,self.root),C.Pixel(y/A.db.uiScale,self.root))
-    for _,frame in ipairs({self.bar,self.panel,self.menu,self.deviceMenu}) do if frame and frame.Reskin then frame.Reskin() end end
+    for _,frame in ipairs({self.bar,self.panel,self.menu,self.news}) do if frame and frame.Reskin then frame.Reskin() end end
+    for _,row in pairs(self.rows) do
+        local b=row.iconButton
+        if b.Reskin then b:Reskin() end
+        -- Reserve the Classic border plus a pixel-aligned gap in both designs.
+        local inset=(b.skinCorner or C.Pixel(3,b))+C.Pixel(1,b)
+        row.icon:SetIconSize(math.max(1,math.min(18,b:GetWidth()-2*inset)))
+    end
+    self.grip:AlignDots();self.panelGrip:AlignDots()
     self:PositionMenus()
 end
 function UI:PositionMinimap()
@@ -312,36 +478,34 @@ function UI:CreateMinimap()
 end
 function UI:Refresh()
     if not A.audio or not self.root or not self.menu then return end
+    if A.audio.changing then return end
     self.refreshing=true
     for _,ch in ipairs(A.Audio.channels) do
         local s=A.audio:Get(ch.id);local b,row=self.barControls[ch.id],self.rows[ch.id]
         local text=s.percent and (s.percent..' %') or '-- %'
         b.value:SetText(text);b.icon:SetMuted(not s.audible);row.icon:SetMuted(not s.audible);row.value:SetText(text)
-        row.toggle.text:SetText(s.togglable and (s.enabled and L.ON or L.OFF) or '--')
-        local toggleName=(not C.IsRetail() or not s.enabled) and 'ToggleRed' or 'Toggle'
-        row.toggle:SetSkin(toggleName)
-        row.toggle:SetEnabled(s.togglable);row.iconButton:SetEnabled(s.togglable)
+        row.toggle.text:SetText(s.available and (s.audible and L.ON or L.OFF) or '--')
+        row.toggle:SetEnabled(s.available);row.iconButton:SetEnabled(s.available)
         row.slider:EnableMouse(s.adjustable);row.slider:EnableMouseWheel(s.adjustable);row.slider:SetAlpha(s.adjustable and 1 or .35)
         row.fill:SetAlpha(s.adjustable and 1 or .35);row.slider.track:SetAlpha(s.adjustable and 1 or .35)
         row.slider:SetValue(s.percent or 0);row.fill:SetValue(s.percent or 0)
     end
     self.bar:SetShown(A.db.showBar and A.db.viewMode=='compact');self.panel:SetShown(A.db.showBar and A.db.viewMode=='expanded');self.root:SetShown(A.db.showBar)
     if self.minimap then self.minimap:SetShown(A.db.showMinimap) end
-    self.modeButton.text:SetText(A.db.viewMode=='expanded' and L.COMPACT or L.EXPAND)
-    self.scaleSlider:SetValue(A.db.uiScale*100);self.scaleSlider.fill:SetValue((A.db.uiScale-.75)/.75*100)
-    self.scaleValue:SetText(math.floor(A.db.uiScale*100+.5)..' %')
+    local scalePercent=self.pendingScale or math.floor(A.db.uiScale*100+.5)
+    self.scaleSlider:SetValue(scalePercent);self:ShowScaleValue(scalePercent)
     for key,c in pairs(self.checks) do c:SetChecked(A.db[key]) end
     self.refreshing=false;self:ApplyLayout();self:SyncEscape()
 end
 function UI:Create()
     self.theme=C.IsRetail() and 'Retail' or 'Classic'
     self.root=CreateFrame('Frame','SoundstoneRoot',UIParent);self.root:SetFrameStrata('MEDIUM');self.root:SetMovable(true);self.root:SetClampedToScreen(true)
-    self:CreateBar();self:CreatePanel();self:CreateMenu();self:CreateMinimap()
+    self:CreateBar();self:CreatePanel();self:CreateMenu();self:CreateNews();self:CreateMinimap()
     self.escape=CreateFrame('Frame','SoundstoneEscapeHandler',UIParent);self.escape:SetSize(1,1);self.escape:Hide()
     table.insert(UISpecialFrames,'SoundstoneEscapeHandler')
     self.escape:SetScript('OnHide',function() if not UI.syncEscape then UI:Escape() end end)
     self.root:HookScript('OnHide',function()
-        if UI.dragging then UI.root:StopMovingOrSizing();A:SavePosition(UI.root);UI.dragging=false end
+        if UI.dragging then UI.root:StopMovingOrSizing();UI:FinishDrag() end
         UI:CloseMenus()
     end)
     self:RefreshDevices();self:Refresh()
