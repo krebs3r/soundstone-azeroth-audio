@@ -1,6 +1,6 @@
 # Ingame-Abnahme und Screenshots
 
-Noch kein Client ist für die CurseForge-Erstveröffentlichung bestätigt. Installation und 711 simulierte Szenarien sind keine Ingame-Abnahme.
+TBC Anniversary ist für v0.3.0 bestätigt; siehe [Abnahmeprotokoll](acceptance/v0.3.0-anniversary.md). Die folgende Checkliste dient weiteren Tests. Installation und 711 simulierte Szenarien allein sind keine Ingame-Abnahme.
 
 ## Pro Client ausfüllen
 

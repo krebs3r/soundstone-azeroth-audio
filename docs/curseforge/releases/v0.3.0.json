@@ -3,5 +3,15 @@
   "commit": "e64a52c721979beeba156b6aeb89fe59c6375cec",
   "sha256": "ad31660d4a96594dec59431d2586046e23afa27b0372263a4935dfc1d8b19482",
   "changelog": "v0.3.0.md",
-  "confirmed_clients": []
+  "confirmed_clients": [
+    {
+      "client": "anniversary",
+      "game_version": "2.5.6",
+      "build": "2.5.6.69795",
+      "status": "passed",
+      "tested_by": "krebs3r",
+      "tested_at": "2026-09-15",
+      "evidence": "acceptance/v0.3.0-anniversary.md"
+    }
+  ]
 }
