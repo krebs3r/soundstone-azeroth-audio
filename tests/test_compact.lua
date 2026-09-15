@@ -109,7 +109,7 @@ test('header controls have separate hit areas and keep the title centered',funct
 end)
 
 test('metadata version and author surround a real heart texture in the footer',function()
-    eq(A.UI.version.textValue,'v0.3.1');eq(A.UI.author.textValue,'by krebs3r')
+    eq(A.UI.version.textValue,'v0.3.2');eq(A.UI.author.textValue,'by krebs3r')
     eq(A.UI.version.fontSize,7.5);eq(A.UI.author.fontSize,7.5);eq(A.UI.footer.alpha,.55)
     assert(A.UI.footerHeart.texturePath:find('Heart.tga',1,true))
     eq(A.UI.footerHeart:GetWidth(),8);eq(A.UI.footerHeart:GetHeight(),8)

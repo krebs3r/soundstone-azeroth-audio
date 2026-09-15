@@ -17,7 +17,7 @@ test('Escape closes one layer and then returns to compact view',function()
 end)
 test('six grip dots and unstretched icon dimensions',function()
     eq(#A.UI.gripDots,6)
-    eq(#A.UI.panelGripDots,6);eq(A.UI.version.textValue,'v0.3.1')
+    eq(#A.UI.panelGripDots,6);eq(A.UI.version.textValue,'v0.3.2')
     for _,id in ipairs({'master','sfx','music'}) do
         local names={master='Master',sfx='Sfx',music='Music'}
         local t=A.UI.barControls[id].icon.texture;local asset=A.Assets[names[id]]

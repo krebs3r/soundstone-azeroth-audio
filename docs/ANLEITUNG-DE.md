@@ -92,17 +92,17 @@ Die automatisierten Lua-Tests ersetzen nicht den Test im echten Client. Der gena
 16. Einstellungen an allen Bildschirmrändern öffnen: Breite und linke Außenkante müssen zur Kompaktleiste passen. Unten müssen sie nach oben ausweichen. Nach dem Schließen darf die gespeicherte Position nicht verändert sein.
 
 
-## Freier Platz, kurze Hilfe und Neuerungen
+## Freier Platz, kurze Hilfe und Version
 
-In den Optionen ist **„Überlappung beim Ablegen vermeiden“** standardmäßig eingeschaltet. Beim Loslassen sucht Soundstone den nächstgelegenen freien Platz neben sichtbaren, lesbaren UI-Bedienelementen. Andere Fenster werden nicht verschoben. Ist kein Platz verfügbar, geht Soundstone zur vorherigen Position zurück und meldet dies im Chat. Nachträglich geöffnete Fenster, dekorative Flächen und von WoW geschützte/nicht lesbare Positionen können weiterhin überlappen. Für völlig freies Ablegen die Option ausschalten.
+In den Optionen ist **„Überlappung beim Ablegen vermeiden“** standardmäßig eingeschaltet. Beim Loslassen und beim Wechsel von der kleinen zur großen Ansicht sucht Soundstone den nächstgelegenen freien Platz neben sichtbaren, lesbaren UI-Bedienelementen. Andere Fenster werden nicht verschoben. Ist kein Platz verfügbar, geht Soundstone zur vorherigen Position zurück und meldet dies im Chat. Ist beim Vergrößern kein Platz verfügbar oder die Prüfung nicht möglich, kehrt Soundstone zur kleinen Ansicht zurück. Nachträglich geöffnete Fenster, dekorative Flächen und von WoW geschützte/nicht lesbare Positionen können weiterhin überlappen. Für völlig freies Ablegen die Option ausschalten.
 
 Die Kompaktleiste zeigt kurze Klick-/Mausradhilfe. In der großen Ansicht unterscheiden sich die Hinweise für An/Aus-Buttons und Lautstärkeregler. Soundeffekte umfasst weiterhin Effekte, Umgebung und Dialoge.
 
 Der Titel heißt **Soundstone – Azeroth Audio**. Die Schrift passt sich innerhalb des vorhandenen Platzes an; falls ein Client den Namen nicht lesbar unterbringt, zeigt er „Soundstone“ und den vollen Namen im Tooltip.
 
-Ein Klick auf die Versionszeile öffnet **Neuerungen**. Eine Kachel je Version in Schriftgröße 11 fasst die Neuerungen zusammen: je eine für 0.3.0 und 0.2.0. **Zurück/Weiter** blättern; Escape schließt erst die Neuerungen, beim nächsten Tastendruck die große Ansicht. Einstellungen und Neuerungen ersetzen einander. Der vollständige Verlauf steht in `CHANGELOG.md`.
+Die Versionszeile zeigt die installierte Addon-Version. Ab 0.3.2 enthält das Addon keine Änderungsübersicht mehr. Versionshinweise stehen auf der GitHub-Release-Seite und auf CurseForge.
 
-Die Optionen sind durch die zusätzliche Checkbox 276 × 236 Einheiten groß, die Änderungsübersicht 300 × 160 wie die große Audioansicht. Kompaktleiste und Audiofenster bleiben unverändert.
+Die Optionen sind 276 × 236 Einheiten groß. Kompaktleiste und Audiofenster bleiben unverändert.
 
 Alle vier aktuellen offiziellen Clientfamilien sind Zielplattformen. Die aktuelle Version ist noch nicht in sämtlichen Clients und Spielmodi im Spiel abgenommen. Siehe `docs/COMPATIBILITY.md`; Forever bleibt unbestätigt.
 

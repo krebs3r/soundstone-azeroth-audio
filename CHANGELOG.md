@@ -2,16 +2,32 @@
 
 User-facing changes are grouped by version. Unreleased entries describe local work and do not imply a GitHub release or verified support for every WoW client.
 
-## 0.3.1 — Unreleased
+## 0.3.2 — 2026-09-15
+
+Includes the internal 0.3.1 test builds; 0.3.1 was not published as a release.
+
+### Changed
+
+- Smaller, centered minimap logo (20 UI units) with the existing 33-unit button and click area.
 
 ### Fixed
 
+- Shorter German channel tooltips keep percentage signs attached to their numbers, preventing an isolated percent sign on the next line.
 - Placement avoidance now traverses visible UI trees in small batches instead of scanning every client frame synchronously. Hidden pooled frames and Soundstone's own controls are excluded early.
 - Free drop positions return immediately; blocked positions use a yielding search and sort so larger layouts can be processed across rendered frames.
 - Visible Blizzard action-bar containers are reserved even when their mouse-input flags are disabled or inaccessible. Forbidden or secret geometry remains excluded.
 - Pending placement work is cancelled on a new drag, hide, scale/view changes or position reset. It never applies an outdated result after those actions.
+- Switching from compact to expanded now checks the larger footprint and moves to the nearest free position. If the check fails or no space is available, the compact view and prior position are restored. Routine audio refreshes preserve pending placement work.
 
-Retail in-game verification remains pending. Historical 0.3.0 packages and its TBC acceptance are unchanged.
+Retail feedback confirms dragging no longer freezes and avoidance moves the addon clear of action icons on release. TBC Anniversary also passed the follow-up functionality test. Final 0.3.2 package verification follows the minimap adjustment; historical 0.3.0 packages and acceptance remain unchanged.
+
+### Removed
+
+- In-game changelog module, popup, pagination and footer click/tooltip. Version and author attribution remain visible; release notes are maintained outside the addon.
+
+### Tools
+
+- Explicit `--allow-running` installation option for existing installations, with backup and file verification; reload the UI after the update completes.
 
 ## 0.3.0 — 2026-09-15
 

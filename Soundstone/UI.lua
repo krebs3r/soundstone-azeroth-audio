@@ -151,7 +151,7 @@ end
 function UI:ChannelTip(owner,id,context)
     local s=A.audio:Get(id)
     local state=s.available and (s.audible and L.ON or L.OFF) or L.UNAVAILABLE
-    local lines={state..(s.percent and ' · '..s.percent..' %' or '')}
+    local lines={state..(s.percent and ' · '..s.percent..'%' or '')}
     if s.reason and s.reason~='OFF' then lines[1]=lines[1]..' — '..L[s.reason] end
     if id=='sfx' and context~='compact' then lines[#lines+1]=L.TIP_SFX end
     lines[#lines+1]=context=='compact' and L.TIP_COMPACT or (context=='slider' and L.TIP_SLIDER or L.TIP_EXPANDED)
@@ -172,8 +172,11 @@ local function wire(target,id,click,context)
 end
 function UI:CancelPlacement()
     if self.placementJob then
-        if A.db.position==self.placementJob.requested then A.db.position=self.placementJob.origin end
+        local job=self.placementJob
         self.placementJob=nil;self.root:SetScript('OnUpdate',nil)
+        if A.db.position==job.requested then
+            A.db.position=job.origin
+        end
     end
 end
 function UI:FinishDrag()
@@ -181,24 +184,30 @@ function UI:FinishDrag()
     A:SavePosition(self.root)
     local origin=self.dragOrigin or A.db.position
     self.dragOrigin=nil;self.dragging=false;self.suppressUntil=C.Now()+.15;self:ApplyLayout()
+    self:BeginPlacement(origin)
+end
+function UI:BeginPlacement(origin,fallbackView)
     if not A.db.avoidOverlap or not self.root:IsShown() then return end
     local sw,sh=UIParent:GetWidth(),UIParent:GetHeight()
     local scale=A.db.uiScale
     local job=A.Placement.Start(self.root,A.db.position.x+sw/2,A.db.position.y+sh/2,
         self.root:GetWidth()*scale,self.root:GetHeight()*scale,sw,sh)
     job.origin=origin;job.requested=A.db.position
+    job.view=A.db.viewMode;job.scale=A.db.uiScale
+    job.sw=sw;job.sh=sh;job.parentScale=UIParent:GetEffectiveScale()
     self.placementJob=job
     self.root:SetScript('OnUpdate',function()
         if UI.placementJob~=job then return end
         local done,x,y,status=job:Step()
         if not done then return end
-        UI:CancelPlacement();A.Placement.lastStats=job.stats
+        UI.placementJob=nil;UI.root:SetScript('OnUpdate',nil);A.Placement.lastStats=job.stats
         if x then A.db.position={x=x-sw/2,y=y-sh/2}
         else
             A.db.position=origin
+            if fallbackView then A.db.viewMode=fallbackView end
             A:Print(status=='no-space' and L.NO_FREE_SPACE or L.PLACEMENT_UNAVAILABLE)
         end
-        UI:ApplyLayout()
+        UI:Refresh()
     end)
 end
 local function movable(handle,menuClick)
@@ -304,49 +313,41 @@ function UI:CreatePanel()
         if i<3 then local sep=flat(row,{.55,.52,.45,.3},272,.6);sep:SetPoint('BOTTOM',0,0) end
         self.rows[ch.id]=row
     end
-    local footer=CreateFrame('Button',nil,p);self.footer=footer;footer:SetPoint('BOTTOMRIGHT',-10,5);footer:SetAlpha(.55)
+    local footer=CreateFrame('Frame',nil,p);self.footer=footer;footer:SetPoint('BOTTOMRIGHT',-10,5);footer:SetAlpha(.55)
     self.version=font(footer,'v'..C.Version(),7.5);self.version:SetSize(self.version:GetStringWidth(),8);self.version:SetPoint('LEFT')
     self.footerHeart=sprite(footer,'Heart');self.footerHeart:SetSize(8,8);self.footerHeart:SetVertexColor(.95,.3,.38);self.footerHeart:SetPoint('LEFT',self.version,'RIGHT',3,0)
     self.author=font(footer,'by krebs3r',7.5);self.author:SetSize(self.author:GetStringWidth(),8);self.author:SetPoint('LEFT',self.footerHeart,'RIGHT',3,0)
     footer:SetSize(self.version:GetWidth()+self.author:GetWidth()+14,8)
-    footer:RegisterForClicks('LeftButtonUp');footer:SetScript('OnClick',function() UI:ToggleNews() end)
-    footer:SetScript('OnEnter',function() footer:SetAlpha(.9);tip(footer,L.CHANGES,L.CHANGES_HELP) end)
-    footer:SetScript('OnLeave',function() footer:SetAlpha(.55);hideTip() end)
-    footer:SetScript('OnHide',function() footer:SetAlpha(.55);hideTip() end)
 end
 function UI:SyncEscape()
     if not self.escape then return end
     self.syncEscape=true
     -- The native menu manager consumes Escape itself before special frames.
     local nativeOpen=self.outputDropdown.native and self.outputDropdown:IsOpen()
-    self.escape:SetShown(A.db.showBar and not nativeOpen and (A.db.viewMode=='expanded' or self.menu:IsShown() or (self.news and self.news:IsShown())))
+    self.escape:SetShown(A.db.showBar and not nativeOpen and (A.db.viewMode=='expanded' or self.menu:IsShown()))
     self.syncEscape=false
 end
 function UI:Escape()
     if self.outputDropdown:IsOpen() then self.outputDropdown:Close()
-    elseif self.news and self.news:IsShown() then self.news:Hide()
     elseif self.menu:IsShown() then self.menu:Hide()
     else A:SetView('compact') end
     self:SyncEscape()
 end
 function UI:CloseMenus()
-    if self.news then self.news:Hide() end
     if self.menu then self.menu:Hide();self.outputDropdown:Close();self:SyncEscape() end
     hideTip()
 end
 function UI:ToggleMenu()
-    if self.news then self.news:Hide() end
     if self.menu:IsShown() then self:CloseMenus() else
         self.menu:Show();self:Refresh();self:RefreshDevices();self:PositionMenus();self:SyncEscape()
     end
 end
 function UI:ActivePopup()
-    if self.news and self.news:IsShown() then return self.news end
     return self.menu
 end
 function UI:PositionMenus()
     if not self.menu then return end
-    for _,popup in ipairs({self.menu,self.news}) do
+    for _,popup in ipairs({self.menu}) do
         popup:ClearAllPoints()
         local gap=C.Pixel(Layout.menuGap,popup)
         if self.menuOpensUp then popup:SetPoint('BOTTOMLEFT',self.root,'TOPLEFT',0,gap)
@@ -360,31 +361,6 @@ function UI:PositionMenus()
         end
     end
     if self.outputDropdown then self.outputDropdown:Position() end
-end
-function UI:ShowNewsPage(index)
-    self.newsPage=math.max(1,math.min(#A.ReleaseNotes,index))
-    local entry=A.ReleaseNotes[self.newsPage]
-    self.newsTitle:SetText(L.CHANGES..' · v'..entry.version)
-    self.newsBody:SetText(entry.text)
-    self.newsCounter:SetText(self.newsPage..' / '..#A.ReleaseNotes)
-    self.newsPrevious:SetEnabled(self.newsPage>1);self.newsNext:SetEnabled(self.newsPage<#A.ReleaseNotes)
-end
-function UI:ToggleNews()
-    if self.news:IsShown() then self:CloseMenus();return end
-    self:CloseMenus();self:ShowNewsPage(1);self.news:Show();self:ApplyLayout();self:SyncEscape()
-end
-function UI:CreateNews()
-    local frame=CreateFrame('Frame','SoundstoneNews',self.root);self.news=frame
-    frame:SetSize(Layout.news.width,Layout.news.height);frame:SetFrameStrata('DIALOG');frame:EnableMouse(true)
-    skin(frame,self.theme..'Panel');frame:Hide()
-    self.newsTitle=font(frame,'',12,true);self.newsTitle:SetPoint('TOPLEFT',10,-8)
-    local close=textureButton(frame,'Close',18,18,'',function() UI:CloseMenus() end);close:SetPoint('TOPRIGHT',-7,-6)
-    self.newsBody=font(frame,'',11);self.newsBody:SetPoint('TOPLEFT',12,-34)
-    self.newsBody:SetSize(Layout.news.width-24,Layout.news.height-68);self.newsBody:SetJustifyH('LEFT');self.newsBody:SetJustifyV('TOP');self.newsBody:SetWordWrap(true)
-    self.newsPrevious=nativeButton(frame,72,20,L.PREVIOUS,function() UI:ShowNewsPage(UI.newsPage-1) end);self.newsPrevious:SetPoint('BOTTOMLEFT',10,10)
-    self.newsNext=nativeButton(frame,72,20,L.NEXT,function() UI:ShowNewsPage(UI.newsPage+1) end);self.newsNext:SetPoint('BOTTOMRIGHT',-10,10)
-    self.newsCounter=font(frame,'',10);self.newsCounter:SetPoint('BOTTOM',0,15)
-    frame:SetScript('OnHide',function() UI:ApplyLayout();UI:SyncEscape() end)
 end
 function UI:ShowScaleValue(percent)
     self.scaleValue:SetText(percent..' %');self.scaleSlider.fill:SetValue((percent-75)/75*100)
@@ -437,7 +413,12 @@ function UI:RefreshDevices()
 end
 function UI:ApplyLayout()
     if not self.root then return end
-    self:CancelPlacement()
+    local job=self.placementJob
+    -- Audio refreshes do not invalidate an in-flight placement of the same
+    -- geometry. Explicit moves, resize, hide and option changes still cancel it.
+    if job and (A.db.position~=job.requested or A.db.viewMode~=job.view or A.db.uiScale~=job.scale
+        or UIParent:GetWidth()~=job.sw or UIParent:GetHeight()~=job.sh or UIParent:GetEffectiveScale()~=job.parentScale
+        or not A.db.showBar or not A.db.avoidOverlap) then self:CancelPlacement() end
     local view=Layout.View(A.db.viewMode)
     self.root:SetScale(A.db.uiScale);self.root:SetSize(view.width,view.height)
     local x,y=Layout.Clamp(A.db.position.x,A.db.position.y,view.width*A.db.uiScale,view.height*A.db.uiScale,UIParent:GetWidth(),UIParent:GetHeight())
@@ -449,7 +430,7 @@ function UI:ApplyLayout()
     end
     self.anchorX,self.anchorY=x,y
     self.root:ClearAllPoints();self.root:SetPoint('TOPLEFT',UIParent,'CENTER',C.Pixel(x/A.db.uiScale,self.root),C.Pixel(y/A.db.uiScale,self.root))
-    for _,frame in ipairs({self.bar,self.panel,self.menu,self.news}) do if frame and frame.Reskin then frame.Reskin() end end
+    for _,frame in ipairs({self.bar,self.panel,self.menu}) do if frame and frame.Reskin then frame.Reskin() end end
     for _,row in pairs(self.rows) do
         local b=row.iconButton
         if b.Reskin then b:Reskin() end
@@ -470,7 +451,7 @@ function UI:CreateMinimap()
     if not Minimap then return end
     local b=CreateFrame('Button','SoundstoneMinimapButton',Minimap);self.minimap=b;b:SetSize(33,33);b:SetFrameStrata('MEDIUM');b:SetFrameLevel(Minimap:GetFrameLevel()+8)
     local bg=b:CreateTexture(nil,'BACKGROUND');bg:SetTexture('Interface\\Minimap\\UI-Minimap-Background');bg:SetAllPoints()
-    local brand=icon(b,'logo',27);brand:SetPoint('CENTER');b.icon=brand.texture
+    local brand=icon(b,'logo',20);brand:SetPoint('CENTER');b.icon=brand.texture
     local border=b:CreateTexture(nil,'OVERLAY');border:SetTexture('Interface\\Minimap\\MiniMap-TrackingBorder');border:SetSize(54,54);border:SetPoint('TOPLEFT')
     b:RegisterForClicks('LeftButtonUp','RightButtonUp');b:RegisterForDrag('LeftButton')
     b:SetScript('OnClick',function(_,mouse)
@@ -513,7 +494,7 @@ end
 function UI:Create()
     self.theme=C.IsRetail() and 'Retail' or 'Classic'
     self.root=CreateFrame('Frame','SoundstoneRoot',UIParent);self.root:SetFrameStrata('MEDIUM');self.root:SetMovable(true);self.root:SetClampedToScreen(true)
-    self:CreateBar();self:CreatePanel();self:CreateMenu();self:CreateNews();self:CreateMinimap()
+    self:CreateBar();self:CreatePanel();self:CreateMenu();self:CreateMinimap()
     self.escape=CreateFrame('Frame','SoundstoneEscapeHandler',UIParent);self.escape:SetSize(1,1);self.escape:Hide()
     table.insert(UISpecialFrames,'SoundstoneEscapeHandler')
     self.escape:SetScript('OnHide',function() if not UI.syncEscape then UI:Escape() end end)

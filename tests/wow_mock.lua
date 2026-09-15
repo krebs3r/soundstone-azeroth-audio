@@ -164,7 +164,7 @@ SlashCmdList={}
 WOW_PROJECT_MAINLINE=1
 WOW_PROJECT_ID=1
 function GetLocale() return Mock.locale end
-function GetAddOnMetadata(_,key) if key=='Version' then return '0.3.1' end end
+function GetAddOnMetadata(_,key) if key=='Version' then return '0.3.2' end end
 function GetTime() return Mock.time end
 function IsShiftKeyDown() return Mock.shift or false end
 function IsMouseButtonDown() return Mock.leftMouseDown or false end

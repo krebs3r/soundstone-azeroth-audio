@@ -12,7 +12,7 @@ if os.environ.get('SOUNDSTONE_TEST_DEPS'):
 from lupa.lua51 import LuaRuntime
 
 ROOT = Path(__file__).resolve().parents[1]
-FILES = ['Locale.lua', 'Compat.lua', 'Assets.lua', 'Layout.lua', 'Placement.lua', 'ReleaseNotes.lua', 'Audio.lua', 'Devices.lua', 'Dropdown.lua', 'UI.lua', 'Core.lua']
+FILES = ['Locale.lua', 'Compat.lua', 'Assets.lua', 'Layout.lua', 'Placement.lua', 'Audio.lua', 'Devices.lua', 'Dropdown.lua', 'UI.lua', 'Core.lua']
 total = 0
 configs = [
     ('Retail', 1, 'deDE', False, True),

@@ -1,12 +1,12 @@
 # Validation status
 
-Version: 0.3.0. Client metadata rechecked against installed builds and UI sources on 2026-09-15; automated checks on 2026-09-15. Publication was explicitly requested on 2026-09-15; this does not certify in-game coverage for every client.
+Version: 0.3.2. Client metadata rechecked against installed builds and UI sources on 2026-09-15; automated checks on 2026-09-15. Publication was explicitly requested on 2026-09-15; this does not certify in-game coverage for every client.
 
 ## Automated
 
-The latest extension adds seven scenarios per API/backend configuration: an independent exhaustive-grid oracle for nearest free placement; frame filtering and unavailable/secret API values; drag placement throughout the scale matrix; opt-out, locking and no-space rollback; distinct short tooltips; title fitting and paged release-note behavior; and release-note screen containment. Reload also preserves the new overlap preference. UTF-8 font metrics in the mock count characters instead of bytes; real client glyph widths still require in-game inspection.
+Placement tests cover nearest-free-position search, visible-frame collection, cooperative time limits, cancellation, scaled Blizzard action bars and expansion from the compact view. Routine audio refreshes preserve pending checks. The removed in-game release notes no longer have runtime or layout tests. Real client glyph widths and the smaller minimap logo still require in-game inspection.
 
-**711 passing scenario checks** execute the actual addon in Lua 5.1 against bounded frame/CVar doubles. Five configurations represent Retail, Mists Classic, TBC Anniversary, Classic Era and an unknown-client/global-API fallback; each runs with native and fallback dropdown menus. These are API simulations, not the game engine.
+**781 passing scenario checks** execute the actual addon in Lua 5.1 against bounded frame/CVar doubles. Five configurations represent Retail, Mists Classic, TBC Anniversary, Classic Era and an unknown-client/global-API fallback; each runs with native and fallback dropdown menus. These are API simulations, not the game engine.
 
 Audio checks cover startup without writes, mute preservation, zero/100% boundaries, rounding, sliders and wheel steps, external changes, missing APIs, rejected/ignored/throwing writes, slash commands, bindings, minimap behavior, reload and corrupt saved settings. The audio matrix runs 192 switch/zero-volume transitions per configuration/backend. Additional cases cover effects/ambience/dialogue grouping, music-only activation while master is blocked, mixed external settings, positive-volume history, first-use fallbacks, readback, every write-failure position and failed rollback. Voice/pet/error-speech settings remain untouched. Synchronous CVar callbacks cannot display intermediate group states.
 
@@ -26,12 +26,12 @@ The scenario count counts test invocations, not every assertion inside the matri
 
 The release-note window is **300 × 160**, identical to the expanded mixer. A new scenario in each backend/configuration verifies unique version cards, boundaries, counter text, navigation clamping and separation between text and navigation buttons. There are two cards: 0.3.0 and 0.2.0. Existing Escape, screen-edge and scale-matrix cases still pass.
 
-The README images are full-page screenshots of `readme-gallery.html` and `readme-details.html`, using the production-asset renderer. They show current Retail/Classic views, options and the resized changelog. They are explicitly labeled browser previews; actual Blizzard widgets and font rendering may differ.
+The README images are full-page screenshots of `readme-gallery.html` and `readme-details.html`, using the production-asset renderer. They show historical 0.3.0 Retail/Classic views, options and release notes. The release-notes window is removed in 0.3.2. They are explicitly labeled browser previews; actual Blizzard widgets and font rendering may differ.
 
 The installable package is validated locally and in GitHub Actions. The release uploads its ZIP and corresponding SHA-256 file. Source archives are not the recommended installation artifact.
 
 ## Remaining in-game acceptance
 
-Load this build in each target client, check game/headset output, combat, external Blizzard audio changes and `/reload`. Compare both skins at 1080p/1440p, WoW scale 65/85/100% and Soundstone scale 75/100/150%. Check German/English card text, the version footer, frame edges and device dropdown near screen corners.
+Load this build in each target client, check game/headset output, combat, external Blizzard audio changes and `/reload`. Compare both skins at 1080p/1440p, WoW scale 65/85/100% and Soundstone scale 75/100/150%. Check German/English option text, the version footer, frame edges and device dropdown near screen corners.
 
 The simulated configurations are not live client runs. See [COMPATIBILITY.md](COMPATIBILITY.md) for verified client build numbers and outstanding coverage. Forever remains unconfirmed.
