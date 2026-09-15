@@ -1,135 +1,109 @@
 local addonName, A = ...
 Soundstone = A
-local L, C = A.L, A.Compat
-local validPoints = { CENTER = true, TOP = true, BOTTOM = true, LEFT = true, RIGHT = true,
-    TOPLEFT = true, TOPRIGHT = true, BOTTOMLEFT = true, BOTTOMRIGHT = true }
-local defaults = {
-    bar = { point = "CENTER", x = 0, y = -180 },
-    panel = { point = "CENTER", x = 0, y = 0 },
-}
-
-local function number(value, fallback)
-    value = tonumber(value)
-    if not value or value ~= value or math.abs(value) == math.huge then return fallback end
-    return value
-end
-
+local L,C,Layout=A.L,A.Compat,A.Layout
 function A:Print(text)
-    if DEFAULT_CHAT_FRAME then DEFAULT_CHAT_FRAME:AddMessage("|cffffcc4dSoundstone:|r " .. text) end
+    if DEFAULT_CHAT_FRAME then DEFAULT_CHAT_FRAME:AddMessage('|cffffcc4dSoundstone:|r '..text) end
 end
-
-function A:Result(ok, err)
-    if not ok and (not self.lastError or C.Now() - self.lastError > 1) then
-        self:Print(L[err] or L.WRITE_ERROR)
-        self.lastError = C.Now()
+function A:Result(ok,err)
+    if not ok and (not self.lastError or C.Now()-self.lastError>1) then
+        self:Print(L[err] or L.WRITE_ERROR); self.lastError=C.Now()
     end
     return ok
 end
-
-function A:Toggle(id)
-    if self.audio then return self:Result(self.audio:Toggle(id)) end
+function A:Toggle(id) if self.audio then return self:Result(self.audio:Toggle(id)) end end
+function A:SetVolume(id,value) if self.audio then return self:Result(self.audio:SetVolume(id,value)) end end
+function A:Step(id,delta) if self.audio then return self:Result(self.audio:Step(id,delta,IsShiftKeyDown and IsShiftKeyDown())) end end
+function A:SetView(mode)
+    self.db.viewMode=mode=='expanded' and 'expanded' or 'compact'
+    self.db.showBar=true
+    self.UI:CloseMenus(); self.UI:Refresh()
 end
-
-function A:SetVolume(id, value)
-    if self.audio then return self:Result(self.audio:SetVolume(id, value)) end
-end
-
-function A:Step(id, delta)
-    if self.audio then return self:Result(self.audio:Step(id, delta, IsShiftKeyDown and IsShiftKeyDown())) end
-end
-
 function A:TogglePanel()
-    if not self.UI.panel then return end
-    self.UI.panel:SetShown(not self.UI.panel:IsShown())
+    if not self.db.showBar then self:SetVisible(true)
+    else self:SetView(self.db.viewMode=='expanded' and 'compact' or 'expanded') end
 end
-
-function A:RestorePosition(frame, key)
-    local pos = self.db.positions[key] or defaults[key]
-    frame:ClearAllPoints()
-    frame:SetPoint(pos.point, UIParent, pos.point, pos.x, pos.y)
+function A:SetVisible(visible)
+    local wasVisible=self.db.showBar
+    self.db.showBar=visible and true or false
+    self.UI:CancelScale();self.UI:CloseMenus();self.UI:Refresh()
+    if wasVisible and not self.db.showBar then self:Print(L.HIDDEN) end
 end
-
-function A:SavePosition(frame, key)
-    local point, _, relativePoint, x, y = frame:GetPoint(1)
-    if not validPoints[point] then return end
-    -- Store a center anchor so relative-frame changes never leak into saved state.
-    local cx, cy = frame:GetCenter()
-    local px, py = UIParent:GetCenter()
-    local scale = frame:GetEffectiveScale() / UIParent:GetEffectiveScale()
-    if cx and cy and px and py then
-        self.db.positions[key] = { point = "CENTER", x = cx * scale - px, y = cy * scale - py }
-    elseif point == relativePoint then
-        self.db.positions[key] = { point = point, x = x, y = y }
-    end
+function A:SetScale(value)
+    self.UI.pendingScale=nil
+    self.db.uiScale=Layout.Scale(value); self.UI:ApplyLayout(); self.UI:Refresh()
 end
-
+function A:SavePosition(frame)
+    local scale=frame:GetEffectiveScale()/UIParent:GetEffectiveScale()
+    local px,py=UIParent:GetCenter()
+    local x,y=frame:GetLeft(),frame:GetTop()
+    if x and y and px and py then self.db.position={x=x*scale-px,y=y*scale-py} end
+end
 function A:ResetPositions()
-    self.db.positions = {}
-    self.db.minimapAngle = 225
-    if self.UI.bar then self:RestorePosition(self.UI.bar, "bar") end
-    if self.UI.panel then self:RestorePosition(self.UI.panel, "panel") end
-    self.UI:PositionMinimap()
+    self.db.position=Layout.LegacyPosition(nil,UIParent:GetWidth(),UIParent:GetHeight())
+    self.db.minimapAngle=225; self.UI:ApplyLayout(); self.UI:PositionMinimap()
 end
-
 function A:Command(message)
-    local cmd, argument = (message or ""):lower():match("^%s*(%S*)%s*(.-)%s*$")
-    if cmd == "" then self:TogglePanel()
-    elseif cmd == "bar" then self.db.showBar = not self.db.showBar; self.UI:Refresh()
-    elseif cmd == "minimap" then self.db.showMinimap = not self.db.showMinimap; self.UI:Refresh()
-    elseif cmd == "lock" then self.db.locked = not self.db.locked; self.UI:Refresh()
-    elseif cmd == "reset" then self:ResetPositions()
-    elseif cmd == "help" then self:Print(L.HELP)
-    elseif cmd == "master" or cmd == "sfx" or cmd == "music" then
-        if argument == "on" or argument == "off" then self:Result(self.audio:SetEnabled(cmd, argument == "on"))
-        elseif argument == "" or argument == "toggle" then self:Toggle(cmd)
-        elseif tonumber(argument) then self:SetVolume(cmd, tonumber(argument))
+    local cmd,arg=(message or ''):lower():match('^%s*(%S*)%s*(.-)%s*$')
+    if cmd=='' then self:TogglePanel()
+    elseif cmd=='compact' or cmd=='expand' then self:SetView(cmd=='expand' and 'expanded' or 'compact')
+    elseif cmd=='hide' or cmd=='show' then self:SetVisible(cmd=='show')
+    elseif cmd=='bar' then self:SetVisible(not self.db.showBar)
+    elseif cmd=='minimap' then self.db.showMinimap=not self.db.showMinimap; self.UI:Refresh()
+    elseif cmd=='lock' then self.db.locked=not self.db.locked; self.UI:Refresh()
+    elseif cmd=='reset' then self:ResetPositions()
+    elseif cmd=='scale' and tonumber(arg) then self:SetScale(tonumber(arg)/100)
+    elseif cmd=='help' then self:Print(L.HELP)
+    elseif cmd=='master' or cmd=='sfx' or cmd=='music' then
+        if arg=='on' or arg=='off' then self:Result(self.audio:SetEnabled(cmd,arg=='on'))
+        elseif arg=='' or arg=='toggle' then self:Toggle(cmd)
+        elseif tonumber(arg) then self:SetVolume(cmd,tonumber(arg))
         else self:Print(L.BAD_COMMAND) end
     else self:Print(L.BAD_COMMAND) end
 end
-
 function A:Initialize()
     if self.initialized then return end
-    self.initialized = true
-    if type(SoundstoneDB) ~= "table" then SoundstoneDB = {} end
-    self.db = SoundstoneDB
-    local db = self.db
-    db.schema = 1
-    for key, default in pairs({ showBar = true, showMinimap = true, locked = false }) do
-        if type(db[key]) ~= "boolean" then db[key] = default end
+    self.initialized=true
+    if type(SoundstoneDB)~='table' then SoundstoneDB={} end
+    self.db=SoundstoneDB
+    local db=self.db
+    for key,value in pairs({showBar=true,showMinimap=true,locked=false,avoidOverlap=true}) do
+        if type(db[key])~='boolean' then db[key]=value end
     end
-    db.minimapAngle = number(db.minimapAngle, 225) % 360
-    if type(db.positions) ~= "table" then db.positions = {} end
-    for key, pos in pairs(db.positions) do
-        if not defaults[key] or type(pos) ~= "table" or not validPoints[pos.point] then db.positions[key] = nil
-        else
-            pos.x = math.max(-10000, math.min(10000, number(pos.x, 0)))
-            pos.y = math.max(-10000, math.min(10000, number(pos.y, 0)))
-        end
+    if db.schema~=2 or type(db.position)~='table' then
+        local old=type(db.positions)=='table' and db.positions.bar
+        db.position=Layout.LegacyPosition(old,UIParent:GetWidth(),UIParent:GetHeight())
     end
-    self.audio = self.Audio.New(C, function() self.UI:Refresh() end)
+    db.position.x=Layout.Number(db.position.x,-168); db.position.y=Layout.Number(db.position.y,-157)
+    db.viewMode=db.viewMode=='expanded' and 'expanded' or 'compact'
+    db.uiScale=Layout.Scale(db.uiScale)
+    db.minimapAngle=Layout.Number(db.minimapAngle,225)%360
+    db.schema=2; db.positions=nil
+    self.audio=self.Audio.New(C,function() self.UI:Refresh() end,db.lastVolumes)
+    db.lastVolumes=self.audio.history
+    self.devices=self.Devices.New(C,function() self.UI:RefreshDevices() end)
     self.UI:Create()
-    SLASH_SOUNDSTONE1, SLASH_SOUNDSTONE2 = "/soundstone", "/azeraudio"
-    SlashCmdList.SOUNDSTONE = function(message) self:Command(message) end
-    if not db.welcomed then self:Print(L.WELCOME); db.welcomed = true end
+    SLASH_SOUNDSTONE1,SLASH_SOUNDSTONE2='/soundstone','/azeraudio'
+    SlashCmdList.SOUNDSTONE=function(message) self:Command(message) end
+    if not db.welcomed then self:Print(L.WELCOME);db.welcomed=true end
 end
-
-local events = CreateFrame("Frame")
-A.events = events
-events:RegisterEvent("ADDON_LOADED")
-events:RegisterEvent("PLAYER_LOGIN")
-events:RegisterEvent("PLAYER_ENTERING_WORLD")
-events:RegisterEvent("CVAR_UPDATE")
-events:RegisterEvent("DISPLAY_SIZE_CHANGED")
-events:SetScript("OnEvent", function(_, event, arg)
-    if event == "ADDON_LOADED" and arg == addonName then
-        -- Login initializes the mixer only after WoW has loaded the audio CVars.
+local events=CreateFrame('Frame')
+A.events=events
+for _,event in ipairs({'ADDON_LOADED','PLAYER_LOGIN','PLAYER_ENTERING_WORLD','CVAR_UPDATE','DISPLAY_SIZE_CHANGED','UI_SCALE_CHANGED','SOUND_DEVICE_UPDATE'}) do
+    pcall(events.RegisterEvent,events,event)
+end
+events:SetScript('OnEvent',function(_,event,arg)
+    if event=='ADDON_LOADED' and arg==addonName then
         if IsLoggedIn and IsLoggedIn() then A:Initialize() end
-    elseif event == "PLAYER_LOGIN" then A:Initialize()
-    elseif A.initialized and event == "PLAYER_ENTERING_WORLD" then
-        A.UI:PositionMinimap(); A.UI:Refresh()
-    elseif A.initialized and event == "CVAR_UPDATE" then
-        if not arg or tostring(arg):lower():find("sound", 1, true) then A.UI:Refresh() end
-    elseif A.initialized and event == "DISPLAY_SIZE_CHANGED" then
-        A:RestorePosition(A.UI.bar, "bar"); A:RestorePosition(A.UI.panel, "panel")
+    elseif event=='PLAYER_LOGIN' then A:Initialize()
+    elseif A.initialized then
+        if event=='CVAR_UPDATE' then
+            local name=tostring(arg or ''):lower()
+            if name=='' or name:find('sound',1,true) then A.UI:Refresh() end
+            if name=='' or name=='sound_outputdriverindex' then A.UI:RefreshDevices() end
+            if name=='uiscale' or name=='useuiscale' then A.UI:ApplyLayout() end
+        elseif event=='SOUND_DEVICE_UPDATE' then A.UI:RefreshDevices()
+        elseif event=='PLAYER_ENTERING_WORLD' or event=='DISPLAY_SIZE_CHANGED' or event=='UI_SCALE_CHANGED' then
+            A.UI:ApplyLayout(); A.UI:PositionMinimap(); A.UI:Refresh()
+        end
     end
 end)

@@ -3,12 +3,18 @@
 ## Notes: A compact Blizzard-inspired mixer for master, effects and music.
 ## Notes-deDE: Kompakte Audiosteuerung fuer Gesamtlautstaerke, Soundeffekte und Musik.
 ## Author: krebs3r
-## Version: 0.1.0
+## Version: 0.3.0
 ## SavedVariables: SoundstoneDB
-## IconTexture: Interface\Icons\INV_Misc_Rune_01
+## IconTexture: Interface\AddOns\Soundstone\Media\Logo.tga
 
 Locale.lua
 Compat.lua
+Assets.lua
+Layout.lua
+Placement.lua
+ReleaseNotes.lua
 Audio.lua
+Devices.lua
+Dropdown.lua
 UI.lua
 Core.lua
