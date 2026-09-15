@@ -4,9 +4,9 @@ Soundstone targets every **current official desktop client family** listed below
 
 | Family | Installed build checked locally | Interface in TOC | Current validation |
 | --- | --- | --- | --- |
-| Retail / Midnight | 12.1.0.69814 | 120100 | Source/API review and simulated scenarios; current build needs in-game acceptance |
+| Retail / Midnight | 12.1.0.69814 | 120100 | [Final 0.3.2 package confirmed in game](curseforge/acceptance/v0.3.2-retail.md), 2026-09-15 |
 | Mists of Pandaria Classic | 5.5.4.69585 | 50504 | Source/API review and simulated scenarios; current build needs in-game acceptance |
-| TBC Classic Anniversary | 2.5.6.69795 | 20506 | Earlier local builds exercised by the user; updated package supplied for `/reload` testing |
+| TBC Classic Anniversary | 2.5.6.69795 | 20506 | [Final 0.3.2 package confirmed in game](curseforge/acceptance/v0.3.2-anniversary.md), 2026-09-15 |
 | Classic Era / Hardcore / Season of Discovery | 1.15.9.69722 | 11509 | Shared client family; individual game modes still need in-game acceptance |
 | WoW: Forever | No installed/validated client | None claimed | Unconfirmed; do not advertise support |
 

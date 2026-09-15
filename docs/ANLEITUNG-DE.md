@@ -6,7 +6,7 @@ Ich habe Soundstone erstellt, weil ich beim WoW-Spielen gelegentlich Netflix, Yo
 
 ## Installation
 
-Entpacke `Soundstone-0.3.0.zip` in den Ordner `Interface\AddOns` der gewünschten WoW-Version. Die Datei muss anschließend unter `Interface\AddOns\Soundstone\Soundstone.toc` liegen.
+Entpacke `Soundstone-0.3.2.zip` in den Ordner `Interface\AddOns` der gewünschten WoW-Version. Die Datei muss anschließend unter `Interface\AddOns\Soundstone\Soundstone.toc` liegen.
 
 Wähle im WoW-Installationsordner `_retail_`, `_classic_`, `_anniversary_` oder `_classic_era_`. Bei Installation im laufenden Spiel zuerst `/reload` versuchen. Falls Soundstone danach nicht erscheint, den Client vollständig neu starten und Soundstone in der Addon-Liste aktivieren.
 
@@ -109,4 +109,4 @@ Alle vier aktuellen offiziellen Clientfamilien sind Zielplattformen. Die aktuell
 
 ## Release herunterladen
 
-Das installierbare Paket heißt **Soundstone-0.3.0.zip** und liegt unter **Assets** auf der [Release-Seite](https://github.com/krebs3r/soundstone-azeroth-audio/releases/tag/v0.3.0). Nicht die automatisch angebotenen „Source code“-Archive verwenden. Beim Entpacken muss genau `Interface/AddOns/Soundstone/Soundstone.toc` entstehen. Die zusätzlichen README-Bilder zeigen die aktuelle Browser-Vorschau mit Originaltexturen, keine Ingame-Aufnahmen.
+Das installierbare Paket heißt **Soundstone-0.3.2.zip** und liegt unter **Assets** auf der [Release-Seite](https://github.com/krebs3r/soundstone-azeroth-audio/releases/tag/v0.3.0). Nicht die automatisch angebotenen „Source code“-Archive verwenden. Beim Entpacken muss genau `Interface/AddOns/Soundstone/Soundstone.toc` entstehen. Die zusätzlichen README-Bilder zeigen die aktuelle Browser-Vorschau mit Originaltexturen, keine Ingame-Aufnahmen.

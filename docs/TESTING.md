@@ -4,7 +4,7 @@ Version: 0.3.2. Client metadata rechecked against installed builds and UI source
 
 ## Automated
 
-Placement tests cover nearest-free-position search, visible-frame collection, cooperative time limits, cancellation, scaled Blizzard action bars and expansion from the compact view. Routine audio refreshes preserve pending checks. The removed in-game release notes no longer have runtime or layout tests. Real client glyph widths and the smaller minimap logo still require in-game inspection.
+Placement tests cover nearest-free-position search, visible-frame collection, cooperative time limits, cancellation, scaled Blizzard action bars and expansion from the compact view. Routine audio refreshes preserve pending checks. The removed in-game release notes no longer have runtime or layout tests. The final 0.3.2 package, including its smaller minimap logo, was confirmed in [Retail](curseforge/acceptance/v0.3.2-retail.md) and [TBC Anniversary](curseforge/acceptance/v0.3.2-anniversary.md) on 2026-09-15. Other clients and the full scale/resolution matrix still require in-game inspection.
 
 **781 passing scenario checks** execute the actual addon in Lua 5.1 against bounded frame/CVar doubles. Five configurations represent Retail, Mists Classic, TBC Anniversary, Classic Era and an unknown-client/global-API fallback; each runs with native and fallback dropdown menus. These are API simulations, not the game engine.
 
@@ -24,14 +24,14 @@ The scenario count counts test invocations, not every assertion inside the matri
 
 ## Release UI and screenshots
 
-The release-note window is **300 × 160**, identical to the expanded mixer. A new scenario in each backend/configuration verifies unique version cards, boundaries, counter text, navigation clamping and separation between text and navigation buttons. There are two cards: 0.3.0 and 0.2.0. Existing Escape, screen-edge and scale-matrix cases still pass.
+The README uses three high-resolution **0.3.2** browser mockups: Retail mixer, Classic mixer and compact Classic with German options. They use the production-asset renderer and current layout/version metadata. Fonts and native widgets are approximated. See [export instructions](screenshots/README.md) for dimensions, provenance and regeneration.
 
-The README images are full-page screenshots of `readme-gallery.html` and `readme-details.html`, using the production-asset renderer. They show historical 0.3.0 Retail/Classic views, options and release notes. The release-notes window is removed in 0.3.2. They are explicitly labeled browser previews; actual Blizzard widgets and font rendering may differ.
+The older 0.3.0 overview/details PNGs remain historical references. Their release-notes popup was removed in 0.3.2 and is not shown in the current README.
 
 The installable package is validated locally and in GitHub Actions. The release uploads its ZIP and corresponding SHA-256 file. Source archives are not the recommended installation artifact.
 
 ## Remaining in-game acceptance
 
-Load this build in each target client, check game/headset output, combat, external Blizzard audio changes and `/reload`. Compare both skins at 1080p/1440p, WoW scale 65/85/100% and Soundstone scale 75/100/150%. Check German/English option text, the version footer, frame edges and device dropdown near screen corners.
+Retail and TBC Anniversary have user acceptance for the final 0.3.2 package, linked above. MoP Classic and Classic Era remain pending. For remaining client and matrix checks, verify game/headset output, combat, external Blizzard audio changes and `/reload`. Compare both skins at 1080p/1440p, WoW scale 65/85/100% and Soundstone scale 75/100/150%. Check German/English option text, the version footer, frame edges and device dropdown near screen corners.
 
 The simulated configurations are not live client runs. See [COMPATIBILITY.md](COMPATIBILITY.md) for verified client build numbers and outstanding coverage. Forever remains unconfirmed.
