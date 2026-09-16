@@ -4,9 +4,9 @@
 
 **Your game. Your sound.**
 
-Control your World of Warcraft audio in one compact window. Soundstone brings together master volume, sound effects, music and your output device, with a quick bar and an expanded mixer. No additional addons are required.
+Control your World of Warcraft audio in one compact window. Soundstone keeps master volume, sound effects, music and your output device within reach, with a quick bar and an expanded mixer. No additional addons are required.
 
-[Download Soundstone 0.3.2](https://github.com/krebs3r/soundstone-azeroth-audio/releases/download/v0.3.2/Soundstone-0.3.2.zip) · [CurseForge](https://www.curseforge.com/wow/addons/soundstone-azeroth-audio) · [Deutsche Anleitung](docs/ANLEITUNG-DE.md) · [Report an issue](https://github.com/krebs3r/soundstone-azeroth-audio/issues)
+[Download on CurseForge](https://www.curseforge.com/wow/addons/soundstone-azeroth-audio) · [GitHub Releases](https://github.com/krebs3r/soundstone-azeroth-audio/releases) · [Deutsche Anleitung](docs/ANLEITUNG-DE.md) · [Report an issue](https://github.com/krebs3r/soundstone-azeroth-audio/issues)
 
 ## Why I built Soundstone
 
@@ -16,134 +16,86 @@ Soundstone shares its visual style with [Hourstone – Azeroth Hours](https://gi
 
 ## Features
 
-- Master volume, sound effects and music, with individual toggles and volume sliders.
-- Switch between a compact bar and an expanded mixer.
-- Adjust volume with the mouse wheel; hold Shift for finer steps.
-- Choose WoW's audio output device from an attached, scrollable menu.
-- Movable window with saved position and scale, position locking and optional overlap avoidance.
-- Optional minimap button that can be moved or hidden.
-- German on `deDE` clients, English on all other locales.
-- No dependencies or external service. Preferences stay in WoW's local SavedVariables.
+- Master volume, sound effects and music, with individual toggles and sliders.
+- A compact bar for quick access and an expanded mixer for finer control.
+- Mouse-wheel volume control; hold Shift for smaller steps.
+- Audio output selection when supported by your WoW client.
+- A movable, resizable window with saved position, position locking and optional overlap avoidance.
+- An optional minimap button and keyboard shortcuts.
+- German interface on German clients, English on all others.
 
 ## Interface previews
 
-These design previews show the **0.3.2** layout using the addon's actual frame and icon textures, rendered at high resolution. The in-game addon uses WoW's native fonts and controls; those are approximated here. These are interface mockups, not in-game screenshots.
+Design previews of the 0.3.2 interface, not in-game screenshots; fonts and controls may differ. The 0.3.0 layout differs slightly.
 
-### Retail — audio mixer
+### Retail
 
-Master volume, sound effects and music at 80%, 60% and 25%, with all three groups enabled.
+<img src="docs/screenshots/soundstone-0.3.2-retail.png" width="600" alt="Soundstone Retail mixer with master volume, sound effects and music controls">
 
-<img src="docs/screenshots/soundstone-0.3.2-retail.png" width="600" alt="Soundstone 0.3.2 Retail mixer with three audio groups, volume sliders and view controls">
+### Classic
 
-### Classic — audio mixer
+<img src="docs/screenshots/soundstone-0.3.2-classic.png" width="600" alt="Soundstone Classic mixer with master volume, sound effects and music controls">
 
-The same controls in the Classic frame, with silver slider thumbs.
+### Compact bar and settings
 
-<img src="docs/screenshots/soundstone-0.3.2-classic.png" width="600" alt="Soundstone 0.3.2 Classic mixer with master volume, sound effects and music enabled">
-
-### Compact — quick controls and options
-
-The compact Classic bar with attached settings. This example also shows the German interface, including output device, size and placement options.
-
-<img src="docs/screenshots/soundstone-0.3.2-compact-classic.png" width="552" alt="Soundstone 0.3.2 compact Classic bar and German options, including overlap avoidance">
+<img src="docs/screenshots/soundstone-0.3.2-compact-classic.png" width="552" alt="Soundstone compact Classic bar and German settings for output device, size and placement">
 
 ## Supported clients
 
-| Client family | Addon interface version | In-game testing |
-| --- | ---: | --- |
-| Retail (12.1.0) | 120100 | Confirmed (2026-09-15) |
-| Mists of Pandaria Classic (5.5.4) | 50504 | Pending |
-| Burning Crusade Classic Anniversary (2.5.6) | 20506 | Confirmed (2026-09-15) |
-| Classic Era, Hardcore and Season of Discovery (1.15.9) | 11509 | Pending |
+These versions have been tested in game:
 
-Version **0.3.2** has been tested in [Retail](docs/curseforge/acceptance/v0.3.2-retail.md) and [Burning Crusade Classic Anniversary](docs/curseforge/acceptance/v0.3.2-anniversary.md). Support for the other listed clients is implemented but still awaits in-game testing. See the [compatibility audit](docs/COMPATIBILITY.md) and [validation status](docs/TESTING.md) for coverage and outstanding checks. WoW: Forever is unconfirmed.
+| WoW client | Soundstone download |
+| --- | --- |
+| Retail (12.1.0) | [0.3.2](https://github.com/krebs3r/soundstone-azeroth-audio/releases/download/v0.3.2/Soundstone-0.3.2.zip) |
+| Mists of Pandaria Classic (5.5.4) | [0.3.0](https://github.com/krebs3r/soundstone-azeroth-audio/releases/download/v0.3.0/Soundstone-0.3.0.zip) |
+| Burning Crusade Classic Anniversary (2.5.6) | [0.3.2](https://github.com/krebs3r/soundstone-azeroth-audio/releases/download/v0.3.2/Soundstone-0.3.2.zip) |
+| Classic (1.15.9) | [0.3.0](https://github.com/krebs3r/soundstone-azeroth-audio/releases/download/v0.3.0/Soundstone-0.3.0.zip) |
+
+Classic Era, Hardcore and Season of Discovery share the Classic client. The Classic test confirms client compatibility; individual game modes have not been tested separately. Choose a download marked for your client on CurseForge.
 
 ## Installation
 
-1. Download **`Soundstone-0.3.2.zip`** from [GitHub Releases](https://github.com/krebs3r/soundstone-azeroth-audio/releases/tag/v0.3.2). GitHub's automatically generated source archives are for development.
-2. Exit WoW and extract the ZIP into the relevant client's `Interface/AddOns` folder.
-3. Confirm the result is **`Interface/AddOns/Soundstone/Soundstone.toc`**, without an extra repository folder or nested `Soundstone` folder.
-4. Enable Soundstone in the character selection AddOns list and log in. Use `/soundstone` or the minimap button to open it.
+Install **Soundstone – Azeroth Audio** through the CurseForge app for your WoW client.
 
-Repeat for each WoW installation you use: `_retail_`, `_classic_`, `_anniversary_` or `_classic_era_`. No extra addon or library is required. The CurseForge project link is above; see the [publication status](docs/curseforge/STATUS.md) if it is not yet available.
+For manual installation:
 
-**Updating:** exit WoW, replace the existing `Soundstone` addon folder and restart. Keep your `WTF` folder; it contains saved preferences. If an update was already copied while playing, `/reload` reloads the addon. Restart the client to discover a newly installed addon.
+1. Download the Soundstone ZIP for your client from the table above or [CurseForge](https://www.curseforge.com/wow/addons/soundstone-azeroth-audio/files).
+2. Close WoW and extract the `Soundstone` folder into that client's `Interface/AddOns` folder.
+3. Start WoW, enable Soundstone in the AddOns list and enter `/soundstone`.
 
-## Usage
+The final path should be `Interface/AddOns/Soundstone/Soundstone.toc`. Repeat for each WoW installation you use.
+
+**Updating manually:** close WoW and replace the `Soundstone` folder. Keep your `WTF` folder to preserve saved preferences.
+
+## Quick start
 
 | Control | Action |
 | --- | --- |
-| `/soundstone` or `/azeraudio` | Restore Soundstone or switch its view |
-| `/soundstone show` / `hide` | Show / hide the addon, even with the minimap button hidden |
-| Left-click an audio icon or On/Off button | Toggle that audio group |
-| Right-click a compact audio icon | Open the expanded mixer |
+| `/soundstone` or minimap left-click | Open Soundstone or switch between compact bar and mixer |
+| Audio icon or On/Off button | Mute or unmute that audio group |
 | Mouse wheel over an icon or slider | Change volume by 5%; Shift + wheel changes 1% |
-| Drag a volume slider | Set volume from 0–100% |
-| Gear button | Output device, size, minimap visibility and placement settings |
-| View arrows | Switch compact and expanded views |
-| Crossed-out eye | Hide Soundstone; restore with `/soundstone` |
-| Escape or red X | Close the current popup, then return from mixer to compact view |
-| Drag the six-dot grip or mixer title | Move Soundstone unless positions are locked |
-| Minimap left-click / right-click | Restore or switch view / show or hide Soundstone |
+| Volume slider | Set volume from 0–100% |
+| Gear button | Choose output device, size, minimap visibility and placement settings |
+| View arrows or right-click a compact audio icon | Switch views or open the mixer |
+| Six-dot grip or mixer title | Drag the window |
+| Crossed-out eye | Hide Soundstone; restore it with `/soundstone show` |
+| Escape | Close the current menu or return to the compact bar |
 
-### Commands and bindings
+Use `/soundstone help` for all commands. `/azeraudio` works as an alias. Optional shortcuts are available under **Soundstone – Azeroth Audio** in WoW's Key Bindings menu.
 
-Both `/soundstone` and `/azeraudio` accept:
+### Audio and layout tips
 
-```text
-compact / expand      Choose a view
-hide / show / bar     Hide, restore or toggle visibility
-minimap               Toggle the minimap button
-lock / reset          Lock positions or reset them
-scale 100             Set addon size (75–150%)
-master 70             Set master volume to 70%
-sfx off               Mute effects, ambience and dialogue
-music on              Enable music; restore volume if needed
-music toggle          Toggle music
-help                  Show command help
-```
+**Sound effects** groups effects, ambience and dialogue. Voice chat remains separate. Soundstone uses your current WoW audio settings when you log in.
 
-Optional bindings are available under **Soundstone – Azeroth Audio** in WoW's Key Bindings menu. No keys are assigned automatically.
+Muting preserves your volume levels. Enabling a group at 0% restores its last positive volume; moving a muted slider does not unmute it. With Master off, enabling Music or Sound effects activates just that group.
 
-## How audio controls work
+Set the window size from **75–150%** in the gear menu. In 0.3.2, **Avoid overlap when placing** helps find space when you move the window or expand the mixer. Turn it off if you prefer unrestricted placement.
 
-Turning **Master** off makes every group appear off while preserving its settings. Enabling **Music** with master off activates only music; enabling **Sound effects** instead activates that group alone. Sound effects includes effects, ambience and dialogue; voice chat remains separate. The effects slider adjusts the three grouped volumes together.
-
-Enabling at **0%** restores the last positive volume. Muting preserves volume levels; dragging a muted slider does not unmute it. Gray icons indicate inactive audio. Percentages show configured channel volumes, not measured output. WoW's audio settings remain the source of truth; startup never applies default volumes.
-
-The output-device menu validates and reads back the selection. Successful changes restart WoW's audio system once. Unsupported APIs and rejected changes are reported rather than displayed as successful selections.
-
-### Saved preferences and layout
-
-Preferences are stored locally as `SoundstoneDB`, per WoW installation and account. The views share a saved position; minimap visibility is independent. The compact bar is **276 × 36**, the mixer **300 × 160**, and options **276 × 236** UI units.
-
-Soundstone follows WoW's UI scale and adds its own **75–150%** size setting. Size changes apply when the slider is released. Options attach below the current view, or above near the bottom screen edge.
-
-**Avoid overlap when placing** finds a free position beside visible, readable UI controls when a drag ends or the mixer expands. It does not reserve space against later-opening windows or inaccessible frame bounds. Turn the option off for unrestricted placement.
-
-## Feedback
+## Feedback and more
 
 Found a problem? [Open an issue](https://github.com/krebs3r/soundstone-azeroth-audio/issues) with your WoW client version, Soundstone version and the steps to reproduce it. Include a screenshot or Lua error message if available.
 
-## Development
-
-Runtime code is Lua 5.1 compatible. Development uses Python 3.10+ and the dependencies in `requirements-dev.txt`; CI runs Python 3.12:
-
-```sh
-python -m pip install -r requirements-dev.txt
-python tests/run.py
-python -m unittest discover -s tests -p 'test_release_tools.py'
-python tools/preview.py
-python tools/package.py
-```
-
-The Lua suite runs simulated client/API configurations with native and fallback dropdown menus. Packaging validates TOC entries, XML, textures, shared header bounds and ZIP integrity. The result is `dist/Soundstone-0.3.2.zip` with one installable `Soundstone/` folder and a SHA-256 file.
-
-`python tools/preview.py` generates a browser preview using production textures and layout metadata. Serve `docs/` locally to inspect `ui-preview.html`, `readme-gallery.html` and `readme-details.html`. See [preview export instructions](docs/screenshots/README.md) to regenerate the README images. Fonts and native controls are approximated; visual changes still need to be checked in game. `tools/export-assets.ps1` exports the artwork.
-
-Pushes and pull requests run **Validate and package** and produce an installable ZIP. A matching version tag builds and publishes a prerelease; a tested release is promoted explicitly. See the [CurseForge release guide](docs/curseforge/README.md) for approved-release uploads and the local multi-client installer.
-
-See the [changelog](CHANGELOG.md), [validation status](docs/TESTING.md) and [German guide](docs/ANLEITUNG-DE.md) for release history and testing details. Release notes are maintained outside the addon; the version footer has no changelog popup in 0.3.2.
+[Release history](CHANGELOG.md) · [Deutsche Anleitung](docs/ANLEITUNG-DE.md) · [Development](docs/DEVELOPMENT.md)
 
 ## License and artwork
 

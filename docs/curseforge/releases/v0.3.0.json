@@ -12,6 +12,24 @@
       "tested_by": "krebs3r",
       "tested_at": "2026-09-15",
       "evidence": "acceptance/v0.3.0-anniversary.md"
+    },
+    {
+      "client": "mists",
+      "game_version": "5.5.4",
+      "build": "5.5.4.69585",
+      "status": "passed",
+      "tested_by": "krebs3r",
+      "tested_at": "2026-09-16",
+      "evidence": "acceptance/v0.3.0-mists.md"
+    },
+    {
+      "client": "era",
+      "game_version": "1.15.9",
+      "build": "1.15.9.69722",
+      "status": "passed",
+      "tested_by": "krebs3r",
+      "tested_at": "2026-09-16",
+      "evidence": "acceptance/v0.3.0-era.md"
     }
   ]
 }

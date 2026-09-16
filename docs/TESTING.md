@@ -32,6 +32,6 @@ The installable package is validated locally and in GitHub Actions. The release 
 
 ## Remaining in-game acceptance
 
-Retail and TBC Anniversary have user acceptance for the final 0.3.2 package, linked above. MoP Classic and Classic Era remain pending. For remaining client and matrix checks, verify game/headset output, combat, external Blizzard audio changes and `/reload`. Compare both skins at 1080p/1440p, WoW scale 65/85/100% and Soundstone scale 75/100/150%. Check German/English option text, the version footer, frame edges and device dropdown near screen corners.
+Retail and TBC Anniversary have user acceptance for the final 0.3.2 package, linked above. On 2026-09-16, the user confirmed **0.3.0** working without Lua errors in [MoP Classic 5.5.4](curseforge/acceptance/v0.3.0-mists.md) and [Classic 1.15.9](curseforge/acceptance/v0.3.0-era.md). This does not confirm 0.3.2 in those clients or separate Classic game modes. For remaining client and matrix checks, verify game/headset output, combat, external Blizzard audio changes and `/reload`. Compare both skins at 1080p/1440p, WoW scale 65/85/100% and Soundstone scale 75/100/150%. Check German/English option text, the version footer, frame edges and device dropdown near screen corners.
 
 The simulated configurations are not live client runs. See [COMPATIBILITY.md](COMPATIBILITY.md) for verified client build numbers and outstanding coverage. Forever remains unconfirmed.

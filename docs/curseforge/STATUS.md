@@ -1,6 +1,14 @@
-# Einrichtungsstand am 15.09.2026
+# Einrichtungsstand am 16.09.2026
 
-## Update: Freigabe 0.3.2
+## Update: MoP und Classic für 0.3.0 freigegeben
+
+- Der Nutzer bestätigt Soundstone **0.3.0** in **Mists of Pandaria Classic 5.5.4** und **Classic 1.15.9**: funktioniert, keine Lua-Fehler. Die Addon-Version wurde ausdrücklich geklärt. Abnahmen: [MoP](acceptance/v0.3.0-mists.md), [Classic](acceptance/v0.3.0-era.md).
+- Bei der bestehenden CurseForge-Datei **8885266** wurden am 16.09.2026 im Autoren-Dashboard **5.5.4** und **1.15.9** ergänzt; **2.5.6** bleibt erhalten. Status nach dem Speichern: **Approved**. Kein neuer Upload.
+- Die [öffentliche Dateiliste](https://www.curseforge.com/wow/addons/soundstone-azeroth-audio/files/all) zeigt alle vier Flavors und Versionen. Für MoP und Classic wird **0.3.0**, für Retail und TBC **0.3.2** angeboten.
+- Datei **8885767** (0.3.2) ist ebenfalls **Approved**, weiterhin ausschließlich für **12.1.0** und **2.5.6**. Eine Freigabe von 0.3.2 für MoP/Classic erfordert deren separate Ingame-Abnahme.
+- Die nachträglichen Clientfreigaben stehen in `releases/v0.3.0.json`. Der ursprüngliche Upload-Beleg bleibt als historischer Beleg unverändert.
+
+## Historie: Freigabe 0.3.2 am 15.09.2026
 
 0.3.2 fasst die Platzierungs-/Tooltip-Korrekturen, den entfernten Ingame-Changelog und das kleinere Minimap-Logo zusammen. 781 Lua-Szenarien und 24 lokale Installations-/Release-Tests bestehen; ein Symlink-Test ist unter Windows übersprungen und besteht in der Linux-CI. [PR #3](https://github.com/krebs3r/soundstone-azeroth-audio/pull/3) ist übernommen.
 
@@ -14,11 +22,9 @@
 
 ## Noch offen
 
-Nach der Moderationsfreigabe:
-
-1. [Öffentliche Projektseite](https://www.curseforge.com/wow/addons/soundstone-azeroth-audio), Galerie und Zuordnung zu Retail 12.1.0 sowie TBC Anniversary 2.5.6 prüfen.
-2. Installation von 0.3.2 über die CurseForge-App in beiden Clients kontrollieren. Paketidentität und direkte lokale Installation sind bereits geprüft; die Verteilung durch die App ist noch offen.
-3. Diesen Status aktualisieren und gegebenenfalls Moderationsrückfragen im bestehenden Projekt bearbeiten.
+1. Installation über die CurseForge-App prüfen: 0.3.2 in Retail/TBC, 0.3.0 in MoP/Classic. Die öffentliche Dateizuordnung ist bestätigt; die Installation durch die App wurde in diesem Schritt nicht getestet.
+2. 0.3.2 separat in MoP/Classic im Spiel abnehmen, bevor auch diese Datei die zusätzlichen Zuordnungen erhält.
+3. Separate Classic-Spielmodi und die vollständige Ingame-Testmatrix bleiben offen; die neue Nutzerbestätigung ist ein Funktionstest ohne gemeldete Lua-Fehler.
 
 Historische Tags und GitHub-ZIPs bleiben unverändert. Künftige Addon-Korrekturen bekommen eine neue Version. Galerie und Beschreibung werden separat gepflegt; der Release-Workflow überträgt ZIP und Changelog sowie ausschließlich dokumentierte, bestätigte Spielversionen.
 
