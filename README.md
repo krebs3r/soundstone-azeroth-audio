@@ -26,7 +26,7 @@ Soundstone shares its visual style with [Hourstone – Azeroth Hours](https://gi
 
 ## Interface previews
 
-Design previews of the 0.3.2 interface, not in-game screenshots; fonts and controls may differ. The 0.3.0 layout differs slightly.
+Design previews of the 0.3.2 interface, not in-game screenshots; fonts and controls may differ.
 
 ### Retail
 
@@ -47,9 +47,9 @@ These versions have been tested in game:
 | WoW client | Soundstone download |
 | --- | --- |
 | Retail (12.1.0) | [0.3.2](https://github.com/krebs3r/soundstone-azeroth-audio/releases/download/v0.3.2/Soundstone-0.3.2.zip) |
-| Mists of Pandaria Classic (5.5.4) | [0.3.0](https://github.com/krebs3r/soundstone-azeroth-audio/releases/download/v0.3.0/Soundstone-0.3.0.zip) |
+| Mists of Pandaria Classic (5.5.4) | [0.3.2](https://github.com/krebs3r/soundstone-azeroth-audio/releases/download/v0.3.2/Soundstone-0.3.2.zip) |
 | Burning Crusade Classic Anniversary (2.5.6) | [0.3.2](https://github.com/krebs3r/soundstone-azeroth-audio/releases/download/v0.3.2/Soundstone-0.3.2.zip) |
-| Classic (1.15.9) | [0.3.0](https://github.com/krebs3r/soundstone-azeroth-audio/releases/download/v0.3.0/Soundstone-0.3.0.zip) |
+| Classic (1.15.9) | [0.3.2](https://github.com/krebs3r/soundstone-azeroth-audio/releases/download/v0.3.2/Soundstone-0.3.2.zip) |
 
 Classic Era, Hardcore and Season of Discovery share the Classic client. The Classic test confirms client compatibility; individual game modes have not been tested separately. Choose a download marked for your client on CurseForge.
 
@@ -89,7 +89,7 @@ Use `/soundstone help` for all commands. `/azeraudio` works as an alias. Optiona
 
 Muting preserves your volume levels. Enabling a group at 0% restores its last positive volume; moving a muted slider does not unmute it. With Master off, enabling Music or Sound effects activates just that group.
 
-Set the window size from **75–150%** in the gear menu. In 0.3.2, **Avoid overlap when placing** helps find space when you move the window or expand the mixer. Turn it off if you prefer unrestricted placement.
+Set the window size from **75–150%** in the gear menu. **Avoid overlap when placing** helps find space when you move the window or expand the mixer. Turn it off if you prefer unrestricted placement.
 
 ## Feedback and more
 

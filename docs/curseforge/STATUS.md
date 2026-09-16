@@ -1,6 +1,13 @@
 # Einrichtungsstand am 16.09.2026
 
-## Update: MoP und Classic für 0.3.0 freigegeben
+## Update: 0.3.2 für alle vier Clientfamilien freigegeben
+
+- Der Nutzer hat nach der ursprünglichen 0.3.0-Abnahme auch **0.3.2** erfolgreich in **MoP 5.5.4** und **Classic 1.15.9** getestet. Nachweise: [MoP](acceptance/v0.3.2-mists.md), [Classic](acceptance/v0.3.2-era.md).
+- Bei CurseForge-Datei **8885767** wurden **5.5.4** und **1.15.9** ergänzt. Nach dem Speichern zeigt das Autoren-Dashboard **Approved** und alle vier Versionen: **12.1.0, 5.5.4, 2.5.6, 1.15.9**.
+- Die [öffentliche Dateiliste](https://www.curseforge.com/wow/addons/soundstone-azeroth-audio/files/all) bietet **0.3.2** unter Retail, MoP Classic, Classic und Classic TBC an; geprüft am 16.09.2026.
+- Release-Datensatz und CurseForge-Versionshinweise wurden ergänzt. Kein neuer Upload; ZIP, Tag und ursprünglicher Upload-Beleg bleiben unverändert.
+
+## Historie: MoP und Classic zunächst für 0.3.0 freigegeben
 
 - Der Nutzer bestätigt Soundstone **0.3.0** in **Mists of Pandaria Classic 5.5.4** und **Classic 1.15.9**: funktioniert, keine Lua-Fehler. Die Addon-Version wurde ausdrücklich geklärt. Abnahmen: [MoP](acceptance/v0.3.0-mists.md), [Classic](acceptance/v0.3.0-era.md).
 - Bei der bestehenden CurseForge-Datei **8885266** wurden am 16.09.2026 im Autoren-Dashboard **5.5.4** und **1.15.9** ergänzt; **2.5.6** bleibt erhalten. Status nach dem Speichern: **Approved**. Kein neuer Upload.
@@ -22,9 +29,8 @@
 
 ## Noch offen
 
-1. Installation über die CurseForge-App prüfen: 0.3.2 in Retail/TBC, 0.3.0 in MoP/Classic. Die öffentliche Dateizuordnung ist bestätigt; die Installation durch die App wurde in diesem Schritt nicht getestet.
-2. 0.3.2 separat in MoP/Classic im Spiel abnehmen, bevor auch diese Datei die zusätzlichen Zuordnungen erhält.
-3. Separate Classic-Spielmodi und die vollständige Ingame-Testmatrix bleiben offen; die neue Nutzerbestätigung ist ein Funktionstest ohne gemeldete Lua-Fehler.
+1. Installation von 0.3.2 über die CurseForge-App in allen vier Clientfamilien prüfen. Die öffentliche Dateizuordnung ist bestätigt; die Installation durch die App wurde in diesem Schritt nicht getestet.
+2. Separate Classic-Spielmodi und die vollständige Ingame-Testmatrix bleiben offen; die Nutzerbestätigung belegt die Funktion in den genannten Clients.
 
 Historische Tags und GitHub-ZIPs bleiben unverändert. Künftige Addon-Korrekturen bekommen eine neue Version. Galerie und Beschreibung werden separat gepflegt; der Release-Workflow überträgt ZIP und Changelog sowie ausschließlich dokumentierte, bestätigte Spielversionen.
 
