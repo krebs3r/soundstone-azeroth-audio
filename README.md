@@ -42,14 +42,15 @@ Design previews of the 0.3.2 interface, not in-game screenshots; fonts and contr
 
 ## Supported clients
 
-These versions have been tested in game:
+These versions are released for each client:
 
 | WoW client | Soundstone download |
 | --- | --- |
-| Retail (12.1.0) | [0.3.2](https://github.com/krebs3r/soundstone-azeroth-audio/releases/download/v0.3.2/Soundstone-0.3.2.zip) |
-| Mists of Pandaria Classic (5.5.4) | [0.3.2](https://github.com/krebs3r/soundstone-azeroth-audio/releases/download/v0.3.2/Soundstone-0.3.2.zip) |
-| Burning Crusade Classic Anniversary (2.5.6) | [0.3.2](https://github.com/krebs3r/soundstone-azeroth-audio/releases/download/v0.3.2/Soundstone-0.3.2.zip) |
-| Classic (1.15.9) | [0.3.2](https://github.com/krebs3r/soundstone-azeroth-audio/releases/download/v0.3.2/Soundstone-0.3.2.zip) |
+| Retail (12.1.0) | [0.3.4](https://github.com/krebs3r/soundstone-azeroth-audio/releases/download/v0.3.4/Soundstone-0.3.4.zip) |
+| Mists of Pandaria Classic (5.5.4) | [0.3.4](https://github.com/krebs3r/soundstone-azeroth-audio/releases/download/v0.3.4/Soundstone-0.3.4.zip) |
+| Burning Crusade Classic Anniversary (2.5.6) | [0.3.4](https://github.com/krebs3r/soundstone-azeroth-audio/releases/download/v0.3.4/Soundstone-0.3.4.zip) |
+| Classic (1.15.9) | [0.3.4](https://github.com/krebs3r/soundstone-azeroth-audio/releases/download/v0.3.4/Soundstone-0.3.4.zip) |
+| WoW: Forever beta (1.60.1) | [0.3.4](https://github.com/krebs3r/soundstone-azeroth-audio/releases/download/v0.3.4/Soundstone-0.3.4.zip) |
 
 Classic Era, Hardcore and Season of Discovery share the Classic client. The Classic test confirms client compatibility; individual game modes have not been tested separately. Choose a download marked for your client on CurseForge.
 
