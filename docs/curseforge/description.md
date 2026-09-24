@@ -7,6 +7,7 @@ Keep your game audio within reach. Soundstone adds a compact volume bar and an e
 - Adjust volume with sliders or the mouse wheel; click an audio icon to mute or unmute.
 - Switch between a compact bar and an expanded mixer.
 - Select WoW's audio output device when the client supports it.
+- Open it from the Retail Addons menu below the clock; clients without that menu use the minimap button.
 - Move and scale the controls, lock their position, and show or hide the minimap button.
 - Restore the last positive volume when enabling a channel set to zero.
 - English and German interface, with no required companion addons.
@@ -27,7 +28,7 @@ Use the game versions and client flavors listed on the selected CurseForge file.
 
 Soundstone bietet eine kompakte Lautstärkeleiste und einen aufklappbaren Mixer für Gesamtlautstärke, Soundeffekte und Musik. Regle die Lautstärke mit Schiebereglern oder dem Mausrad und schalte einzelne Gruppen per Klick stumm. Die Soundeffekt-Gruppe umfasst Effekte, Umgebung und Dialoge; der Sprachchat bleibt separat.
 
-Installiere die zu deinem WoW-Client passende Datei über CurseForge. Öffne das Addon mit `/soundstone`, blende es mit `/soundstone show` wieder ein und zeige mit `/soundstone help` die Befehle an. Das Mausrad ändert die Lautstärke um 5 %, mit Umschalt um 1 %. Position, Größe und Minimap-Schaltfläche lassen sich anpassen. Weitere Addons sind nicht erforderlich.
+Installiere die zu deinem WoW-Client passende Datei über CurseForge. Öffne das Addon mit `/soundstone`, blende es mit `/soundstone show` wieder ein und zeige mit `/soundstone help` die Befehle an. Das Mausrad ändert die Lautstärke um 5 %, mit Umschalt um 1 %. In Retail findest du Soundstone im Addons-Menü unter der Uhr. Position, Größe und Minimap-Schaltfläche lassen sich anpassen. Weitere Addons sind nicht erforderlich.
 
 ## Support and source
 

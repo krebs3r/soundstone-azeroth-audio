@@ -1,29 +1,25 @@
-# Soundstone 0.3.2 – Azeroth Audio
+# Soundstone 0.3.3 – Azeroth Audio
 
 ## What's changed
 
-- Smaller, centered minimap logo with more space inside the existing button.
-- Fixed long pauses when placing Soundstone with overlap avoidance enabled.
-- Check the expanded mixer's full area when switching from the compact bar; move clear of visible action bars or return to compact if no safe position can be found.
-- Shorter German tooltips keep percentage signs attached to their numbers.
-- Removed the in-game changelog window and its data. Version and author remain in the footer.
-- The local installer supports explicit updates while WoW runs, with backup and file verification; use `/reload` after it finishes.
+- **Addons menu (Retail):** Soundstone now appears in WoW's Addons menu at the top right, below the clock. Left-click switches between the compact bar and the mixer (or brings a hidden Soundstone back), right-click shows or hides it.
+- **Minimap button now optional:** In clients with the Addons menu, the minimap button is switched off once when you update. You can turn it back on under Options → "Show minimap button" or with `/soundstone minimap`; your choice is kept.
+- **Classic clients unchanged:** Clients without the Addons menu keep the minimap button exactly as before.
 
-This release includes changes from the internal 0.3.1 test builds. No separate 0.3.1 release was published.
+Settings, positions and volume levels from earlier versions are kept.
 
-## Installation and validation
+## Installation
 
-Download **Soundstone-0.3.2.zip** from this release's assets and replace the **Soundstone** folder in your client's **Interface/AddOns** directory. Keep your **WTF** folder to preserve settings. Reload the UI after updating; restart WoW if new files are not detected.
+Download **Soundstone-0.3.3.zip** from this release's assets and replace the **Soundstone** folder in your client's **Interface/AddOns** directory. Keep your **WTF** folder to preserve settings. Restart WoW after updating so the Addons menu entry is registered.
 
-781 simulated Lua scenarios plus installer/release and package checks. Retail 12.1.0 and TBC Anniversary 2.5.6 passed user testing, including the final release ZIP and smaller minimap logo. Acceptance is recorded against this exact release package. Mists and Classic Era are not approved for this CurseForge file.
+797 simulated Lua scenarios plus installer/release and package checks. The pre-release test build was confirmed in game by the user in Retail and Classic on 2026-09-24. Other clients are not approved by this test.
 
 ## Deutsch
 
-- Kleineres Minimap-Logo mit mehr Abstand zum vorhandenen Rahmen.
-- Keine langen Pausen mehr bei der Platzsuche nach dem Ablegen.
-- Beim Wechsel zur großen Ansicht wird deren gesamte Fläche geprüft und neben sichtbaren Aktionsleisten platziert. Ist kein freier Platz verfügbar, kehrt Soundstone zur kleinen Ansicht zurück.
-- Kürzere Hilfetexte; Prozentzeichen bleiben bei ihrer Zahl.
-- Ingame-Changelog entfernt; Versionsnummer und Autorenzeile bleiben erhalten.
-- Die Installationshilfe unterstützt ausdrücklich erlaubte Updates bei laufendem WoW mit Sicherung und Dateiprüfung. Anschließend `/reload` ausführen.
+- **Addons-Menü (Retail):** Soundstone erscheint jetzt im Addons-Menü oben rechts unter der Uhr. Linksklick wechselt zwischen Kompaktleiste und Mixer (oder holt ein ausgeblendetes Soundstone zurück), Rechtsklick blendet es ein oder aus.
+- **Minimap-Button jetzt optional:** In Clients mit Addons-Menü wird der Minimap-Button beim Update einmalig ausgeschaltet. Unter Optionen → „Minimap-Button anzeigen“ oder mit `/soundstone minimap` lässt er sich wieder einschalten; die Wahl bleibt erhalten.
+- **Classic-Clients unverändert:** Clients ohne Addons-Menü behalten den Minimap-Button wie bisher.
 
-**Installation:** Den enthaltenen Ordner **Soundstone** im jeweiligen **Interface/AddOns**-Verzeichnis ersetzen. **WTF** mit den Einstellungen behalten. Dieses Release-ZIP ist für Retail 12.1.0 und TBC Anniversary 2.5.6 vom Nutzer abgenommen; andere Clients werden damit nicht freigegeben.
+Einstellungen, Positionen und Lautstärken früherer Versionen bleiben erhalten.
+
+**Installation:** Den enthaltenen Ordner **Soundstone** im jeweiligen **Interface/AddOns**-Verzeichnis ersetzen, **WTF** behalten und WoW danach neu starten. Der Test-Build wurde am 24.09.2026 vom Nutzer in Retail und Classic im Spiel bestätigt.

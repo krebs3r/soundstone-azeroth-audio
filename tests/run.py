@@ -28,9 +28,11 @@ for variant, project, locale, legacy, backdrop, native in [(*config, native) for
     if native:
         lua.execute((ROOT / 'tests/menu_mock.lua').read_text(encoding='utf-8'))
     lua.globals().print = lambda *items: print(*items, flush=True)
-    lua.execute('SoundstoneDB={positions={bar={point="CENTER",x=145,y=-85}},showBar=true,showMinimap=true,locked=false}')
+    lua.execute('SoundstoneDB={positions={bar={point="CENTER",x=145,y=-85}},showBar=true,showMinimap=true,locked=false,compartmentMigrated=true}')
     lua.globals().WOW_PROJECT_ID = project
     lua.globals().Mock.locale = locale
+    if project != 1:
+        lua.execute('AddonCompartmentFrame=nil')
     if legacy:
         lua.execute('C_CVar=nil; Mock.legacyReturn=true')
     if not backdrop:
@@ -49,6 +51,7 @@ for variant, project, locale, legacy, backdrop, native in [(*config, native) for
     total += lua.execute((ROOT / 'tests/test_ui03.lua').read_text(encoding='utf-8-sig'))
     total += lua.execute((ROOT / 'tests/test_followups.lua').read_text(encoding='utf-8'))
     total += lua.execute((ROOT / 'tests/test_placement.lua').read_text(encoding='utf-8'))
+    total += lua.execute((ROOT / 'tests/test_compartment.lua').read_text(encoding='utf-8'))
     reload_mode = 'expanded' if project % 2 else 'compact'
     ns.SetView(ns, reload_mode)
     ns.Command(ns, 'hide')
@@ -62,6 +65,8 @@ for variant, project, locale, legacy, backdrop, native in [(*config, native) for
     lua.globals().Mock.cvars = cvars
     lua.globals().WOW_PROJECT_ID = project
     lua.globals().Mock.locale = locale
+    if project != 1:
+        lua.execute('AddonCompartmentFrame=nil')
     if legacy:
         lua.execute('C_CVar=nil; Mock.legacyReturn=true')
     if not backdrop:
@@ -87,6 +92,27 @@ for variant, project, locale, legacy, backdrop, native in [(*config, native) for
     assert len(lua.globals().Mock.writes) == 0
     total += 1
     print('PASS reload preserves settings and channel state without CVar writes', flush=True)
+
+# The Addons menu replaces the minimap button once; a later opt-in survives reloads.
+for has_menu in (True, False):
+    lua.execute((ROOT / 'tests/wow_mock.lua').read_text(encoding='utf-8'))
+    if not has_menu:
+        lua.execute('AddonCompartmentFrame=nil')
+    lua.execute('SoundstoneDB={showMinimap=true,minimapAngle=90}')
+    for step in range(2):
+        ns = lua.table()
+        for name in FILES:
+            load((ROOT / 'Soundstone' / name).read_text(encoding='utf-8'), '@'+name, ns)
+        ns.Initialize(ns)
+        assert ns.db.showMinimap is (not has_menu or step == 1)
+        assert ns.UI.minimap.IsShown(ns.UI.minimap) is ns.db.showMinimap
+        assert (ns.UI.compartment is True) is has_menu
+        assert ns.db.minimapAngle == 90
+        if has_menu and step == 0:
+            ns.Command(ns, 'minimap')
+            lua.execute('Mock.compartment={}')
+    total += 1
+print('PASS Addons menu migration hides the minimap button once and keeps later opt-in', flush=True)
 
 # A damaged SavedVariables file must not prevent the UI from loading.
 lua.execute('SoundstoneDB={showBar="bad",positions={bar={point="INVALID",x="bad"}},minimapAngle=0/0}')

@@ -21,7 +21,7 @@ Soundstone shares its visual style with [Hourstone – Azeroth Hours](https://gi
 - Mouse-wheel volume control; hold Shift for smaller steps.
 - Audio output selection when supported by your WoW client.
 - A movable, resizable window with saved position, position locking and optional overlap avoidance.
-- An optional minimap button and keyboard shortcuts.
+- An entry in the Retail Addons menu below the clock, an optional minimap button and keyboard shortcuts.
 - German interface on German clients, English on all others.
 
 ## Interface previews
@@ -71,7 +71,8 @@ The final path should be `Interface/AddOns/Soundstone/Soundstone.toc`. Repeat fo
 
 | Control | Action |
 | --- | --- |
-| `/soundstone` or minimap left-click | Open Soundstone or switch between compact bar and mixer |
+| `/soundstone`, Addons menu or minimap left-click | Open Soundstone or switch between compact bar and mixer |
+| Right-click in the Addons menu or on the minimap button | Show or hide Soundstone |
 | Audio icon or On/Off button | Mute or unmute that audio group |
 | Mouse wheel over an icon or slider | Change volume by 5%; Shift + wheel changes 1% |
 | Volume slider | Set volume from 0–100% |

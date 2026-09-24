@@ -21,6 +21,10 @@ function C.IsRetail()
     return WOW_PROJECT_MAINLINE ~= nil and WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 end
 
+function C.HasAddonCompartment()
+    return type(AddonCompartmentFrame) == "table" and type(AddonCompartmentFrame.RegisterAddon) == "function"
+end
+
 function C.Frame(kind, name, parent)
     return CreateFrame(kind, name, parent, BackdropTemplateMixin and "BackdropTemplate" or nil)
 end

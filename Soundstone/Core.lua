@@ -30,7 +30,7 @@ function A:SetVisible(visible)
     local wasVisible=self.db.showBar
     self.db.showBar=visible and true or false
     self.UI:CancelScale();self.UI:CloseMenus();self.UI:Refresh()
-    if wasVisible and not self.db.showBar then self:Print(L.HIDDEN) end
+    if wasVisible and not self.db.showBar then self:Print(self.UI.compartment and L.HIDDEN_COMPARTMENT or L.HIDDEN) end
 end
 function A:SetScale(value)
     self.UI.pendingScale=nil
@@ -73,6 +73,8 @@ function A:Initialize()
     for key,value in pairs({showBar=true,showMinimap=true,locked=false,avoidOverlap=true}) do
         if type(db[key])~='boolean' then db[key]=value end
     end
+    -- Clients with the Addons menu list Soundstone there; the minimap button becomes opt-in once.
+    if C.HasAddonCompartment() and not db.compartmentMigrated then db.showMinimap=false;db.compartmentMigrated=true end
     if db.schema~=2 or type(db.position)~='table' then
         local old=type(db.positions)=='table' and db.positions.bar
         db.position=Layout.LegacyPosition(old,UIParent:GetWidth(),UIParent:GetHeight())

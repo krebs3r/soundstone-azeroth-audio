@@ -216,3 +216,5 @@ end
 C_CVar={GetCVar=Mock.read,SetCVar=Mock.write}
 GetCVar=Mock.read
 SetCVar=Mock.write
+Mock.compartment={}
+AddonCompartmentFrame={RegisterAddon=function(_,info) table.insert(Mock.compartment,info) end}

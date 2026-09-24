@@ -470,6 +470,25 @@ function UI:CreateMinimap()
     b:SetScript('OnHide',function() b:SetScript('OnUpdate',nil) end)
     Minimap:HookScript('OnSizeChanged',function() UI:PositionMinimap() end);self:PositionMinimap()
 end
+local function rightClick(...)
+    for i=1,select('#',...) do
+        local value=select(i,...)
+        if value=='RightButton' or (type(value)=='table' and value.buttonName=='RightButton') then return true end
+    end
+    return false
+end
+function UI:CreateCompartment()
+    if not C.HasAddonCompartment() then return end
+    local owner=function(frame) return type(frame)=='table' and frame or AddonCompartmentFrame end
+    local ok=pcall(AddonCompartmentFrame.RegisterAddon,AddonCompartmentFrame,{
+        text='Soundstone',icon='Interface\\AddOns\\Soundstone\\Media\\Logo.tga',
+        notCheckable=true,registerForAnyClick=true,
+        func=function(...) if rightClick(...) then A:Command('bar') else A:TogglePanel() end end,
+        funcOnEnter=function(frame) tip(owner(frame),'Soundstone',L.COMPARTMENT_HELP) end,
+        funcOnLeave=hideTip,
+    })
+    self.compartment=ok or nil
+end
 function UI:Refresh()
     if not A.audio or not self.root or not self.menu then return end
     if A.audio.changing then return end
@@ -494,7 +513,7 @@ end
 function UI:Create()
     self.theme=C.IsRetail() and 'Retail' or 'Classic'
     self.root=CreateFrame('Frame','SoundstoneRoot',UIParent);self.root:SetFrameStrata('MEDIUM');self.root:SetMovable(true);self.root:SetClampedToScreen(true)
-    self:CreateBar();self:CreatePanel();self:CreateMenu();self:CreateMinimap()
+    self:CreateBar();self:CreatePanel();self:CreateMenu();self:CreateMinimap();self:CreateCompartment()
     self.escape=CreateFrame('Frame','SoundstoneEscapeHandler',UIParent);self.escape:SetSize(1,1);self.escape:Hide()
     table.insert(UISpecialFrames,'SoundstoneEscapeHandler')
     self.escape:SetScript('OnHide',function() if not UI.syncEscape then UI:Escape() end end)

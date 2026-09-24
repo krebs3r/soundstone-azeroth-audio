@@ -2,6 +2,16 @@
 
 User-facing changes are grouped by version. Unreleased entries describe local work and do not imply a GitHub release or verified support for every WoW client.
 
+## 0.3.3 — 2026-09-24
+
+### Added
+
+- Retail: Soundstone registers in the Addons menu below the clock. Left-click switches views or restores a hidden Soundstone, right-click shows or hides it; the tooltip explains both.
+
+### Changed
+
+- In clients with the Addons menu, the minimap button is switched off once when updating. Turn it back on under Options or with `/soundstone minimap`; that choice is kept. Clients without the Addons menu keep the minimap button as before.
+
 ## 0.3.2 — 2026-09-15
 
 Includes the internal 0.3.1 test builds; 0.3.1 was not published as a release.
