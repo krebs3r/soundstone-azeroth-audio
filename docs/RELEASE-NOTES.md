@@ -1,29 +1,27 @@
-# Soundstone 0.3.2 – Azeroth Audio
+# Soundstone 0.3.4 – Azeroth Audio
 
 ## What's changed
 
-- Smaller, centered minimap logo with more space inside the existing button.
-- Fixed long pauses when placing Soundstone with overlap avoidance enabled.
-- Check the expanded mixer's full area when switching from the compact bar; move clear of visible action bars or return to compact if no safe position can be found.
-- Shorter German tooltips keep percentage signs attached to their numbers.
-- Removed the in-game changelog window and its data. Version and author remain in the footer.
-- The local installer supports explicit updates while WoW runs, with backup and file verification; use `/reload` after it finishes.
+- **Addons menu (Retail and WoW: Forever):** Soundstone now appears in WoW's Addons menu at the top right, below the clock. Left-click switches between the compact bar and the mixer (or brings a hidden Soundstone back), right-click shows or hides it.
+- **Minimap button now optional:** In clients with the Addons menu, the minimap button is switched off once when you update. Turn it back on under Options → "Show minimap button" or with `/soundstone minimap`; your choice is kept. Clients without the Addons menu keep the minimap button as before.
+- **WoW: Forever beta:** Soundstone lists Forever's interface (16001) and uses its Classic artwork there.
+- **Fixed umlauts in output device names:** Names such as "Kopfhörer" no longer show a placeholder box in the output device menu.
 
-This release includes changes from the internal 0.3.1 test builds. No separate 0.3.1 release was published.
+This release includes the internal 0.3.3 test build; no separate 0.3.3 release was published. Settings, positions and volume levels from earlier versions are kept.
 
 ## Installation and validation
 
-Download **Soundstone-0.3.2.zip** from this release's assets and replace the **Soundstone** folder in your client's **Interface/AddOns** directory. Keep your **WTF** folder to preserve settings. Reload the UI after updating; restart WoW if new files are not detected.
+Download **Soundstone-0.3.4.zip** from this release's assets and replace the **Soundstone** folder in your client's **Interface/AddOns** directory (WoW: Forever beta: **_classic_beta_/Interface/AddOns**). Keep your **WTF** folder to preserve settings. Restart WoW after updating so the Addons menu entry is registered.
 
-781 simulated Lua scenarios plus installer/release and package checks. Retail 12.1.0 and TBC Anniversary 2.5.6 passed user testing, including the final release ZIP and smaller minimap logo. Acceptance is recorded against this exact release package. Mists and Classic Era are not approved for this CurseForge file.
+983 simulated Lua scenarios plus installer/release and package checks. The 0.3.4 test build was confirmed in game by the user in Retail and the WoW: Forever beta on 2026-09-24. The Addons menu change (0.3.3) was also confirmed in Classic. Other clients are not approved for 0.3.4 by these tests.
 
 ## Deutsch
 
-- Kleineres Minimap-Logo mit mehr Abstand zum vorhandenen Rahmen.
-- Keine langen Pausen mehr bei der Platzsuche nach dem Ablegen.
-- Beim Wechsel zur großen Ansicht wird deren gesamte Fläche geprüft und neben sichtbaren Aktionsleisten platziert. Ist kein freier Platz verfügbar, kehrt Soundstone zur kleinen Ansicht zurück.
-- Kürzere Hilfetexte; Prozentzeichen bleiben bei ihrer Zahl.
-- Ingame-Changelog entfernt; Versionsnummer und Autorenzeile bleiben erhalten.
-- Die Installationshilfe unterstützt ausdrücklich erlaubte Updates bei laufendem WoW mit Sicherung und Dateiprüfung. Anschließend `/reload` ausführen.
+- **Addons-Menü (Retail und WoW: Forever):** Soundstone erscheint jetzt im Addons-Menü oben rechts unter der Uhr. Linksklick wechselt zwischen Kompaktleiste und Mixer (oder holt ein ausgeblendetes Soundstone zurück), Rechtsklick blendet es ein oder aus.
+- **Minimap-Button jetzt optional:** In Clients mit Addons-Menü wird der Minimap-Button beim Update einmalig ausgeschaltet. Unter Optionen → „Minimap-Button anzeigen“ oder mit `/soundstone minimap` lässt er sich wieder einschalten; die Wahl bleibt erhalten. Clients ohne Addons-Menü behalten den Minimap-Button wie bisher.
+- **WoW: Forever (Beta):** Soundstone unterstützt die Interface-Version 16001 und nutzt dort das Classic-Design.
+- **Umlaute bei Ausgabegeräten behoben:** Namen wie „Kopfhörer“ werden im Gerätemenü wieder korrekt angezeigt.
 
-**Installation:** Den enthaltenen Ordner **Soundstone** im jeweiligen **Interface/AddOns**-Verzeichnis ersetzen. **WTF** mit den Einstellungen behalten. Dieses Release-ZIP ist für Retail 12.1.0 und TBC Anniversary 2.5.6 vom Nutzer abgenommen; andere Clients werden damit nicht freigegeben.
+Enthält die interne Testversion 0.3.3. Einstellungen, Positionen und Lautstärken bleiben erhalten.
+
+**Installation:** Den enthaltenen Ordner **Soundstone** im jeweiligen **Interface/AddOns**-Verzeichnis ersetzen (Forever-Beta: **_classic_beta_**), **WTF** behalten und WoW danach neu starten. Der Test-Build 0.3.4 wurde am 24.09.2026 vom Nutzer in Retail und der WoW-Forever-Beta bestätigt, das Addons-Menü (0.3.3) zusätzlich in Classic.

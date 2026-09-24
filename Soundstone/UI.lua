@@ -269,7 +269,7 @@ local function slider(parent,width,callback)
     local status=CreateFrame('StatusBar',nil,parent);status:SetPoint('LEFT',s,'LEFT',3,0);status:SetPoint('RIGHT',s,'RIGHT',-3,0);status:SetHeight(3)
     track:SetFrameLevel(parent:GetFrameLevel()+1);status:SetFrameLevel(parent:GetFrameLevel()+2);s:SetFrameLevel(parent:GetFrameLevel()+3)
     status:SetStatusBarTexture(WHITE);status:SetStatusBarColor(1,.69,.13);status:SetMinMaxValues(0,100)
-    local name=C.IsRetail() and 'GoldThumb' or 'SilverThumb'
+    local name=C.RetailStyle() and 'GoldThumb' or 'SilverThumb'
     s:SetThumbTexture(MEDIA..name..'.tga')
     local thumb=s:GetThumbTexture();thumb:SetTexCoord(unpack(A.Assets[name].uv));thumb:SetSize(10,18);thumb:SetDrawLayer('OVERLAY',7);thumb:SetBlendMode('BLEND')
     s:SetScript('OnValueChanged',function(_,value) if not UI.refreshing then callback(value) end end)
@@ -303,7 +303,7 @@ function UI:CreatePanel()
     for i,ch in ipairs(A.Audio.channels) do
         local row=CreateFrame('Frame',nil,p);row:SetSize(276,42);row:SetPoint('TOPLEFT',12,-29-(i-1)*42)
         row.iconButton=CreateFrame('Button',nil,row);row.iconButton:SetSize(25,25);row.iconButton:SetPoint('LEFT')
-        if not C.IsRetail() then skin(row.iconButton,'ClassicPanel',3) end
+        if not C.RetailStyle() then skin(row.iconButton,'ClassicPanel',3) end
         row.icon=icon(row.iconButton,ch.id,18);row.icon:SetPoint('CENTER');wire(row.iconButton,ch.id,true)
         row.name=font(row,L[ch.label],10);row.name:SetPoint('LEFT',30,0);row.name:SetWidth(69);row.name:SetJustifyH('LEFT')
         row.toggle=nativeButton(row,34,20,'',function() A:Toggle(ch.id) end);row.toggle:SetPoint('LEFT',99,0);wire(row.toggle,ch.id,true)
@@ -470,6 +470,25 @@ function UI:CreateMinimap()
     b:SetScript('OnHide',function() b:SetScript('OnUpdate',nil) end)
     Minimap:HookScript('OnSizeChanged',function() UI:PositionMinimap() end);self:PositionMinimap()
 end
+local function rightClick(...)
+    for i=1,select('#',...) do
+        local value=select(i,...)
+        if value=='RightButton' or (type(value)=='table' and value.buttonName=='RightButton') then return true end
+    end
+    return false
+end
+function UI:CreateCompartment()
+    if not C.HasAddonCompartment() then return end
+    local owner=function(frame) return type(frame)=='table' and frame or AddonCompartmentFrame end
+    local ok=pcall(AddonCompartmentFrame.RegisterAddon,AddonCompartmentFrame,{
+        text='Soundstone',icon='Interface\\AddOns\\Soundstone\\Media\\Logo.tga',
+        notCheckable=true,registerForAnyClick=true,
+        func=function(...) if rightClick(...) then A:Command('bar') else A:TogglePanel() end end,
+        funcOnEnter=function(frame) tip(owner(frame),'Soundstone',L.COMPARTMENT_HELP) end,
+        funcOnLeave=hideTip,
+    })
+    self.compartment=ok or nil
+end
 function UI:Refresh()
     if not A.audio or not self.root or not self.menu then return end
     if A.audio.changing then return end
@@ -492,9 +511,9 @@ function UI:Refresh()
     self.refreshing=false;self:ApplyLayout();self:SyncEscape()
 end
 function UI:Create()
-    self.theme=C.IsRetail() and 'Retail' or 'Classic'
+    self.theme=C.RetailStyle() and 'Retail' or 'Classic'
     self.root=CreateFrame('Frame','SoundstoneRoot',UIParent);self.root:SetFrameStrata('MEDIUM');self.root:SetMovable(true);self.root:SetClampedToScreen(true)
-    self:CreateBar();self:CreatePanel();self:CreateMenu();self:CreateMinimap()
+    self:CreateBar();self:CreatePanel();self:CreateMenu();self:CreateMinimap();self:CreateCompartment()
     self.escape=CreateFrame('Frame','SoundstoneEscapeHandler',UIParent);self.escape:SetSize(1,1);self.escape:Hide()
     table.insert(UISpecialFrames,'SoundstoneEscapeHandler')
     self.escape:SetScript('OnHide',function() if not UI.syncEscape then UI:Escape() end end)

@@ -2,6 +2,32 @@
 
 User-facing changes are grouped by version. Unreleased entries describe local work and do not imply a GitHub release or verified support for every WoW client.
 
+## 0.3.4 — 2026-09-24
+
+Includes 0.3.3; 0.3.3 was not published as a separate release.
+
+### Added
+
+- WoW: Forever beta (interface 16001): Soundstone loads there and uses the Classic artwork, although Forever runs the Retail API. The Addons menu or the minimap button is chosen at runtime as in 0.3.3.
+
+### Fixed
+
+- Output device names with umlauts (e.g. "Kopfhörer") showed a placeholder box in Retail and the WoW: Forever beta, because the client returns them in Windows-1252 instead of UTF-8. Such names are now converted; valid UTF-8 names are unchanged.
+
+### Tools
+
+- `tools/install-local.py --client forever` installs into the Forever beta folder `_classic_beta_`.
+
+## 0.3.3 — 2026-09-24 (internal, included in 0.3.4)
+
+### Added
+
+- Retail: Soundstone registers in the Addons menu below the clock. Left-click switches views or restores a hidden Soundstone, right-click shows or hides it; the tooltip explains both.
+
+### Changed
+
+- In clients with the Addons menu, the minimap button is switched off once when updating. Turn it back on under Options or with `/soundstone minimap`; that choice is kept. Clients without the Addons menu keep the minimap button as before.
+
 ## 0.3.2 — 2026-09-15
 
 Includes the internal 0.3.1 test builds; 0.3.1 was not published as a release.

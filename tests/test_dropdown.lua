@@ -141,4 +141,14 @@ test('view changes, options closure and hiding close dropdowns in both backends'
     A:Command('show');A:SetView('compact')
     Mock.devices={'System Default','Speakers','Headset'};Mock.cvars.Sound_OutputDriverIndex='1';A.UI:RefreshDevices()
 end)
+test('Windows-1252 device names are shown as UTF-8 and stay selectable',function()
+    local C=A.Compat
+    eq(C.Utf8('Kopfh\195\182rer'),'Kopfh\195\182rer');eq(C.Utf8('Speakers'),'Speakers')
+    eq(C.Utf8('Kopfh\246rer'),'Kopfh\195\182rer');eq(C.Utf8('\128 \150 \255'),'\226\130\172 \226\128\147 \195\191')
+    eq(C.Utf8('\195'),'\195\131');eq(C.Utf8('\129'),'\239\191\189')
+    Mock.devices={'System Default','Kopfh\246rer (DAC)'};Mock.cvars.Sound_OutputDriverIndex='0';A.UI:RefreshDevices()
+    local items=A.devices:Get().items;eq(items[2].name,'Kopfh\195\182rer (DAC)')
+    eq(A.devices:Select(1,items[2].name),true);eq(Mock.cvars.Sound_OutputDriverIndex,'1')
+    Mock.devices={'System Default','Speakers','Headset'};Mock.cvars.Sound_OutputDriverIndex='1';A.UI:RefreshDevices()
+end)
 return count

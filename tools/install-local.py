@@ -11,7 +11,7 @@ import tempfile
 from release_package import read_package, compare_folder, reject_links, tree_paths
 
 ROOT = Path(__file__).resolve().parents[1]
-CLIENTS = {'retail': '_retail_', 'mists': '_classic_', 'anniversary': '_anniversary_', 'era': '_classic_era_'}
+CLIENTS = {'retail': '_retail_', 'mists': '_classic_', 'anniversary': '_anniversary_', 'era': '_classic_era_', 'forever': '_classic_beta_'}
 DEFAULT_WOW = Path(r'E:\Battle.net\World of Warcraft')
 
 

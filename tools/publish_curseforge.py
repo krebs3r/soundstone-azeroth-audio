@@ -23,7 +23,8 @@ ROOT = Path(__file__).resolve().parents[1]
 REPO = 'krebs3r/soundstone-azeroth-audio'
 CF_API = 'https://wow.curseforge.com/api'
 # CurseForge WoW version families, also used by BigWigsMods/packager.
-FAMILIES = {'retail': 517, 'mists': 79434, 'anniversary': 73246, 'era': 67408}
+# 'forever' taken from CurseForge's WoW Forever search filter; resolve_versions still requires a unique API match.
+FAMILIES = {'retail': 517, 'mists': 79434, 'anniversary': 73246, 'era': 67408, 'forever': 88568}
 RECEIPT = 'curseforge-upload.json'
 INTENT = 'curseforge-upload-pending.json'
 
