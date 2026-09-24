@@ -19,6 +19,7 @@ configs = [
     ('Mists Classic', 19, 'enUS', False, True),
     ('TBC Anniversary', 5, 'deDE', False, True),
     ('Classic Era', 2, 'enUS', False, True),
+    ('WoW Forever', 1, 'enUS', False, True),
     ('API fallback', 999, 'frFR', True, False),
 ]
 for variant, project, locale, legacy, backdrop, native in [(*config, native) for config in configs for native in (False, True)]:
@@ -33,6 +34,8 @@ for variant, project, locale, legacy, backdrop, native in [(*config, native) for
     lua.globals().Mock.locale = locale
     if project != 1:
         lua.execute('AddonCompartmentFrame=nil')
+    if variant == 'WoW Forever':
+        lua.execute('Mock.interface=16001')
     if legacy:
         lua.execute('C_CVar=nil; Mock.legacyReturn=true')
     if not backdrop:
@@ -52,6 +55,10 @@ for variant, project, locale, legacy, backdrop, native in [(*config, native) for
     total += lua.execute((ROOT / 'tests/test_followups.lua').read_text(encoding='utf-8'))
     total += lua.execute((ROOT / 'tests/test_placement.lua').read_text(encoding='utf-8'))
     total += lua.execute((ROOT / 'tests/test_compartment.lua').read_text(encoding='utf-8'))
+    forever = variant == 'WoW Forever'
+    assert ns.Compat.IsForever() is forever
+    assert ns.UI.theme == ('Retail' if project == 1 and not forever else 'Classic')
+    total += 1
     reload_mode = 'expanded' if project % 2 else 'compact'
     ns.SetView(ns, reload_mode)
     ns.Command(ns, 'hide')
@@ -67,6 +74,8 @@ for variant, project, locale, legacy, backdrop, native in [(*config, native) for
     lua.globals().Mock.locale = locale
     if project != 1:
         lua.execute('AddonCompartmentFrame=nil')
+    if variant == 'WoW Forever':
+        lua.execute('Mock.interface=16001')
     if legacy:
         lua.execute('C_CVar=nil; Mock.legacyReturn=true')
     if not backdrop:
@@ -126,4 +135,4 @@ assert ns.db.positions is None
 assert ns.db.schema == 2
 total += 1
 print('PASS corrupted SavedVariables recover to valid defaults', flush=True)
-print(f'\nPASS: {total} scenario checks across 5 simulated API/client configurations, each with native and fallback menus.', flush=True)
+print(f'\nPASS: {total} scenario checks across 6 simulated API/client configurations, each with native and fallback menus.', flush=True)

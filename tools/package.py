@@ -11,7 +11,7 @@ addon = root / 'Soundstone'
 toc = (addon / 'Soundstone.toc').read_text(encoding='utf-8')
 version = re.search(r'^## Version: ([\d.]+)$', toc, re.M).group(1)
 interfaces = re.search(r'^## Interface: (.+)$', toc, re.M).group(1).split(', ')
-assert interfaces == ['120100', '50504', '20506', '11509']
+assert interfaces == ['120100', '50504', '20506', '11509', '16001']
 for line in toc.splitlines():
     if line and not line.startswith('#'):
         assert (addon / line).is_file(), f'Missing TOC entry: {line}'

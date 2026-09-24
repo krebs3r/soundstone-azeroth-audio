@@ -218,3 +218,4 @@ GetCVar=Mock.read
 SetCVar=Mock.write
 Mock.compartment={}
 AddonCompartmentFrame={RegisterAddon=function(_,info) table.insert(Mock.compartment,info) end}
+function GetBuildInfo() return '12.1.0','69814','Sep 1 2026',Mock.interface or 120100 end

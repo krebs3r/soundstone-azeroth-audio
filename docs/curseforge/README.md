@@ -55,7 +55,7 @@ In `releases/vX.Y.Z.json` stehen Tag, exakter Commit, ZIP-Prüfsumme, Changelog-
 }
 ```
 
-Zulässige Familien: `retail`, `mists`, `anniversary`, `era`. Build und Version im Beispiel sind keine Abnahme. Das Skript ermittelt die exakte CurseForge-Spielversions-ID innerhalb der jeweiligen Familie und bricht bei unbekannten/mehrdeutigen Versionen ab. Es wählt niemals ersatzweise eine andere Version. Die TOC kann zusätzliche Zielversionen enthalten; diese werden ohne Abnahme nicht als unterstützt hochgeladen.
+Zulässige Familien: `retail`, `mists`, `anniversary`, `era`, `forever` (WoW: Forever, Spielversion z. B. `1.60.1`). Build und Version im Beispiel sind keine Abnahme. Das Skript ermittelt die exakte CurseForge-Spielversions-ID innerhalb der jeweiligen Familie und bricht bei unbekannten/mehrdeutigen Versionen ab. Es wählt niemals ersatzweise eine andere Version. Die TOC kann zusätzliche Zielversionen enthalten; diese werden ohne Abnahme nicht als unterstützt hochgeladen.
 
 ## Prüflauf und Erstveröffentlichung 0.3.0
 
