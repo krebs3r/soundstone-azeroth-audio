@@ -5,7 +5,8 @@
 - [v0.3.4](https://github.com/krebs3r/soundstone-azeroth-audio/releases/tag/v0.3.4) ist als GitHub-Pre-Release gebaut, Commit `88ed3145d5826dc9fde13f89fede545d28363d40`, ZIP-SHA256 `d3861c0faeda292268c720cdf3cb0d5075b4ff6b96a83d20532483dbebe29eff`. Inhalt bytegleich mit dem getesteten Test-Build.
 - Ingame bestätigt: Retail 12.1.0.69933 und WoW: Forever 1.60.1.69977. MoP 5.5.4, TBC 2.5.6 und Classic 1.15.9 bleiben auf Wunsch des Nutzers freigegeben (ohne separaten 0.3.4-Ingame-Test). Datensatz: `releases/v0.3.4.json`.
 - Neu: Familie `forever` (gameVersionTypeID 88568, aus dem CurseForge-Suchfilter; per Prüflauf gegen die API zu bestätigen).
-- Offen: Prüflauf (`dry_run`), danach Hochstufen zum regulären Release in GitHub → automatischer Upload mit 12.1.0, 1.60.1, 5.5.4, 2.5.6, 1.15.9.
+- Vom Nutzer am 24.09.2026 zum regulären Release hochgestuft. Der [CurseForge-Workflow](https://github.com/krebs3r/soundstone-azeroth-audio/actions/runs/35983892006) war erfolgreich: Datei **8962547**, Upload 09:52 UTC, Spielversionen-IDs 16519 (12.1.0), 17053 (Forever 1.60.1), 16168 (5.5.4), 16533 (2.5.6), 16630 (1.15.9). Die Forever-Familie 88568 wurde damit von der API eindeutig aufgelöst.
+- [Upload-Beleg](https://github.com/krebs3r/soundstone-azeroth-audio/releases/download/v0.3.4/curseforge-upload.json) am GitHub-Release gespeichert. Moderationsstatus im Autoren-Dashboard noch prüfen.
 
 ## Update: 0.3.2 für alle vier Clientfamilien freigegeben
 
