@@ -2,6 +2,12 @@
 
 User-facing changes are grouped by version. Unreleased entries describe local work and do not imply a GitHub release or verified support for every WoW client.
 
+## 0.3.5 — 2026-09-26
+
+### Fixed
+
+- The minimap button was larger than other addons' buttons (e.g. Hourstone or those using LibDBIcon), and its dark background reached past the ring. It now uses Blizzard's tracking-button geometry for the Retail and Classic styles.
+
 ## 0.3.4 — 2026-09-24
 
 Includes 0.3.3; 0.3.3 was not published as a separate release.

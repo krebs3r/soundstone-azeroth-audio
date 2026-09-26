@@ -449,10 +449,17 @@ function UI:PositionMinimap()
 end
 function UI:CreateMinimap()
     if not Minimap then return end
-    local b=CreateFrame('Button','SoundstoneMinimapButton',Minimap);self.minimap=b;b:SetSize(33,33);b:SetFrameStrata('MEDIUM');b:SetFrameLevel(Minimap:GetFrameLevel()+8)
-    local bg=b:CreateTexture(nil,'BACKGROUND');bg:SetTexture('Interface\\Minimap\\UI-Minimap-Background');bg:SetAllPoints()
-    local brand=icon(b,'logo',20);brand:SetPoint('CENTER');b.icon=brand.texture
-    local border=b:CreateTexture(nil,'OVERLAY');border:SetTexture('Interface\\Minimap\\MiniMap-TrackingBorder');border:SetSize(54,54);border:SetPoint('TOPLEFT')
+    local b=CreateFrame('Button','SoundstoneMinimapButton',Minimap);self.minimap=b;b:SetSize(31,31);b:SetFrameStrata('MEDIUM');b:SetFrameLevel(Minimap:GetFrameLevel()+8)
+    -- Blizzard's tracking-button geometry, as used by LibDBIcon and Hourstone. The border's
+    -- transparent padding differs between Retail and the Classic families.
+    local retail=C.RetailStyle()
+    local bg=b:CreateTexture(nil,'BACKGROUND');bg:SetTexture('Interface\\Minimap\\UI-Minimap-Background')
+    bg:SetSize(retail and 24 or 20,retail and 24 or 20)
+    if retail then bg:SetPoint('CENTER') else bg:SetPoint('TOPLEFT',7,-5) end
+    local brand=icon(b,'logo',retail and 18 or 17);b.icon=brand.texture
+    if retail then brand:SetPoint('CENTER') else brand:SetPoint('TOPLEFT',7,-6) end
+    local border=b:CreateTexture(nil,'OVERLAY');border:SetTexture('Interface\\Minimap\\MiniMap-TrackingBorder')
+    border:SetSize(retail and 50 or 53,retail and 50 or 53);border:SetPoint('TOPLEFT')
     b:RegisterForClicks('LeftButtonUp','RightButtonUp');b:RegisterForDrag('LeftButton')
     b:SetScript('OnClick',function(_,mouse)
         if b.suppressUntil and C.Now()<b.suppressUntil then return end
