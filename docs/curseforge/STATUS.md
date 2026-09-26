@@ -1,4 +1,10 @@
-# Einrichtungsstand am 24.09.2026
+# Einrichtungsstand am 26.09.2026
+
+## Update: 0.3.5 vorbereitet
+
+- [v0.3.5](https://github.com/krebs3r/soundstone-azeroth-audio/releases/tag/v0.3.5) ist als GitHub-Pre-Release gebaut, Commit `a5f1536f66117e742d5647d93ea399122fa45b44`, ZIP-SHA256 `18a7eda56b27bbc2bb8cb976b93d33895fb43a2604dc30c3f061851e96af9bc6`. Inhalt bytegleich mit dem getesteten Test-Build.
+- Ingame bestätigt am 26.09.2026: Retail 12.1.0.69933, WoW: Forever 1.60.1.69977, MoP 5.5.4.69585, TBC 2.5.6.69795 und Classic 1.15.9.69722 (Builds unverändert seit 0.3.4). Datensatz: `releases/v0.3.5.json`.
+- Offen: Hochstufen zum regulären Release in GitHub → automatischer Upload mit 12.1.0, 1.60.1, 5.5.4, 2.5.6, 1.15.9.
 
 ## Update: 0.3.4 mit WoW: Forever vorbereitet
 
