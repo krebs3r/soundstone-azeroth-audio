@@ -1,4 +1,10 @@
-# Einrichtungsstand am 26.09.2026
+# Einrichtungsstand am 21.10.2026
+
+## Update: 0.3.6 vorbereitet
+
+- [v0.3.6](https://github.com/krebs3r/soundstone-azeroth-audio/releases/tag/v0.3.6) ist als GitHub-Pre-Release gebaut, Commit `20724872938766843dafa29bdf9f226cff47c4f3`, ZIP-SHA256 `f374c6bca3124925dcc9feae525818225d4719e654036b912e7771991e7fd618`. Inhalt bytegleich mit dem getesteten Test-Build.
+- Ingame bestätigt am 21.10.2026: Retail 12.1.5.70448 (Interface 120105; mit 120100 galt 0.3.5 seit dem Patch vom 17.10. als veraltet). WoW: Forever 1.60.1.70450, MoP 5.5.4.70531, TBC 2.5.6.70006 und Classic 1.15.9.70003 auf Wunsch des Nutzers ohne separaten 0.3.6-Ingame-Test freigegeben. Datensatz: `releases/v0.3.6.json`.
+- Offen: Hochstufen zum regulären Release in GitHub → automatischer Upload mit 12.1.5, 1.60.1, 5.5.4, 2.5.6, 1.15.9. Die CurseForge-Spielversion 12.1.5 wird dabei erstmals aufgelöst; der Workflow bricht ab, falls sie nicht eindeutig ist.
 
 ## Update: 0.3.5 vorbereitet
 
