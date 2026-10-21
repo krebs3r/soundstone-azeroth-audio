@@ -14,6 +14,8 @@ from lupa.lua51 import LuaRuntime
 ROOT = Path(__file__).resolve().parents[1]
 FILES = ['Locale.lua', 'Compat.lua', 'Assets.lua', 'Layout.lua', 'Placement.lua', 'Audio.lua', 'Devices.lua', 'Dropdown.lua', 'UI.lua', 'Core.lua']
 total = 0
+# Unknown clients may lack C_CVar and the layout-cache frame methods.
+LEGACY_API = 'C_CVar=nil; Mock.legacyReturn=true; Mock.methods.SetUserPlaced=nil; Mock.methods.IsUserPlaced=nil; Mock.methods.SetDontSavePosition=nil; Mock.methods.GetDontSavePosition=nil'
 configs = [
     ('Retail', 1, 'deDE', False, True),
     ('Mists Classic', 19, 'enUS', False, True),
@@ -37,7 +39,7 @@ for variant, project, locale, legacy, backdrop, native in [(*config, native) for
     if variant == 'WoW Forever':
         lua.execute('Mock.interface=16001')
     if legacy:
-        lua.execute('C_CVar=nil; Mock.legacyReturn=true')
+        lua.execute(LEGACY_API)
     if not backdrop:
         lua.execute('BackdropTemplateMixin=nil')
     ns = lua.table()
@@ -55,6 +57,7 @@ for variant, project, locale, legacy, backdrop, native in [(*config, native) for
     total += lua.execute((ROOT / 'tests/test_followups.lua').read_text(encoding='utf-8'))
     total += lua.execute((ROOT / 'tests/test_placement.lua').read_text(encoding='utf-8'))
     total += lua.execute((ROOT / 'tests/test_compartment.lua').read_text(encoding='utf-8'))
+    total += lua.execute((ROOT / 'tests/test_position.lua').read_text(encoding='utf-8'))
     forever = variant == 'WoW Forever'
     assert ns.Compat.IsForever() is forever
     assert ns.UI.theme == ('Retail' if project == 1 and not forever else 'Classic')
@@ -77,7 +80,7 @@ for variant, project, locale, legacy, backdrop, native in [(*config, native) for
     if variant == 'WoW Forever':
         lua.execute('Mock.interface=16001')
     if legacy:
-        lua.execute('C_CVar=nil; Mock.legacyReturn=true')
+        lua.execute(LEGACY_API)
     if not backdrop:
         lua.execute('BackdropTemplateMixin=nil')
     reloaded = lua.table()

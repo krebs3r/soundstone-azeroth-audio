@@ -84,7 +84,7 @@ function A:Initialize()
     db.uiScale=Layout.Scale(db.uiScale)
     db.minimapAngle=Layout.Number(db.minimapAngle,225)%360
     db.schema=2; db.positions=nil
-    self.audio=self.Audio.New(C,function() self.UI:Refresh() end,db.lastVolumes)
+    self.audio=self.Audio.New(C,function() self.UI:RefreshAudio() end,db.lastVolumes)
     db.lastVolumes=self.audio.history
     self.devices=self.Devices.New(C,function() self.UI:RefreshDevices() end)
     self.UI:Create()
@@ -94,7 +94,8 @@ function A:Initialize()
 end
 local events=CreateFrame('Frame')
 A.events=events
-for _,event in ipairs({'ADDON_LOADED','PLAYER_LOGIN','PLAYER_ENTERING_WORLD','CVAR_UPDATE','DISPLAY_SIZE_CHANGED','UI_SCALE_CHANGED','SOUND_DEVICE_UPDATE'}) do
+for _,event in ipairs({'ADDON_LOADED','PLAYER_LOGIN','PLAYER_ENTERING_WORLD','VARIABLES_LOADED','LOADING_SCREEN_DISABLED',
+    'CVAR_UPDATE','DISPLAY_SIZE_CHANGED','UI_SCALE_CHANGED','SOUND_DEVICE_UPDATE'}) do
     pcall(events.RegisterEvent,events,event)
 end
 events:SetScript('OnEvent',function(_,event,arg)
@@ -104,11 +105,13 @@ events:SetScript('OnEvent',function(_,event,arg)
     elseif A.initialized then
         if event=='CVAR_UPDATE' then
             local name=tostring(arg or ''):lower()
-            if name=='' or name:find('sound',1,true) then A.UI:Refresh() end
+            if name=='' or name:find('sound',1,true) then A.UI:RefreshAudio() end
             if name=='' or name=='sound_outputdriverindex' then A.UI:RefreshDevices() end
             if name=='uiscale' or name=='useuiscale' then A.UI:ApplyLayout() end
         elseif event=='SOUND_DEVICE_UPDATE' then A.UI:RefreshDevices()
-        elseif event=='PLAYER_ENTERING_WORLD' or event=='DISPLAY_SIZE_CHANGED' or event=='UI_SCALE_CHANGED' then
+        elseif event=='PLAYER_ENTERING_WORLD' or event=='VARIABLES_LOADED' or event=='LOADING_SCREEN_DISABLED'
+            or event=='DISPLAY_SIZE_CHANGED' or event=='UI_SCALE_CHANGED' then
+            -- Loading can finish after PLAYER_ENTERING_WORLD; re-apply the saved position then.
             A.UI:ApplyLayout(); A.UI:PositionMinimap(); A.UI:Refresh()
         end
     end
