@@ -179,20 +179,44 @@ function UI:CancelPlacement()
         end
     end
 end
+-- Move from the displayed rect. Re-anchoring first would pull the bar away from the cursor.
+function UI:StartDrag()
+    if A.db.locked then return end
+    if self.dragging then self:StopDrag() end
+    -- An unchecked drop or expansion falls back to the last verified position and view. The
+    -- bar stays where it is shown because ApplyLayout waits until the drag ends.
+    local job=self.placementJob
+    self.dragFallbackView=job and A.db.position==job.requested and job.fallbackView or nil
+    self:CancelPlacement()
+    self.dragging=true;self.dragOrigin={x=A.db.position.x,y=A.db.position.y}
+    self:CloseMenus();self.root:StartMoving()
+    -- A release the handle never sees (e.g. outside the game window) still ends the drag.
+    self.root:SetScript('OnUpdate',function()
+        if IsMouseButtonDown and not IsMouseButtonDown('LeftButton') then UI:StopDrag() end
+    end)
+end
+function UI:StopDrag()
+    if not self.dragging then return end
+    self.root:SetScript('OnUpdate',nil);self.root:StopMovingOrSizing()
+    -- StartMoving marks the root user-placed; SoundstoneDB alone stores its position.
+    if self.root.SetUserPlaced then pcall(self.root.SetUserPlaced,self.root,false) end
+    self:FinishDrag()
+end
 function UI:FinishDrag()
     self:CancelPlacement()
     A:SavePosition(self.root)
-    local origin=self.dragOrigin or A.db.position
-    self.dragOrigin=nil;self.dragging=false;self.suppressUntil=C.Now()+.15;self:ApplyLayout()
-    self:BeginPlacement(origin)
+    local origin,fallbackView=self.dragOrigin or A.db.position,self.dragFallbackView
+    self.dragOrigin=nil;self.dragFallbackView=nil;self.dragging=false;self.suppressUntil=C.Now()+.15;self:ApplyLayout()
+    self:BeginPlacement(origin,fallbackView)
 end
 function UI:BeginPlacement(origin,fallbackView)
-    if not A.db.avoidOverlap or not self.root:IsShown() then return end
+    -- OnUpdate does not run while hidden, so a check could only time out there.
+    if not A.db.avoidOverlap or not A.db.showBar or not self.root:IsVisible() then return end
     local sw,sh=UIParent:GetWidth(),UIParent:GetHeight()
     local scale=A.db.uiScale
     local job=A.Placement.Start(self.root,A.db.position.x+sw/2,A.db.position.y+sh/2,
         self.root:GetWidth()*scale,self.root:GetHeight()*scale,sw,sh)
-    job.origin=origin;job.requested=A.db.position
+    job.origin=origin;job.requested=A.db.position;job.fallbackView=fallbackView
     job.view=A.db.viewMode;job.scale=A.db.uiScale
     job.sw=sw;job.sh=sh;job.parentScale=UIParent:GetEffectiveScale()
     self.placementJob=job
@@ -212,13 +236,8 @@ function UI:BeginPlacement(origin,fallbackView)
 end
 local function movable(handle,menuClick)
     handle:EnableMouse(true);handle:RegisterForDrag('LeftButton')
-    handle:SetScript('OnDragStart',function()
-        if not A.db.locked then UI:CancelPlacement();UI:ApplyLayout();UI:CloseMenus();UI.dragOrigin={x=A.db.position.x,y=A.db.position.y};UI.root:StartMoving();UI.dragging=true;hideTip() end
-    end)
-    handle:SetScript('OnDragStop',function()
-        UI.root:StopMovingOrSizing()
-        if UI.dragging then UI:FinishDrag() end
-    end)
+    handle:SetScript('OnDragStart',function() UI:StartDrag() end)
+    handle:SetScript('OnDragStop',function() UI:StopDrag() end)
     if menuClick then
         handle:SetScript('OnClick',function()
             if not UI.suppressUntil or C.Now()>=UI.suppressUntil then UI:ToggleMenu() end
@@ -245,6 +264,8 @@ end
 function UI:CreateBar()
     local b=CreateFrame('Frame','SoundstoneBar',self.root);self.bar=b
     b:SetSize(Layout.compact.width,Layout.compact.height);b:SetPoint('TOPLEFT');skin(b,self.theme..'Bar')
+    -- A view switch during a drag hides its handle before OnDragStop can arrive.
+    b:HookScript('OnHide',function() UI:StopDrag() end)
     local grip=CreateFrame('Button',nil,b);self.grip=grip
     grip:SetSize(19,28);grip:SetPoint('LEFT',3,0);self.gripDots=dots(grip,3.1,5.3)
     movable(grip)
@@ -278,6 +299,7 @@ end
 function UI:CreatePanel()
     local p=CreateFrame('Frame','SoundstonePanel',self.root);self.panel=p
     p:SetSize(Layout.expanded.width,Layout.expanded.height);p:SetPoint('TOPLEFT');skin(p,self.theme..'Panel')
+    p:HookScript('OnHide',function() UI:StopDrag() end)
     local header=CreateFrame('Button',nil,p);self.panelHeader=header;header:SetPoint('TOPLEFT',72,-4);header:SetSize(156,21);movable(header)
     local title=font(header,'Soundstone – Azeroth Audio',14,true);self.panelTitle=title;title:SetPoint('CENTER')
     local titleSize=14
@@ -413,6 +435,8 @@ function UI:RefreshDevices()
 end
 function UI:ApplyLayout()
     if not self.root then return end
+    -- The client moves the root during a drag; FinishDrag applies the layout afterwards.
+    if self.dragging then return end
     local job=self.placementJob
     -- Audio refreshes do not invalidate an in-flight placement of the same
     -- geometry. Explicit moves, resize, hide and option changes still cancel it.
@@ -496,10 +520,11 @@ function UI:CreateCompartment()
     })
     self.compartment=ok or nil
 end
-function UI:Refresh()
+-- Audio changes only update values; they never move or re-skin the window.
+function UI:RefreshAudio()
     if not A.audio or not self.root or not self.menu then return end
     if A.audio.changing then return end
-    self.refreshing=true
+    local refreshing=self.refreshing;self.refreshing=true
     for _,ch in ipairs(A.Audio.channels) do
         local s=A.audio:Get(ch.id);local b,row=self.barControls[ch.id],self.rows[ch.id]
         local text=s.percent and (s.percent..' %') or '-- %'
@@ -510,6 +535,13 @@ function UI:Refresh()
         row.fill:SetAlpha(s.adjustable and 1 or .35);row.slider.track:SetAlpha(s.adjustable and 1 or .35)
         row.slider:SetValue(s.percent or 0);row.fill:SetValue(s.percent or 0)
     end
+    self.refreshing=refreshing
+end
+function UI:Refresh()
+    if not A.audio or not self.root or not self.menu then return end
+    if A.audio.changing then return end
+    self:RefreshAudio()
+    self.refreshing=true
     self.bar:SetShown(A.db.showBar and A.db.viewMode=='compact');self.panel:SetShown(A.db.showBar and A.db.viewMode=='expanded');self.root:SetShown(A.db.showBar)
     if self.minimap then self.minimap:SetShown(A.db.showMinimap) end
     local scalePercent=self.pendingScale or math.floor(A.db.uiScale*100+.5)
@@ -520,14 +552,18 @@ end
 function UI:Create()
     self.theme=C.RetailStyle() and 'Retail' or 'Classic'
     self.root=CreateFrame('Frame','SoundstoneRoot',UIParent);self.root:SetFrameStrata('MEDIUM');self.root:SetMovable(true);self.root:SetClampedToScreen(true)
+    -- Keep the client's layout cache (layout-local.txt) from saving a second position.
+    if self.root.SetDontSavePosition then self.root:SetDontSavePosition(true) end
     self:CreateBar();self:CreatePanel();self:CreateMenu();self:CreateMinimap();self:CreateCompartment()
     self.escape=CreateFrame('Frame','SoundstoneEscapeHandler',UIParent);self.escape:SetSize(1,1);self.escape:Hide()
     table.insert(UISpecialFrames,'SoundstoneEscapeHandler')
     self.escape:SetScript('OnHide',function() if not UI.syncEscape then UI:Escape() end end)
     self.root:HookScript('OnHide',function()
-        UI:CancelPlacement()
-        if UI.dragging then UI.root:StopMovingOrSizing();UI:FinishDrag() end
-        UI:CloseMenus()
+        UI:CancelPlacement();UI:StopDrag();UI:CloseMenus()
     end)
+    -- Hiding can revert an unchecked position; show the saved one again (e.g. after Alt+Z).
+    self.root:HookScript('OnShow',function() UI:ApplyLayout() end)
+    -- Addons may rescale UIParent without a scale event; re-clamp to the new size.
+    UIParent:HookScript('OnSizeChanged',function() UI:ApplyLayout() end)
     self:RefreshDevices();self:Refresh()
 end

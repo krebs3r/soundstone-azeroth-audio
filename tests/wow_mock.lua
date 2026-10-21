@@ -2,6 +2,7 @@
 Mock = { objects = {}, writes = {}, messages = {}, time = 10, locale = 'deDE', retail = true }
 Menu=nil;DropdownButtonMixin=nil;WowStyle1DropdownMixin=nil;AnchorUtil=nil;MenuResponse=nil
 local methods = {}
+Mock.methods = methods
 local coordinates
 local function object(kind, name, parent)
     local o = setmetatable({ kind=kind, name=name, parent=parent, scripts={}, points={}, shown=true,
@@ -108,8 +109,16 @@ function methods:RegisterForClicks(...) self.clicks={...} end
 function methods:RegisterForDrag(...) self.drags={...} end
 function methods:SetMovable(v) self.movable=v end
 function methods:SetClampedToScreen(v) self.clamped=v end
-function methods:StartMoving() self.moving=true end
+-- As in the client, moving a frame marks it for the layout cache (layout-local.txt).
+function methods:StartMoving() self.moving=true;self.userPlaced=true end
 function methods:StopMovingOrSizing() self.moving=false end
+function methods:SetUserPlaced(v)
+    if v and not self.movable then error('Frame is not movable or resizable') end
+    self.userPlaced=v
+end
+function methods:IsUserPlaced() return self.userPlaced or false end
+function methods:SetDontSavePosition(v) self.dontSavePosition=v end
+function methods:GetDontSavePosition() return self.dontSavePosition or false end
 function methods:SetEnabled(v) self.enabled=v end
 function methods:SetChecked(v) self.checked=v end
 function methods:GetChecked() return self.checked end
@@ -218,4 +227,4 @@ GetCVar=Mock.read
 SetCVar=Mock.write
 Mock.compartment={}
 AddonCompartmentFrame={RegisterAddon=function(_,info) table.insert(Mock.compartment,info) end}
-function GetBuildInfo() return '12.1.0','69814','Sep 1 2026',Mock.interface or 120100 end
+function GetBuildInfo() return '12.1.5','70448','Oct 16 2026',Mock.interface or 120105 end

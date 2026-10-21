@@ -2,6 +2,17 @@
 
 User-facing changes are grouped by version. Unreleased entries describe local work and do not imply a GitHub release or verified support for every WoW client.
 
+## 0.3.6 — unreleased
+
+### Fixed
+
+- Retail 12.1.5 (interface 120105) listed Soundstone as out of date and did not load it unless "Load out of date AddOns" was enabled. The TOC now declares 120105.
+- After login, relog or `/reload` the bar could appear away from its saved position and jump back on the next click. Soundstone now applies its saved position again once loading has finished and whenever the interface is resized, including by other addons. WoW's own frame-position cache (`layout-local.txt`) no longer stores a second position for the bar.
+- The bar jumped while being dragged. Starting a drag snapped it back to its saved position first, and audio changes or other events moved it while the mouse button was held. A drag now starts where the bar is shown, and nothing moves the bar until it is released.
+- Grabbing the bar again while its overlap check was still running sent it back to the earlier position. It now stays under the cursor. If the check of the new spot fails, the last checked position (and the compact view after expanding) is restored as before.
+- Hiding the interface (Alt+Z, cinematics) during a drag or an overlap check could leave the bar shown somewhere other than its saved position until the next reload. A drag released outside the game window now ends properly.
+- Audio changes from clicks, the mouse wheel, key bindings or other addons only update the values and no longer re-position or redraw the window.
+
 ## 0.3.5 — 2026-09-26
 
 ### Fixed
