@@ -2,7 +2,7 @@
 
 User-facing changes are grouped by version. Unreleased entries describe local work and do not imply a GitHub release or verified support for every WoW client.
 
-## 0.3.6 — unreleased
+## 0.3.6 — 2026-10-21
 
 ### Fixed
 

@@ -13,7 +13,7 @@ Settings, positions and volume levels from earlier versions are kept.
 
 Download **Soundstone-0.3.6.zip** from this release's assets and replace the **Soundstone** folder in your client's **Interface/AddOns** directory (WoW: Forever beta: **_classic_beta_/Interface/AddOns**). Keep your **WTF** folder to preserve settings.
 
-1115 simulated Lua scenarios plus installer/release and package checks. In-game confirmation of the 0.3.6 test build is pending.
+1115 simulated Lua scenarios plus installer/release and package checks. The 0.3.6 test build was confirmed in game by the user on 2026-10-21 in Retail 12.1.5. MoP Classic, TBC Anniversary, Classic Era and the WoW: Forever beta are released on the user's compatibility approval without a separate 0.3.6 in-game test.
 
 ## Deutsch
 
@@ -24,4 +24,4 @@ Download **Soundstone-0.3.6.zip** from this release's assets and replace the **S
 
 Einstellungen, Positionen und Lautstärken bleiben erhalten.
 
-**Installation:** Den enthaltenen Ordner **Soundstone** im jeweiligen **Interface/AddOns**-Verzeichnis ersetzen (Forever-Beta: **_classic_beta_**) und **WTF** behalten. Die Ingame-Bestätigung des Test-Builds 0.3.6 steht noch aus.
+**Installation:** Den enthaltenen Ordner **Soundstone** im jeweiligen **Interface/AddOns**-Verzeichnis ersetzen (Forever-Beta: **_classic_beta_**) und **WTF** behalten. Der Test-Build 0.3.6 wurde am 21.10.2026 vom Nutzer in Retail 12.1.5 im Spiel bestätigt. MoP Classic, TBC Anniversary, Classic Era und die WoW-Forever-Beta sind auf Wunsch des Nutzers ohne separaten 0.3.6-Ingame-Test freigegeben.
