@@ -46,8 +46,10 @@ test('compact channels keep fixed percentage fields at zero, full volume and mut
     for _,ch in ipairs(A.Audio.channels) do
         local c=A.UI.barControls[ch.id];local valueX=c.value:GetLeft();local iconX=c.icon:GetLeft()
         assert(c:GetLeft()>=lastRight);lastRight=c:GetLeft()+c:GetWidth()
-        eq(c:GetWidth(),68);eq(c:GetHeight(),28);eq(c.value:GetWidth(),34);eq(c.value.fontSize,11)
-        near(valueX-iconX-c.icon:GetWidth(),5);eq(c.icon:GetWidth(),22);near(iconX-c:GetLeft()+11,15)
+        eq(c:GetWidth(),68);eq(c:GetHeight(),28);eq(c.value:GetWidth(),38);eq(c.value.fontSize,11)
+        near(valueX-iconX-c.icon:GetWidth(),2);eq(c.icon:GetWidth(),22);near(iconX-c:GetLeft()+11,15)
+        -- The field ends two units before the next channel's divider.
+        near(c:GetLeft()+c:GetWidth()-valueX-c.value:GetWidth(),2)
         local volume,enabled=Mock.cvars[ch.volume],Mock.cvars[ch.enabled]
         for _,percent in ipairs({0,100}) do
             A:SetVolume(ch.id,percent);eq(c.value.textValue,percent..' %')
@@ -148,5 +150,39 @@ test('metal buttons have distinct states, release cleanly and preserve the gear'
         b:Fire('OnMouseDown');eq(b.image.color[1],.6);eq(b.image.color[2],.55);eq(b.image.color[3],.4)
         b:Fire('OnMouseUp')
     end
+end)
+
+-- Reported with pixel-perfect scaling: "100 %" was cut to "100..." in the compact bar.
+test('values, names, title and footer shrink to fit when text needs more room',function()
+    A:SetView('expanded');A:SetScale(1)
+    local ui=A.UI;local saved={}
+    local function width(f) return (f.GetUnboundedStringWidth or f.GetStringWidth)(f) end
+    local function fitted()
+        for _,ch in ipairs(A.Audio.channels) do
+            local value,row=ui.barControls[ch.id].value,ui.rows[ch.id]
+            assert(width(value)<=37 or value.fontSize==9);assert(width(row.value)<=31 or row.value.fontSize==8)
+            assert(width(row.name)<=68 or row.name.fontSize==8)
+            eq(value.wordWrap,false);eq(row.value.wordWrap,false);eq(row.name.wordWrap,false)
+        end
+        assert(width(ui.panelTitle)<=152 or ui.panelTitle.textValue=='Soundstone')
+        near(ui.version:GetWidth(),width(ui.version)+1);near(ui.author:GetWidth(),width(ui.author)+1)
+        eq(ui.version.justify,'RIGHT');eq(ui.author.justify,'LEFT')
+        near(ui.footer:GetWidth(),ui.version:GetWidth()+ui.author:GetWidth()+14)
+    end
+    for _,ch in ipairs(A.Audio.channels) do saved[ch.id]={Mock.cvars[ch.volume],Mock.cvars[ch.enabled]};A:SetVolume(ch.id,100) end
+    local master=ui.barControls.master.value
+    eq(master.textValue,'100 %');eq(master.fontSize,11);fitted()
+    -- A smaller effective scale: the bar shrinks "100 %" a little instead of cutting it.
+    Mock.textScale=1.3;ui:ApplyLayout();fitted()
+    eq(master.fontSize,10);assert(width(master)<=37);eq(ui.rows.master.value.fontSize,8.5)
+    -- Each value change fits again: a shorter value returns to the full size.
+    A:SetVolume('music',5);eq(ui.barControls.music.value.fontSize,11);eq(master.fontSize,10);fitted()
+    -- Never below the minimum, and no endless loop.
+    Mock.textScale=3;ui:ApplyLayout();fitted();eq(master.fontSize,9);eq(ui.rows.master.value.fontSize,8)
+    eq(ui.panelTitle.textValue,'Soundstone')
+    Mock.textScale=nil;ui:ApplyLayout();fitted()
+    eq(master.fontSize,11);eq(ui.rows.master.value.fontSize,10);eq(ui.panelTitle.textValue,'Soundstone – Azeroth Audio')
+    for _,ch in ipairs(A.Audio.channels) do Mock.cvars[ch.volume],Mock.cvars[ch.enabled]=saved[ch.id][1],saved[ch.id][2] end
+    ui:Refresh();A:SetView('compact')
 end)
 return count

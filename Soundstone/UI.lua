@@ -12,6 +12,16 @@ local function font(parent,text,size,gold)
     f:SetTextColor(gold and 1 or .96,gold and .81 or .94,gold and .26 or .87)
     f:SetText(text or ''); return f
 end
+-- Glyphs snap to whole pixels, so text needs more UI units at small effective scales (e.g.
+-- pixel-perfect UI scaling). Shrink it until it fits, as Blizzard's AutoScalingFontStringMixin does.
+-- Text exactly as wide as its field can still be cut off (Blizzard pads such widths), so keep a unit spare.
+local function textWidth(f) return (f.GetUnboundedStringWidth or f.GetStringWidth)(f) end
+local function fit(f,size,minSize,width)
+    f:SetFont(STANDARD_TEXT_FONT or 'Fonts\\FRIZQT__.TTF',size,'')
+    while size>minSize and textWidth(f)>width-1 do
+        size=size-.5;f:SetFont(STANDARD_TEXT_FONT or 'Fonts\\FRIZQT__.TTF',size,'')
+    end
+end
 local function flat(parent,color,width,height)
     local t=parent:CreateTexture(nil,'ARTWORK');t:SetTexture(WHITE)
     t:SetVertexColor(unpack(color));t:SetSize(width,height);return t
@@ -276,7 +286,7 @@ function UI:CreateBar()
     for i,ch in ipairs(A.Audio.channels) do
         local c=CreateFrame('Button',nil,b);c:SetSize(68,28);c:SetPoint('LEFT',66+(i-1)*68,0)
         c.icon=icon(c,ch.id,22);c.icon:SetPoint('LEFT',4,0)
-        c.value=font(c,'',11);c.value:SetPoint('LEFT',31,0);c.value:SetWidth(34);c.value:SetJustifyH('RIGHT');c.value:SetWordWrap(false)
+        c.value=font(c,'',11);c.value:SetPoint('LEFT',28,0);c.value:SetWidth(38);c.value:SetJustifyH('RIGHT');c.value:SetWordWrap(false)
         if i>1 then local sep=flat(c,{.58,.43,.19,.65},.6,26);sep:SetPoint('LEFT',0,0) end
         wire(c,ch.id,true,'compact');self.barControls[ch.id]=c
     end
@@ -302,11 +312,6 @@ function UI:CreatePanel()
     p:HookScript('OnHide',function() UI:StopDrag() end)
     local header=CreateFrame('Button',nil,p);self.panelHeader=header;header:SetPoint('TOPLEFT',72,-4);header:SetSize(156,21);movable(header)
     local title=font(header,'Soundstone – Azeroth Audio',14,true);self.panelTitle=title;title:SetPoint('CENTER')
-    local titleSize=14
-    while title:GetStringWidth()>152 and titleSize>10 do
-        titleSize=titleSize-.5;title:SetFont(STANDARD_TEXT_FONT or 'Fonts\\FRIZQT__.TTF',titleSize,'')
-    end
-    if title:GetStringWidth()>152 then title:SetText('Soundstone') end
     title:SetWordWrap(false)
     header:SetScript('OnEnter',function(self) tip(self,'Soundstone – Azeroth Audio',L.DRAG_HELP) end)
     header:SetScript('OnLeave',hideTip)
@@ -327,19 +332,19 @@ function UI:CreatePanel()
         row.iconButton=CreateFrame('Button',nil,row);row.iconButton:SetSize(25,25);row.iconButton:SetPoint('LEFT')
         if not C.RetailStyle() then skin(row.iconButton,'ClassicPanel',3) end
         row.icon=icon(row.iconButton,ch.id,18);row.icon:SetPoint('CENTER');wire(row.iconButton,ch.id,true)
-        row.name=font(row,L[ch.label],10);row.name:SetPoint('LEFT',30,0);row.name:SetWidth(69);row.name:SetJustifyH('LEFT')
+        row.name=font(row,L[ch.label],10);row.name:SetPoint('LEFT',30,0);row.name:SetWidth(69);row.name:SetJustifyH('LEFT');row.name:SetWordWrap(false)
         row.toggle=nativeButton(row,34,20,'',function() A:Toggle(ch.id) end);row.toggle:SetPoint('LEFT',99,0);wire(row.toggle,ch.id,true)
         row.slider=slider(row,98,function(value) A:SetVolume(ch.id,value) end);row.slider:SetPoint('LEFT',143,0)
         row.fill=row.slider.fill;wire(row.slider,ch.id,false)
-        row.value=font(row,'',10);row.value:SetPoint('RIGHT');row.value:SetWidth(32);row.value:SetJustifyH('RIGHT')
+        row.value=font(row,'',10);row.value:SetPoint('RIGHT');row.value:SetWidth(32);row.value:SetJustifyH('RIGHT');row.value:SetWordWrap(false)
         if i<3 then local sep=flat(row,{.55,.52,.45,.3},272,.6);sep:SetPoint('BOTTOM',0,0) end
         self.rows[ch.id]=row
     end
     local footer=CreateFrame('Frame',nil,p);self.footer=footer;footer:SetPoint('BOTTOMRIGHT',-10,5);footer:SetAlpha(.55)
-    self.version=font(footer,'v'..C.Version(),7.5);self.version:SetSize(self.version:GetStringWidth(),8);self.version:SetPoint('LEFT')
+    self.version=font(footer,'v'..C.Version(),7.5);self.version:SetHeight(8);self.version:SetPoint('LEFT');self.version:SetJustifyH('RIGHT')
     self.footerHeart=sprite(footer,'Heart');self.footerHeart:SetSize(8,8);self.footerHeart:SetVertexColor(.95,.3,.38);self.footerHeart:SetPoint('LEFT',self.version,'RIGHT',3,0)
-    self.author=font(footer,'by krebs3r',7.5);self.author:SetSize(self.author:GetStringWidth(),8);self.author:SetPoint('LEFT',self.footerHeart,'RIGHT',3,0)
-    footer:SetSize(self.version:GetWidth()+self.author:GetWidth()+14,8)
+    self.author=font(footer,'by krebs3r',7.5);self.author:SetHeight(8);self.author:SetPoint('LEFT',self.footerHeart,'RIGHT',3,0);self.author:SetJustifyH('LEFT')
+    footer:SetHeight(8)
 end
 function UI:SyncEscape()
     if not self.escape then return end
@@ -463,7 +468,19 @@ function UI:ApplyLayout()
         row.icon:SetIconSize(math.max(1,math.min(18,b:GetWidth()-2*inset)))
     end
     self.grip:AlignDots();self.panelGrip:AlignDots()
-    self:PositionMenus()
+    self:PositionMenus();self:FitText()
+end
+-- Text widths depend on the effective scale, so fit again after each layout and value change.
+function UI:FitText()
+    local title=self.panelTitle
+    title:SetText('Soundstone – Azeroth Audio');fit(title,14,10,152)
+    if textWidth(title)>152 then title:SetText('Soundstone') end
+    for _,ch in ipairs(A.Audio.channels) do
+        local row=self.rows[ch.id]
+        fit(self.barControls[ch.id].value,11,9,38);fit(row.value,10,8,32);fit(row.name,10,8,69)
+    end
+    for _,f in ipairs({self.version,self.author}) do f:SetWidth(textWidth(f)+1) end
+    self.footer:SetWidth(self.version:GetWidth()+self.author:GetWidth()+14)
 end
 -- Scale events fire inside a uiScale CVar write, and pixel-perfect addons call UIParent:SetScale
 -- right after it. Clamping then would keep the bar inside the passing UIParent size, so lay out
@@ -542,7 +559,7 @@ function UI:RefreshAudio()
         row.fill:SetAlpha(s.adjustable and 1 or .35);row.slider.track:SetAlpha(s.adjustable and 1 or .35)
         row.slider:SetValue(s.percent or 0);row.fill:SetValue(s.percent or 0)
     end
-    self.refreshing=refreshing
+    self.refreshing=refreshing;self:FitText()
 end
 function UI:Refresh()
     if not A.audio or not self.root or not self.menu then return end

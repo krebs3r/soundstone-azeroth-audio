@@ -132,10 +132,13 @@ function methods:CreateFontString(name,layer,font) local t=object('FontString',n
 function methods:SetText(text) self.textValue=tostring(text);if self.Text then self.Text:SetText(text) end end
 function methods:GetFontString() return self.Text end
 -- Approximate font metrics only; actual glyph fit is checked visually in the client.
+-- Mock.textScale models glyphs rounded up to whole pixels at small effective scales.
 function methods:GetStringWidth()
     local _,characters=(self.textValue or ''):gsub('[^\128-\191]','')
-    return characters*(self.fontSize or 10)*.55
+    return characters*(self.fontSize or 10)*.55*(Mock.textScale or 1)
 end
+-- Ignores SetWidth, as in the client; the mock's GetStringWidth does so as well.
+function methods:GetUnboundedStringWidth() return self:GetStringWidth() end
 function methods:SetDrawLayer(layer,sublevel) self.layer,self.sublevel=layer,sublevel end
 function methods:SetTextColor(...) self.textColor={...} end
 function methods:SetJustifyH(v) self.justify=v end

@@ -2,7 +2,15 @@
 
 User-facing changes are grouped by version. Unreleased entries describe local work and do not imply a GitHub release or verified support for every WoW client.
 
-## 0.3.7 — unreleased
+## 0.3.8 — unreleased
+
+Includes 0.3.7; 0.3.7 was built as a GitHub prerelease but not released on its own.
+
+### Fixed
+
+- With pixel-perfect UI scaling, for example PixelPerfectUIScale at 1440p, the compact bar cut values such as "100 %" to "100...". WoW rounds characters to whole pixels, so text needs more room at small interface scales. The value fields in the bar now use the free space up to the next divider. Values, channel names, the title and the footer are fitted again after every layout and value change; only if a text still does not fit is its font made slightly smaller.
+
+## 0.3.7 — 2026-10-23 (prerelease only, included in 0.3.8)
 
 ### Fixed
 
