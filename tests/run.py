@@ -15,7 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 FILES = ['Locale.lua', 'Compat.lua', 'Assets.lua', 'Layout.lua', 'Placement.lua', 'Audio.lua', 'Devices.lua', 'Dropdown.lua', 'UI.lua', 'Core.lua']
 total = 0
 # Unknown clients may lack C_CVar and the layout-cache frame methods.
-LEGACY_API = 'C_CVar=nil; Mock.legacyReturn=true; Mock.methods.SetUserPlaced=nil; Mock.methods.IsUserPlaced=nil; Mock.methods.SetDontSavePosition=nil; Mock.methods.GetDontSavePosition=nil'
+LEGACY_API = 'C_CVar=nil; Mock.legacyReturn=true; Mock.methods.SetUserPlaced=nil; Mock.methods.IsUserPlaced=nil; Mock.methods.SetDontSavePosition=nil; Mock.methods.GetDontSavePosition=nil; Mock.methods.GetUnboundedStringWidth=nil'
 configs = [
     ('Retail', 1, 'deDE', False, True),
     ('Mists Classic', 19, 'enUS', False, True),
