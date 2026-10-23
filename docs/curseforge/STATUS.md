@@ -5,7 +5,8 @@
 - [v0.3.8](https://github.com/krebs3r/soundstone-azeroth-audio/releases/tag/v0.3.8) ist als GitHub-Pre-Release gebaut, Commit `9de12ff8c08bbc0702de7164f479c05dfcba6423`, ZIP-SHA256 `2e381eaaeab0b10a5a4b38dd861773a36c28ab1c93300a5f4ec9326f45ef35c6`. Inhalt bytegleich mit dem getesteten Test-Build.
 - 0.3.8 enthält die Positionskorrektur aus [v0.3.7](https://github.com/krebs3r/soundstone-azeroth-audio/releases/tag/v0.3.7). 0.3.7 bleibt auf Wunsch des Nutzers ein Prerelease und wird nicht hochgestuft, weil beim Test mit Pixel-Perfect-Skalierung abgeschnittene Werte („100...“) auffielen.
 - Ingame bestätigt am 23.10.2026: Retail 12.1.5.70529 mit PixelPerfectUIScale bei 0.53. WoW: Forever 1.60.1.70450, MoP 5.5.4.70531, TBC 2.5.6.70006 und Classic 1.15.9.70003 auf Wunsch des Nutzers ohne separaten 0.3.8-Ingame-Test freigegeben. Datensatz: `releases/v0.3.8.json`.
-- Offen: Hochstufen zum regulären Release in GitHub → automatischer Upload mit 12.1.5, 1.60.1, 5.5.4, 2.5.6, 1.15.9.
+- Am 23.10.2026 auf Wunsch des Nutzers zum regulären Release (Latest) hochgestuft; das erste Hochstufen in der Oberfläche war nicht gespeichert worden, danach per `gh release edit`. Der [CurseForge-Workflow](https://github.com/krebs3r/soundstone-azeroth-audio/actions/runs/39921764980) war erfolgreich: Datei **9295729**, Upload 08:02 UTC, Spielversionen-IDs 16984 (12.1.5), 17053 (Forever 1.60.1), 16168 (5.5.4), 16533 (2.5.6), 16630 (1.15.9). Commit und ZIP-SHA256 im Beleg stimmen mit dem getesteten Paket überein.
+- [Upload-Beleg](https://github.com/krebs3r/soundstone-azeroth-audio/releases/download/v0.3.8/curseforge-upload.json) am GitHub-Release gespeichert. Status laut Workflow `uploaded-awaiting-moderation`; die öffentliche Dateiliste zeigte um 08:03 UTC noch 0.3.6 als neueste Datei. Freigabe im Autoren-Dashboard noch prüfen.
 
 ## Update: 0.3.6 vorbereitet
 
