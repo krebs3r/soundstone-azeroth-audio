@@ -2,6 +2,13 @@
 
 User-facing changes are grouped by version. Unreleased entries describe local work and do not imply a GitHub release or verified support for every WoW client.
 
+## 0.3.7 — unreleased
+
+### Fixed
+
+- With addons that set the interface scale themselves, such as PixelPerfectUIScale, the bar still appeared away from its saved position after every login, relog or `/reload`. It jumped back on the next click on Options or Expand, or on a right-click on a channel. These addons write the `uiScale` setting first and then scale the interface below the setting's minimum. Soundstone fitted the bar into the screen at the size in between and was not notified of the final one. It now lays the bar out on the next frame after scale and size changes, including when an addon scales the interface directly.
+- If such an addon re-applied its scale in the first seconds after loading, it cancelled the overlap check of a bar that had just been moved, and the bar went back to its previous spot.
+
 ## 0.3.6 — 2026-10-21
 
 ### Fixed
