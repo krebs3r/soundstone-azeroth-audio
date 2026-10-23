@@ -31,6 +31,11 @@ function Mock.finishPlacement()
     end
     error('Placement did not finish')
 end
+function hooksecurefunc(target,name,hook)
+    if type(target)=='string' then target,name,hook=_G,target,name end
+    local original=target[name];assert(type(original)=='function','Cannot hook '..tostring(name))
+    target[name]=function(...) local result={original(...)};hook(...);return unpack(result) end
+end
 function methods:IsForbidden() return self.forbidden or false end
 function methods:IsMouseEnabled() return self.mouse==true or self.mouse==nil and (self.kind=='Button' or self.kind=='CheckButton' or self.kind=='Slider') end
 function methods:IsMovable() return self.movable or false end

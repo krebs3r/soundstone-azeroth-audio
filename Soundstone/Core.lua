@@ -107,10 +107,11 @@ events:SetScript('OnEvent',function(_,event,arg)
             local name=tostring(arg or ''):lower()
             if name=='' or name:find('sound',1,true) then A.UI:RefreshAudio() end
             if name=='' or name=='sound_outputdriverindex' then A.UI:RefreshDevices() end
-            if name=='uiscale' or name=='useuiscale' then A.UI:ApplyLayout() end
+            if name=='uiscale' or name=='useuiscale' then A.UI:QueueLayout() end
         elseif event=='SOUND_DEVICE_UPDATE' then A.UI:RefreshDevices()
-        elseif event=='PLAYER_ENTERING_WORLD' or event=='VARIABLES_LOADED' or event=='LOADING_SCREEN_DISABLED'
-            or event=='DISPLAY_SIZE_CHANGED' or event=='UI_SCALE_CHANGED' then
+        elseif event=='DISPLAY_SIZE_CHANGED' or event=='UI_SCALE_CHANGED' then
+            A.UI:PositionMinimap(); A.UI:QueueLayout()
+        elseif event=='PLAYER_ENTERING_WORLD' or event=='VARIABLES_LOADED' or event=='LOADING_SCREEN_DISABLED' then
             -- Loading can finish after PLAYER_ENTERING_WORLD; re-apply the saved position then.
             A.UI:ApplyLayout(); A.UI:PositionMinimap(); A.UI:Refresh()
         end

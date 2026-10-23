@@ -14,6 +14,18 @@ local function move(x,y)
     local scale=A.UI.root.scale or 1
     A.UI.root:ClearAllPoints();A.UI.root:SetPoint('TOPLEFT',UIParent,'CENTER',x/scale,y/scale)
 end
+-- One client frame: only visible frames run OnUpdate.
+local function frame() if A.UI.watch:IsVisible() then A.UI.watch:Fire('OnUpdate',1/60) end end
+-- In the client UIParent fills the screen, so its scale sets its size in UI units, without
+-- OnSizeChanged here. The client applies the uiScale CVar itself; addons call SetScale.
+local function screen(scale,width,height) UIParent.width,UIParent.height=width/scale,height/scale end
+local function engineScale(scale,width,height) screen(scale,width,height);UIParent.scale=scale end
+local function addonScale(scale,width,height) screen(scale,width,height);UIParent:SetScale(scale) end
+local function counted(root)
+    local calls={n=0}
+    root.SetPoint=function(self,...) calls.n=calls.n+1;return Mock.methods.SetPoint(self,...) end
+    return calls
+end
 local cvars={};for k,v in pairs(Mock.cvars) do cvars[k]=v end
 local saved={position=A.db.position,locked=A.db.locked,avoidOverlap=A.db.avoidOverlap,uiScale=A.db.uiScale,viewMode=A.db.viewMode}
 A:SetVisible(true);A.UI:CloseMenus();A:SetView('compact');A:SetScale(1);A.db.locked=false;A.db.avoidOverlap=false
@@ -85,9 +97,9 @@ end)
 test('resizing UIParent without a scale event re-clamps from the saved position',function()
     A:SetView('compact');A.db.position={x=-900,y=-480};A.UI:ApplyLayout()
     local x,y=topLeft();near(x,-900,1);near(y,-480,1)
-    UIParent:SetSize(1366,768)
+    UIParent:SetSize(1366,768);frame()
     x,y=topLeft();near(x,-683,1);near(y,-384+36,1)
-    UIParent:SetSize(1920,1080)
+    UIParent:SetSize(1920,1080);frame()
     x,y=topLeft();near(x,-900,1);near(y,-480,1);eq(A.db.position.x,-900);eq(A.db.position.y,-480)
 end)
 
@@ -211,6 +223,105 @@ test('hiding the whole interface keeps the shown and saved positions together',f
         x,y=topLeft();near(x,200,1);near(y,100,1)
     end
     A.Placement.Collect=old;A.db.avoidOverlap=false
+end)
+
+-- Reported for 0.3.6 with PixelPerfectUIScale at 1440p: displaced after every login, back on
+-- the next click. After login it calls UIParent:SetScale(768/1440); its retries first write the
+-- uiScale CVar, and the client fires CVAR_UPDATE and UI_SCALE_CHANGED inside it at 0.64.
+test('a pixel-perfect UIParent scale keeps the saved position',function()
+    Mock.physicalWidth,Mock.physicalHeight=2560,1440
+    local sw,sh,perfect=2560*768/1440,768,768/1440
+    addonScale(perfect,sw,sh);frame();A:SetView('compact');A:SetScale(.87)
+    local corner={x=1280-276*.87,y=720};A.db.position=corner;A.UI:ApplyLayout()
+    -- The anchor from the report: the corner clamped against UIParent at 0.64.
+    engineScale(.64,sw,sh);A.UI:ApplyLayout()
+    near(A.UI.root.points[1][4],950.19159,.001);near(A.UI.root.points[1][5],689.65515,.001)
+    addonScale(perfect,sw,sh);frame()
+    local x,y=topLeft();near(x,corner.x,1);near(y,corner.y,1);eq(A.UI.watch:GetScript('OnUpdate'),nil)
+    for _=1,8 do
+        engineScale(.64,sw,sh)
+        A.events:Fire('OnEvent','CVAR_UPDATE','uiScale',tostring(perfect));A.events:Fire('OnEvent','UI_SCALE_CHANGED')
+        addonScale(perfect,sw,sh)
+        x,y=topLeft();near(x,corner.x,1);near(y,corner.y,1)
+        frame();x,y=topLeft();near(x,corner.x,1);near(y,corner.y,1)
+    end
+    eq(A.db.position,corner)
+    -- Options and the channel toggles no longer move the bar.
+    for _,click in ipairs({function() A.UI.barSettings:Fire('OnClick') end,function() A.UI:CloseMenus() end,
+        function() A.UI.barControls.music:Fire('OnClick','LeftButton') end,function() A.UI.barControls.music:Fire('OnClick','LeftButton') end}) do
+        click();x,y=topLeft();near(x,corner.x,1);near(y,corner.y,1)
+    end
+    -- A right-click expands in place; only the wider panel keeps to the screen edge.
+    A.UI.barControls.sfx:Fire('OnClick','RightButton');x,y=topLeft();near(x,1280-300*.87,1);near(y,corner.y,1)
+    A:SetView('compact');x,y=topLeft();near(x,corner.x,1);near(y,corner.y,1)
+    UIParent.scale=nil;UIParent:SetSize(1920,1080);Mock.physicalWidth,Mock.physicalHeight=1920,1080;A:SetScale(1);frame()
+end)
+
+test('UIParent:SetScale and resizes lay out once on the next frame; idle frames do nothing',function()
+    A:SetView('compact');A.db.position={x=-900,y=-480};A.UI:ApplyLayout()
+    local calls=counted(A.UI.root)
+    eq(A.UI.watch:GetScript('OnUpdate'),nil);frame();eq(calls.n,0)
+    addonScale(1.25,1920,1080);eq(calls.n,0)
+    frame();eq(calls.n,1);local x,y=topLeft();near(x,-768,1);near(y,-432+36,1)
+    eq(A.UI.watch:GetScript('OnUpdate'),nil);frame();eq(calls.n,1)
+    addonScale(1,1920,1080);frame();eq(calls.n,2)
+    UIParent:SetSize(1366,768);eq(calls.n,2);frame();eq(calls.n,3)
+    x,y=topLeft();near(x,-683,1);near(y,-384+36,1)
+    UIParent:SetSize(1920,1080);frame();eq(calls.n,4);frame();eq(calls.n,4)
+    A.UI.root.SetPoint=nil;UIParent.scale=nil
+    x,y=topLeft();near(x,-900,1);near(y,-480,1);eq(A.db.position.x,-900);eq(A.db.position.y,-480)
+end)
+
+test('scale events lay out on the next frame, and hiding drops a queued layout',function()
+    A:SetView('compact');A.db.position={x=-900,y=-480};A.UI:ApplyLayout()
+    for _,event in ipairs({{'UI_SCALE_CHANGED'},{'DISPLAY_SIZE_CHANGED'},{'CVAR_UPDATE','uiScale','0.8'},{'CVAR_UPDATE','useUiScale','1'}}) do
+        engineScale(1.25,1920,1080);A.events:Fire('OnEvent',unpack(event))
+        local x,y=topLeft();near(x,-900,1);near(y,-480,1)
+        frame();x,y=topLeft();near(x,-768,1);near(y,-432+36,1);eq(A.UI.watch:GetScript('OnUpdate'),nil)
+        engineScale(1,1920,1080);A.UI:ApplyLayout()
+    end
+    UIParent:SetSize(1366,768);assert(A.UI.watch:GetScript('OnUpdate'))
+    UIParent.shown=false;A.UI.root:Fire('OnHide');eq(A.UI.watch:GetScript('OnUpdate'),nil)
+    UIParent.shown=true;A.UI.root:Fire('OnShow');local x,y=topLeft();near(x,-683,1);near(y,-384+36,1)
+    UIParent.scale=nil;UIParent:SetSize(1920,1080);frame();eq(A.UI.watch:GetScript('OnUpdate'),nil)
+    x,y=topLeft();near(x,-900,1);near(y,-480,1)
+end)
+
+test('a drop being checked survives a passing UIParent size',function()
+    local old=A.Placement.Collect
+    A.Placement.Collect=function(_,checkpoint) for i=1,1000 do checkpoint() end;return {} end
+    A.db.avoidOverlap=true;A:SetView('compact');A.db.position={x=-50,y=-60};A.UI:ApplyLayout()
+    Mock.leftMouseDown=true;A.UI.grip:Fire('OnDragStart');move(100,200);Mock.leftMouseDown=false;A.UI.grip:Fire('OnDragStop')
+    local job=A.UI.placementJob;assert(job)
+    engineScale(1.2,1920,1080)
+    A.events:Fire('OnEvent','CVAR_UPDATE','uiScale','0.5');A.events:Fire('OnEvent','UI_SCALE_CHANGED')
+    A.events:Fire('OnEvent','DISPLAY_SIZE_CHANGED')
+    addonScale(1,1920,1080);frame()
+    eq(A.UI.placementJob,job);Mock.finishPlacement()
+    near(A.db.position.x,100);near(A.db.position.y,200)
+    local x,y=topLeft();near(x,100,1);near(y,200,1)
+    -- A lasting change still cancels the unchecked drop, as a resize did before.
+    Mock.leftMouseDown=true;A.UI.grip:Fire('OnDragStart');move(300,250);Mock.leftMouseDown=false;A.UI.grip:Fire('OnDragStop')
+    assert(A.UI.placementJob);UIParent:SetSize(1366,768);frame()
+    eq(A.UI.placementJob,nil);near(A.db.position.x,100);near(A.db.position.y,200)
+    UIParent.scale=nil;UIParent:SetSize(1920,1080);frame()
+    A.Placement.Collect=old;A.db.avoidOverlap=false
+end)
+
+test('a rescale during a drag waits for the drop, and a hidden bar catches up when shown',function()
+    A:SetView('compact');A.db.position={x=0,y=0};A.UI:ApplyLayout()
+    Mock.leftMouseDown=true;A.UI.grip:Fire('OnDragStart');move(600,350)
+    local shown=A.UI.root.points[1]
+    UIParent:SetSize(1366,768);A.events:Fire('OnEvent','UI_SCALE_CHANGED');frame();frame()
+    eq(A.UI.dragging,true);eq(#A.UI.root.points,1);eq(A.UI.root.points[1],shown)
+    Mock.leftMouseDown=false;A.UI.grip:Fire('OnDragStop')
+    -- Saved where it was dropped; shown clamped into the smaller UIParent.
+    near(A.db.position.x,600);near(A.db.position.y,350)
+    local x,y=topLeft();near(x,683-276,1);near(y,350,1)
+    UIParent.shown=false;A.UI.root:Fire('OnHide');eq(A.UI.watch:IsVisible(),false)
+    UIParent:SetSize(1920,1080);eq(A.UI.watch:GetScript('OnUpdate'),nil)
+    UIParent.shown=true;A.UI.root:Fire('OnShow')
+    x,y=topLeft();near(x,600,1);near(y,350,1)
 end)
 
 for k in pairs(Mock.cvars) do Mock.cvars[k]=nil end

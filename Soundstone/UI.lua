@@ -465,6 +465,13 @@ function UI:ApplyLayout()
     self.grip:AlignDots();self.panelGrip:AlignDots()
     self:PositionMenus()
 end
+-- Scale events fire inside a uiScale CVar write, and pixel-perfect addons call UIParent:SetScale
+-- right after it. Clamping then would keep the bar inside the passing UIParent size, so lay out
+-- once on the next frame. A hidden root lays out when shown again.
+function UI:QueueLayout()
+    if not self.root:IsVisible() then return end
+    self.watch:SetScript('OnUpdate',function(watch) watch:SetScript('OnUpdate',nil);UI:ApplyLayout() end)
+end
 function UI:PositionMinimap()
     if not self.minimap then return end
     local angle=math.rad(A.db.minimapAngle);local x,y=math.cos(angle),math.sin(angle)
@@ -552,6 +559,8 @@ end
 function UI:Create()
     self.theme=C.RetailStyle() and 'Retail' or 'Classic'
     self.root=CreateFrame('Frame','SoundstoneRoot',UIParent);self.root:SetFrameStrata('MEDIUM');self.root:SetMovable(true);self.root:SetClampedToScreen(true)
+    -- Runs queued layouts; the root's own OnUpdate belongs to dragging and placement checks.
+    self.watch=CreateFrame('Frame',nil,self.root)
     -- Keep the client's layout cache (layout-local.txt) from saving a second position.
     if self.root.SetDontSavePosition then self.root:SetDontSavePosition(true) end
     self:CreateBar();self:CreatePanel();self:CreateMenu();self:CreateMinimap();self:CreateCompartment()
@@ -559,11 +568,13 @@ function UI:Create()
     table.insert(UISpecialFrames,'SoundstoneEscapeHandler')
     self.escape:SetScript('OnHide',function() if not UI.syncEscape then UI:Escape() end end)
     self.root:HookScript('OnHide',function()
-        UI:CancelPlacement();UI:StopDrag();UI:CloseMenus()
+        UI.watch:SetScript('OnUpdate',nil);UI:CancelPlacement();UI:StopDrag();UI:CloseMenus()
     end)
     -- Hiding can revert an unchecked position; show the saved one again (e.g. after Alt+Z).
     self.root:HookScript('OnShow',function() UI:ApplyLayout() end)
-    -- Addons may rescale UIParent without a scale event; re-clamp to the new size.
-    UIParent:HookScript('OnSizeChanged',function() UI:ApplyLayout() end)
+    -- Addons may resize UIParent or set its scale directly (e.g. below the uiScale CVar's minimum),
+    -- which fires no scale event; re-clamp to the new size.
+    UIParent:HookScript('OnSizeChanged',function() UI:QueueLayout() end)
+    if hooksecurefunc then hooksecurefunc(UIParent,'SetScale',function() UI:QueueLayout() end) end
     self:RefreshDevices();self:Refresh()
 end
