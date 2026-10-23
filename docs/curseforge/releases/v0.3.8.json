@@ -1,0 +1,53 @@
+{
+  "tag": "v0.3.8",
+  "commit": "9de12ff8c08bbc0702de7164f479c05dfcba6423",
+  "sha256": "2e381eaaeab0b10a5a4b38dd861773a36c28ab1c93300a5f4ec9326f45ef35c6",
+  "changelog": "v0.3.8.md",
+  "confirmed_clients": [
+    {
+      "client": "retail",
+      "game_version": "12.1.5",
+      "build": "12.1.5.70529",
+      "status": "passed",
+      "tested_by": "krebs3r",
+      "tested_at": "2026-10-23",
+      "evidence": "acceptance/v0.3.8-retail.md"
+    },
+    {
+      "client": "forever",
+      "game_version": "1.60.1",
+      "build": "1.60.1.70450",
+      "status": "passed",
+      "tested_by": "krebs3r",
+      "tested_at": "2026-10-23",
+      "evidence": "acceptance/v0.3.8-forever.md"
+    },
+    {
+      "client": "mists",
+      "game_version": "5.5.4",
+      "build": "5.5.4.70531",
+      "status": "passed",
+      "tested_by": "krebs3r",
+      "tested_at": "2026-10-23",
+      "evidence": "acceptance/v0.3.8-mists.md"
+    },
+    {
+      "client": "anniversary",
+      "game_version": "2.5.6",
+      "build": "2.5.6.70006",
+      "status": "passed",
+      "tested_by": "krebs3r",
+      "tested_at": "2026-10-23",
+      "evidence": "acceptance/v0.3.8-anniversary.md"
+    },
+    {
+      "client": "era",
+      "game_version": "1.15.9",
+      "build": "1.15.9.70003",
+      "status": "passed",
+      "tested_by": "krebs3r",
+      "tested_at": "2026-10-23",
+      "evidence": "acceptance/v0.3.8-era.md"
+    }
+  ]
+}
