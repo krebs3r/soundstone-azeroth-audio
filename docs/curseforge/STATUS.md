@@ -1,4 +1,11 @@
-# Einrichtungsstand am 21.10.2026
+# Einrichtungsstand am 23.10.2026
+
+## Update: 0.3.8 vorbereitet
+
+- [v0.3.8](https://github.com/krebs3r/soundstone-azeroth-audio/releases/tag/v0.3.8) ist als GitHub-Pre-Release gebaut, Commit `9de12ff8c08bbc0702de7164f479c05dfcba6423`, ZIP-SHA256 `2e381eaaeab0b10a5a4b38dd861773a36c28ab1c93300a5f4ec9326f45ef35c6`. Inhalt bytegleich mit dem getesteten Test-Build.
+- 0.3.8 enthält die Positionskorrektur aus [v0.3.7](https://github.com/krebs3r/soundstone-azeroth-audio/releases/tag/v0.3.7). 0.3.7 bleibt auf Wunsch des Nutzers ein Prerelease und wird nicht hochgestuft, weil beim Test mit Pixel-Perfect-Skalierung abgeschnittene Werte („100...“) auffielen.
+- Ingame bestätigt am 23.10.2026: Retail 12.1.5.70529 mit PixelPerfectUIScale bei 0.53. WoW: Forever 1.60.1.70450, MoP 5.5.4.70531, TBC 2.5.6.70006 und Classic 1.15.9.70003 auf Wunsch des Nutzers ohne separaten 0.3.8-Ingame-Test freigegeben. Datensatz: `releases/v0.3.8.json`.
+- Offen: Hochstufen zum regulären Release in GitHub → automatischer Upload mit 12.1.5, 1.60.1, 5.5.4, 2.5.6, 1.15.9.
 
 ## Update: 0.3.6 vorbereitet
 
