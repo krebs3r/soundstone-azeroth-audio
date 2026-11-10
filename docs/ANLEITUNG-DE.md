@@ -8,7 +8,7 @@ Ich habe Soundstone erstellt, weil ich beim WoW-Spielen gelegentlich Netflix, Yo
 
 Entpacke `Soundstone-0.3.2.zip` in den Ordner `Interface\AddOns` der gewünschten WoW-Version. Die Datei muss anschließend unter `Interface\AddOns\Soundstone\Soundstone.toc` liegen.
 
-Wähle im WoW-Installationsordner `_retail_`, `_classic_`, `_anniversary_` oder `_classic_era_`. Bei Installation im laufenden Spiel zuerst `/reload` versuchen. Falls Soundstone danach nicht erscheint, den Client vollständig neu starten und Soundstone in der Addon-Liste aktivieren.
+Wähle im WoW-Installationsordner `_retail_`, `_classic_`, `_anniversary_`, `_classic_era_` oder für WoW: Forever `_forever_`. Bei Installation im laufenden Spiel zuerst `/reload` versuchen. Falls Soundstone danach nicht erscheint, den Client vollständig neu starten und Soundstone in der Addon-Liste aktivieren.
 
 ## Bedienung
 
@@ -70,6 +70,14 @@ Beim Ziehen des Größenreglers ändert sich zunächst nur die Prozentanzeige. E
 
 Stumme beziehungsweise nicht hörbare Kanäle werden in beiden Ansichten ausgegraut und leicht abgedunkelt angezeigt, ohne roten Strich. Beim erneuten Einschalten erscheinen die Icons wieder farbig, sobald der Kanal hörbar ist.
 
+## Aussehen in WoW: Forever
+
+Ab 0.4.0 trägt Soundstone in WoW: Forever dessen eigenes Aussehen statt der Classic-Rahmen. Große Ansicht und Einstellungen öffnen im dicken Bronzerahmen der Forever-Fenster, wie Blizzards eigene Fenster und Taschen-Addons wie Baganator dort: dunkle Titelleiste mit dem Titel im Gold des Clients, rote Kopfknöpfe mit goldenen Symbolen, das rote X des Clients in der Ecke und sein warmgrauer Grund. Die ganze Titelleiste verschiebt das Fenster. Die Kompaktleiste trägt denselben Bronzerahmen ohne Titelleiste, auf demselben warmgrauen Grund; Zahnrad und Ansichtsknopf sind dort rote Knöpfe wie in der Kopfzeile der großen Ansicht. Regler und Reglerknopf stammen aus Forevers Audioeinstellungen, die Rahmen um die Kanal-Icons von seinen Aktionsknöpfen. Das alles ist die Grafik des Clients; Soundstone bringt davon nichts mit. Fehlt ein Teil davon, tritt an seine Stelle ein flacher Ersatz: fast schwarze Fläche mit einer ein Pixel breiten Bronzelinie, flache Felder, kleine Quadrate statt Nieten am Griff.
+
+Das Aussehen richtet sich nach dem Client und lässt sich nicht umstellen: WoW: Forever trägt immer sein eigenes Aussehen, alle anderen Clients das bisherige Soundstone-Aussehen (in Retail mit Retail-Rahmen, sonst mit Classic-Rahmen). Die anderen Clients können Forevers Rahmen nicht zeichnen, weil sie unter denselben Namen andere Grafik mitbringen.
+
+In Retail, Mists of Pandaria Classic, TBC Anniversary und Classic Era bleibt alles wie in 0.3.8. Lautstärkebalken, Prozentwerte, ausgegraute Icons, das gewählte Ausgabegerät und alle Blizzard-Bedienelemente (An/Aus- und Rücksetzknöpfe, Kontrollkästchen, Geräteauswahl, Tooltips) sehen in beiden Aussehen gleich aus. Größen und Positionen sind dieselben; im Forever-Rahmen liegen die Kopfknöpfe in der Titelleiste und die Kanäle etwas enger. Fenster- und Leistenrahmen von 0.4.0 wurden am 9. und 10. November 2026 in WoW: Forever im Spiel gesehen und abgenommen (Client-Skalierung 0.7, Soundstone 100 %); nicht jeder Punkt der In-Game-Checkliste ist geprüft, die anderen Clients sind es noch gar nicht.
+
 ## Erste Prüfung im Spiel
 
 1. Vorhandene Audioeinstellungen notieren. Nach dem Laden müssen die Werte unverändert sein.
@@ -82,15 +90,16 @@ Stumme beziehungsweise nicht hörbare Kanäle werden in beiden Ansichten ausgegr
 8. Ein anderes Ausgabegerät wählen und den Ton prüfen. Danach das ursprüngliche Gerät wieder auswählen; Lautstärken und Stummschaltungen müssen unverändert sein.
 9. Über das Auge Soundstone ausblenden, `/reload` ausführen und mit `/soundstone` zurückholen. Auch bei deaktiviertem Minimap-Button wiederholen; zum Ausblenden der Kompaktleiste `/soundstone hide` verwenden.
 10. Dropdown-Zentrierung, vollständige Buttontexte, 0 % / 100 % und stumme Kanäle prüfen. Bei beiden Auflösungen (1080p/1440p), WoW-Skalierungen (65/85/100 %) und Soundstone-Größen (75/100/150 %) auf Überlappungen und Bildschirmränder achten.
-11. Rechts im großen Fenster stehen Auge, Kompaktansicht und X. Alle drei verwenden denselben roten Rahmen und identische 20 × 20 große Klickflächen. Beim Darüberfahren werden sie wärmer, beim Drücken dunkler. Die Kompaktleiste behält ihren bisherigen 19 × 19 großen Ansichtsbutton. In beiden Ansichten die Tooltips, Buttonzustände und Mausfreigabe außerhalb prüfen.
-12. Pfeilbuttons in beiden Ansichten sowie Augen-Button und ihre Tooltips prüfen. Icons müssen vollständig innerhalb der Classic-Rahmen bleiben. Titel und Fußzeile dürfen keine Bedienelemente überdecken.
+11. Außer in WoW: Forever: Rechts im großen Fenster stehen Auge, Kompaktansicht und X. Alle drei verwenden denselben roten Rahmen und identische 20 × 20 große Klickflächen. Beim Darüberfahren werden sie wärmer, beim Drücken dunkler. Die Kompaktleiste behält ihren bisherigen 19 × 19 großen Ansichtsbutton. In beiden Ansichten die Tooltips, Buttonzustände und Mausfreigabe außerhalb prüfen.
+12. Pfeilbuttons in beiden Ansichten sowie Augen-Button und ihre Tooltips prüfen. Icons müssen vollständig innerhalb der Classic-Rahmen (in Retail der Retail-Rahmen) bleiben; WoW: Forever siehe Schritt 17. Titel und Fußzeile dürfen keine Bedienelemente überdecken.
 13. Dropdown öffnen, erneut anklicken, außerhalb klicken und dreimal Escape drücken. Bei mehr als sechs Geräten scrollen, lange Namen im Tooltip prüfen und das Menü am unteren Bildschirmrand testen. Während der offenen Liste das Ausgabegerät in Blizzards Einstellungen ändern oder ein Gerät trennen; Liste und Auswahl müssen aktuell bleiben.
 14. Musik auf einen positiven Wert stellen, dann auf 0 %. Einschalten muss den positiven Wert zurückholen; mit Gesamt auf 0 % und nach `/reload` wiederholen. Das Verschieben eines ausgeschalteten Reglers allein darf nichts einschalten. Sind alle Einzelschalter aus, muss Gesamt beide Gruppen aktivieren.
 15. In Blizzards Audiomenü unterschiedliche Effekt-, Umgebungs- und Dialogwerte einstellen. Das Hauptfeld zeigt den Effektwert; gemeinsames Stummschalten und Wiedereinschalten erhält positive Einzelwerte. Erst das Bewegen des Soundeffektreglers setzt alle drei gleich. Auch Musik-only auf Umgebungsgeräusche und gesprochene Dialoge prüfen; Voicechat-Einstellungen müssen erhalten bleiben.
 
-Die automatisierten Lua-Tests ersetzen nicht den Test im echten Client. Der genaue Stand steht in [TESTING.md](TESTING.md). WoW: Forever ist noch nicht bestätigt.
+Die automatisierten Lua-Tests ersetzen nicht den Test im echten Client. Der genaue Stand steht in [TESTING.md](TESTING.md). In WoW: Forever wurde zuletzt 0.3.5 in der Beta im Spiel bestätigt; im veröffentlichten Client wurde das Aussehen von 0.4.0 am 9. und 10. November 2026 gesehen und abgenommen, die übrigen Prüfpunkte noch nicht.
 
 16. Einstellungen an allen Bildschirmrändern öffnen: Breite und linke Außenkante müssen zur Kompaktleiste passen. Unten müssen sie nach oben ausweichen. Nach dem Schließen darf die gespeicherte Position nicht verändert sein.
+17. Aussehen prüfen: In WoW: Forever trägt Soundstone den Bronzerahmen, mit roten Kopfknöpfen (32 × 22), dem X in der Ecke (28 × 28) und in der Kompaktleiste roten Knöpfen für Zahnrad und Ansicht (24 × 22). In allen anderen Clients sieht es genau aus wie in 0.3.8. Ein Befehl zum Umstellen des Aussehens existiert nicht.
 
 
 ## Freier Platz, kurze Hilfe und Version
@@ -105,7 +114,7 @@ Die Versionszeile zeigt die installierte Addon-Version. Ab 0.3.2 enthält das Ad
 
 Die Optionen sind 276 × 236 Einheiten groß. Kompaktleiste und Audiofenster bleiben unverändert.
 
-Alle vier aktuellen offiziellen Clientfamilien sind Zielplattformen. Die aktuelle Version ist noch nicht in sämtlichen Clients und Spielmodi im Spiel abgenommen. Siehe `docs/COMPATIBILITY.md`; Forever bleibt unbestätigt.
+Retail, Mists of Pandaria Classic, TBC Anniversary, Classic Era und WoW: Forever sind Zielplattformen. Die aktuelle Version ist noch nicht in sämtlichen Clients und Spielmodi im Spiel abgenommen. Siehe `docs/COMPATIBILITY.md`; in WoW: Forever wurde zuletzt 0.3.5 in der Beta im Spiel bestätigt.
 
 
 ## Release herunterladen

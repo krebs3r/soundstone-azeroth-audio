@@ -148,6 +148,15 @@ class InstallTests(unittest.TestCase):
         self.assertEqual((self.target/'old.lua').read_text(), 'original')
         self.assertEqual((Path(result['backup'])/'old.lua').read_text(), 'original')
 
+    def test_forever_release_folder(self):
+        # The release client lives in _forever_; the beta folder _classic_beta_ is no longer a target.
+        (self.root/'_classic_beta_').mkdir()
+        with self.assertRaises(ValueError):
+            installer.target_for(self.root, 'forever')
+        (self.root/'_forever_').mkdir()
+        self.assertEqual(installer.target_for(self.root, 'forever'),
+                         self.root.absolute()/'_forever_'/'Interface'/'AddOns'/'Soundstone')
+
     def test_unknown_or_missing_client(self):
         with self.assertRaises(ValueError):
             installer.target_for(self.root, 'era')

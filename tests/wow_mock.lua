@@ -19,7 +19,8 @@ function methods:GetWidth() local _,_,w=coordinates(self);return w/self:GetEffec
 function methods:GetHeight() local _,_,_,h=coordinates(self);return h/self:GetEffectiveScale() end
 function methods:SetPoint(...) table.insert(self.points, {...}) end
 function methods:GetPoint(i) return unpack(self.points[i or 1] or {}) end
-function methods:ClearAllPoints() self.points={} end
+-- As in the client, this also clears anchors made with SetAllPoints.
+function methods:ClearAllPoints() self.points={};self.allPoints=nil end
 function methods:SetAllPoints(...) self.allPoints={...} end
 function methods:SetScale(v) self.scale=v end
 function methods:GetParent() return self.parent end
@@ -127,7 +128,7 @@ function methods:GetDontSavePosition() return self.dontSavePosition or false end
 function methods:SetEnabled(v) self.enabled=v end
 function methods:SetChecked(v) self.checked=v end
 function methods:GetChecked() return self.checked end
-function methods:CreateTexture(name,layer) local t=object('Texture',name,self); t.layer=layer; return t end
+function methods:CreateTexture(name,layer,_,sublevel) local t=object('Texture',name,self); t.layer=layer; t.sublevel=sublevel; return t end
 function methods:CreateFontString(name,layer,font) local t=object('FontString',name,self); t.layer=layer; t.font=font; return t end
 function methods:SetText(text) self.textValue=tostring(text);if self.Text then self.Text:SetText(text) end end
 function methods:GetFontString() return self.Text end
@@ -143,7 +144,7 @@ function methods:SetDrawLayer(layer,sublevel) self.layer,self.sublevel=layer,sub
 function methods:SetTextColor(...) self.textColor={...} end
 function methods:SetJustifyH(v) self.justify=v end
 function methods:SetJustifyV(v) self.justifyV=v end
-function methods:SetTexture(v) self.texturePath=v end
+function methods:SetTexture(v) self.texturePath=v;self.atlas=nil end
 function methods:SetTexCoord(...) self.uv={...} end
 function methods:SetVertexColor(...) self.color={...} end
 function methods:SetBlendMode(v) self.blend=v end
@@ -161,8 +162,55 @@ end
 function methods:GetValue() return self.value end
 function methods:SetStatusBarTexture(v) self.statusTexture=v end
 function methods:SetStatusBarColor(...) self.statusColor={...} end
-function methods:SetThumbTexture(v) self.thumb=object('Texture',nil,self); self.thumb:SetTexture(v) end
+-- The client keeps one thumb region per slider and only changes its art.
+function methods:SetThumbTexture(v) self.thumb=self.thumb or object('Texture',nil,self); self.thumb:SetTexture(v) end
+-- As in the client, earlier texture coordinates survive unless resetTexCoords is passed.
+function methods:SetAtlas(name,useSize,filterMode,resetTexCoords)
+    local info=Mock.atlases and Mock.atlases[name]
+    if not info then error('Unknown atlas '..tostring(name)) end
+    self.atlas=name;self.texturePath=nil
+    if resetTexCoords then self.uv=nil end
+    if useSize then self:SetSize(info.width,info.height) end
+end
 function methods:GetThumbTexture() return self.thumb end
+function methods:SetNormalAtlas(v) self.normalAtlas=v end
+function methods:SetPushedAtlas(v) self.pushedAtlas=v end
+function methods:SetHighlightAtlas(v,blend) self.highlightAtlas={v,blend} end
+function methods:SetHorizTile(v) self.horizTile=v end
+function methods:SetVertTile(v) self.vertTile=v end
+-- Blizzard's nine-slice utility, reduced to what Soundstone uses and anchored as NineSlice.lua does:
+-- corners at their offsets with their atlas size, edges between the corners. Atlases come from Mock.atlases.
+NineSliceLayouts={ButtonFrameTemplateNoPortrait={
+    disableSharpening=true,
+    TopLeftCorner={layer='OVERLAY',atlas='UI-Frame-Metal-CornerTopLeft',x=-8,y=16},
+    TopRightCorner={layer='OVERLAY',atlas='UI-Frame-Metal-CornerTopRight',x=2,y=16},
+    BottomLeftCorner={layer='OVERLAY',atlas='UI-Frame-Metal-CornerBottomLeft',x=-8,y=-8},
+    BottomRightCorner={layer='OVERLAY',atlas='UI-Frame-Metal-CornerBottomRight',x=2,y=-8},
+    TopEdge={layer='OVERLAY',atlas='_UI-Frame-Metal-EdgeTop'},BottomEdge={layer='OVERLAY',atlas='_UI-Frame-Metal-EdgeBottom'},
+    LeftEdge={layer='OVERLAY',atlas='!UI-Frame-Metal-EdgeLeft'},RightEdge={layer='OVERLAY',atlas='!UI-Frame-Metal-EdgeRight'},
+}}
+local nineSlice={
+    {'TopLeftCorner','TOPLEFT'},{'TopRightCorner','TOPRIGHT'},{'BottomLeftCorner','BOTTOMLEFT'},{'BottomRightCorner','BOTTOMRIGHT'},
+    {'TopEdge','TOPLEFT','TOPRIGHT','TopLeftCorner','TopRightCorner'},{'BottomEdge','BOTTOMLEFT','BOTTOMRIGHT','BottomLeftCorner','BottomRightCorner'},
+    {'LeftEdge','TOPLEFT','BOTTOMLEFT','TopLeftCorner','BottomLeftCorner'},{'RightEdge','TOPRIGHT','BOTTOMRIGHT','TopRightCorner','BottomRightCorner'},
+}
+NineSliceUtil={
+    GetLayout=function(name) return NineSliceLayouts[name] end,
+    ApplyLayoutByName=function(container,name)
+        local layout=NineSliceLayouts[name]
+        for _,setup in ipairs(nineSlice) do
+            local key,point,relativePoint,first,second=unpack(setup);local piece=layout[key]
+            if piece then
+                local t=container[key] or container:CreateTexture();container[key]=t;t:SetDrawLayer(piece.layer or 'BORDER')
+                t:ClearAllPoints()
+                if first then t:SetPoint(point,container[first],relativePoint,0,0);t:SetPoint(relativePoint,container[second],point,0,0)
+                else t:SetPoint(point,container,point,piece.x,piece.y) end
+                t:SetAtlas(piece.atlas,true)
+            end
+        end
+        Mock.nineSlices=(Mock.nineSlices or 0)+1
+    end,
+}
 
 function CreateFrame(kind,name,parent,template)
     local o=object(kind,name,parent);o.template=template
@@ -204,6 +252,8 @@ function Mock.clickDropdown(d)
     if d.native then d.field:Fire('OnMouseDown','LeftButton') else d.clickTarget:Fire('OnClick','LeftButton') end
 end
 function GetPhysicalScreenSize() return Mock.physicalWidth or 1920,Mock.physicalHeight or 1080 end
+-- Only the factor: without GetNearestPixelSize, C.Pixel keeps its own rounding as in the 0.3.8 baseline.
+PixelUtil={GetPixelToUIUnitFactor=function() local _,h=GetPhysicalScreenSize();return 768/h end}
 DEFAULT_CHAT_FRAME={AddMessage=function(_,v) table.insert(Mock.messages,v) end}
 Mock.tooltip={}
 GameTooltip={SetOwner=function(_,owner) Mock.tooltip.owner=owner end,
@@ -235,4 +285,18 @@ GetCVar=Mock.read
 SetCVar=Mock.write
 Mock.compartment={}
 AddonCompartmentFrame={RegisterAddon=function(_,info) table.insert(Mock.compartment,info) end}
+C_Texture={GetAtlasInfo=function(name) return Mock.atlases and Mock.atlases[name] end}
+-- The atlases Forever's look draws with. Sizes are stand-ins; the real ones are not in the UI source.
+Mock.foreverAtlases={
+    ['UI-Frame-Metal-CornerTopLeft']={width=75,height=74},['UI-Frame-Metal-CornerTopRight']={width=75,height=74},
+    ['UI-Frame-Metal-CornerBottomLeft']={width=75,height=80},['UI-Frame-Metal-CornerBottomRight']={width=75,height=80},
+    ['_UI-Frame-Metal-EdgeTop']={width=32,height=74,tilesHorizontally=true},['_UI-Frame-Metal-EdgeBottom']={width=32,height=20,tilesHorizontally=true},
+    ['!UI-Frame-Metal-EdgeLeft']={width=16,height=32,tilesVertically=true},['!UI-Frame-Metal-EdgeRight']={width=16,height=32,tilesVertically=true},
+    ['_UI-Frame-TopTileStreaks']={width=256,height=43,tilesHorizontally=true},
+    ['RedButton-Exit']={width=28,height=28},['RedButton-exit-pressed']={width=28,height=28},['RedButton-Highlight']={width=28,height=28},
+    ['Minimal_SliderBar_Left']={width=11,height=11},['_Minimal_SliderBar_Middle']={width=8,height=11,tilesHorizontally=true},
+    ['Minimal_SliderBar_Right']={width=11,height=11},['Minimal_SliderBar_Button']={width=20,height=20},
+    ['UI-HUD-ActionBar-IconFrame']={width=46,height=45},['UI-HUD-ActionBar-IconFrame-Down']={width=46,height=45},
+    ['UI-HUD-ActionBar-IconFrame-Mouseover']={width=46,height=45},
+}
 function GetBuildInfo() return '12.1.5','70448','Oct 16 2026',Mock.interface or 120105 end

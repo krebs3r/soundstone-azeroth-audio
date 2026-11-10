@@ -2,7 +2,36 @@
 
 User-facing changes are grouped by version. Unreleased entries describe local work and do not imply a GitHub release or verified support for every WoW client.
 
-## 0.3.8 — unreleased
+## 0.4.0 — 2026-11-10
+
+WoW: Forever gets a look of its own. Its window frames on the mixer, the options and the compact bar were seen and accepted in game on Forever's release client on 9 and 10 November 2026, at client scale 0.7 and Soundstone size 100%; not every point of the in-game checklist was checked. The drag fix and every other client have not been seen in game yet; they are covered by simulated scenarios only.
+
+### Added
+
+- On WoW: Forever, Soundstone wears Forever's own design language instead of the Classic artwork:
+  - The mixer and the options open in Forever's thick bronze window frame, as Blizzard's own windows and bag addons such as Baganator do there: a dark title strip with the window title in the client's gold, red header buttons with gold symbols, the client's red close button in the corner and its warm gray ground.
+  - The compact bar wears the same bronze frame without the title strip, on the same warm gray ground, with the gear and the Expand button as the same red buttons as the mixer's header.
+  - The sliders use the track and thumb of Forever's audio settings, and the mixer's channel icons the frame of its action buttons.
+  - All of this is the client's own art; Soundstone ships none of it.
+- Where a piece of that art is missing, a flat stand-in takes its place: a near-black plate with a one-pixel bronze line, flat wells, small square grip dots. Its lines stay exactly one physical pixel wide at every interface scale and Soundstone size.
+- The look follows the client and has no setting: WoW: Forever always wears its own look, every other client the familiar artwork (Retail art on Retail, Classic art elsewhere). The other clients cannot draw Forever's frames, because they ship different art under the same names.
+
+### Changed
+
+- Retail, Mists Classic, TBC Anniversary and Classic Era look exactly as in 0.3.8: same artwork, colors and layout. The Forever look is not even built there.
+- In every look, the information keeps its colors: the volume fill, the values, muted icons and the selected device. Blizzard's own controls (on/off and reset buttons, checkboxes, the device dropdown, tooltips, the minimap button and the Addons menu entry) are unchanged, as are the channel icons, window sizes and positions.
+- Inside Forever's window frame, the header moves into the title strip and the whole strip moves the window, as on Blizzard's windows; the grip dots stay on the compact bar. The mixer's rows sit 37 instead of 42 units apart and the options a few units closer together, so everything clears the frame's bottom band. On the compact bar the channels take 64 instead of 68 units, so they fit inside the band next to the two red buttons, and every piece sits on the middle of the band's opening.
+- WoW: Forever's release client is also recognized by its project ID (`WOW_PROJECT_CAMELOT`), not only by its interface number.
+
+### Fixed
+
+- Dragged across an action bar, the bar or window slipped partly behind the action buttons: its plate stayed below them while its icons and values stayed on top. A grabbed Soundstone now comes to the front, on every client and in both looks, as Blizzard's own movable windows do.
+
+### Tools
+
+- `tools/install-local.py --client forever` now installs into `_forever_`, the folder of the WoW: Forever release client, instead of the beta folder `_classic_beta_`.
+
+## 0.3.8 — 2026-10-23
 
 Includes 0.3.7; 0.3.7 was built as a GitHub prerelease but not released on its own.
 

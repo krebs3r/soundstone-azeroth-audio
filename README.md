@@ -12,7 +12,7 @@ Control your World of Warcraft audio in one compact window. Soundstone keeps mas
 
 I sometimes watch Netflix, YouTube or another streaming service on my second monitor while playing WoW. I wanted to quickly mute or adjust game sound and music without opening the full audio settings every time, so I built Soundstone to keep those controls within reach.
 
-Soundstone shares its visual style with [Hourstone – Azeroth Hours](https://github.com/krebs3r/hourstone-azeroth-hours), with frames for Retail and Classic.
+Soundstone shares its visual style with [Hourstone – Azeroth Hours](https://github.com/krebs3r/hourstone-azeroth-hours), with frames for Retail and Classic. From 0.4.0, Soundstone wears WoW: Forever's own window frame on Forever.
 
 ## Features
 
@@ -22,6 +22,7 @@ Soundstone shares its visual style with [Hourstone – Azeroth Hours](https://gi
 - Audio output selection when supported by your WoW client.
 - A movable, resizable window with saved position, position locking and optional overlap avoidance.
 - An entry in the Retail Addons menu below the clock, an optional minimap button and keyboard shortcuts.
+- From 0.4.0, WoW: Forever's own look on Forever: the mixer, the options and the compact bar in Forever's bronze window frame, with the client's own buttons, slider and close button. Every other client keeps the familiar artwork; the look follows the client and has no setting.
 - German interface on German clients, English on all others.
 
 ## Interface previews
@@ -50,7 +51,7 @@ These versions are released for each client:
 | Mists of Pandaria Classic (5.5.4) | [0.3.8](https://github.com/krebs3r/soundstone-azeroth-audio/releases/download/v0.3.8/Soundstone-0.3.8.zip) |
 | Burning Crusade Classic Anniversary (2.5.6) | [0.3.8](https://github.com/krebs3r/soundstone-azeroth-audio/releases/download/v0.3.8/Soundstone-0.3.8.zip) |
 | Classic (1.15.9) | [0.3.8](https://github.com/krebs3r/soundstone-azeroth-audio/releases/download/v0.3.8/Soundstone-0.3.8.zip) |
-| WoW: Forever beta (1.60.1) | [0.3.8](https://github.com/krebs3r/soundstone-azeroth-audio/releases/download/v0.3.8/Soundstone-0.3.8.zip) |
+| WoW: Forever (1.60.1) | [0.3.8](https://github.com/krebs3r/soundstone-azeroth-audio/releases/download/v0.3.8/Soundstone-0.3.8.zip) |
 
 Classic Era, Hardcore and Season of Discovery share the Classic client. The Classic test confirms client compatibility; individual game modes have not been tested separately. Choose a download marked for your client on CurseForge.
 
