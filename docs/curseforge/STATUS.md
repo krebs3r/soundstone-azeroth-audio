@@ -1,4 +1,11 @@
-# Einrichtungsstand am 23.10.2026
+# Einrichtungsstand am 10.11.2026
+
+## Update: 0.4.0 vorbereitet
+
+- [v0.4.0](https://github.com/krebs3r/soundstone-azeroth-audio/releases/tag/v0.4.0) ist als GitHub-Pre-Release gebaut, Commit `d811ad2b01cbfd50c2728f91a2fa40094db3a80b`, ZIP-SHA256 `f522ac38816e94bd1428ab8efb2dbf63535482d6e4a4a37aa8dce4d1e4c5163c`. Inhalt bytegleich mit dem lokal gebauten und in allen fünf Clients installierten Paket.
+- Neu ist Forevers eigenes Aussehen. Die Rahmen von großem Fenster und Kompaktleiste hat der Nutzer am 9. und 10.11.2026 im Release-Client von WoW: Forever 1.60.1.70862 im Spiel abgenommen; für die Optionen im Rahmen ist keine Prüfung im Spiel dokumentiert. Alle fünf Clients sind auf Wunsch des Nutzers vom 10.11.2026 freigegeben. Der Release-Stand lief am 10.11.2026 in Retail 12.1.5.70783 und Forever im Spiel, ohne Aufzeichnung, was dabei geprüft wurde; für MoP 5.5.4.70631, TBC 2.5.6.70577 und Classic 1.15.9.70576 ist kein Ingame-Test von 0.4.0 dokumentiert. Die Zieh-Korrektur ist nur simuliert geprüft. Datensatz: `releases/v0.4.0.json`.
+- Forever wird wie bisher als Spielversion 1.60.1 der Familie `forever` hochgeladen; der Release-Client meldet dieselbe Version wie die Beta.
+- Offen: Release-Text aus `docs/RELEASE-NOTES.md` übernehmen, dann zum regulären Release hochstufen → automatischer Upload mit 12.1.5, 1.60.1, 5.5.4, 2.5.6, 1.15.9.
 
 ## Update: 0.3.8 vorbereitet
 
@@ -56,7 +63,7 @@
 - Das ZIP wurde vom CurseForge-CDN zurückgeladen. SHA256 stimmt mit dem getesteten GitHub-Paket überein: `02cfe105da5fc6ea2e59e40fb830195ed05da3e6562a03c3446fdb6d89f48277`.
 - Moderationsstatus im [Autoren-Dashboard](https://authors.curseforge.com/#/projects/1696875/files/8885767): **Under Review**. Das Projekt ist bis zur Genehmigung noch nicht öffentlich sichtbar; nach Genehmigung soll die Datei automatisch veröffentlicht werden.
 
-## Noch offen
+## Noch offen (Stand 0.3.2)
 
 1. Installation von 0.3.2 über die CurseForge-App in allen vier Clientfamilien prüfen. Die öffentliche Dateizuordnung ist bestätigt; die Installation durch die App wurde in diesem Schritt nicht getestet.
 2. Separate Classic-Spielmodi und die vollständige Ingame-Testmatrix bleiben offen; die Nutzerbestätigung belegt die Funktion in den genannten Clients.
