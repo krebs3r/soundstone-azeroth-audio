@@ -96,7 +96,7 @@ In Retail, Mists of Pandaria Classic, TBC Anniversary und Classic Era bleibt all
 14. Musik auf einen positiven Wert stellen, dann auf 0 %. Einschalten muss den positiven Wert zurückholen; mit Gesamt auf 0 % und nach `/reload` wiederholen. Das Verschieben eines ausgeschalteten Reglers allein darf nichts einschalten. Sind alle Einzelschalter aus, muss Gesamt beide Gruppen aktivieren.
 15. In Blizzards Audiomenü unterschiedliche Effekt-, Umgebungs- und Dialogwerte einstellen. Das Hauptfeld zeigt den Effektwert; gemeinsames Stummschalten und Wiedereinschalten erhält positive Einzelwerte. Erst das Bewegen des Soundeffektreglers setzt alle drei gleich. Auch Musik-only auf Umgebungsgeräusche und gesprochene Dialoge prüfen; Voicechat-Einstellungen müssen erhalten bleiben.
 
-Die automatisierten Lua-Tests ersetzen nicht den Test im echten Client. Der genaue Stand steht in [TESTING.md](TESTING.md). In WoW: Forever wurde zuletzt 0.3.5 in der Beta im Spiel bestätigt; im veröffentlichten Client wurde das Aussehen von 0.4.0 am 9. und 10. November 2026 gesehen und abgenommen, die übrigen Prüfpunkte noch nicht.
+Die automatisierten Lua-Tests ersetzen nicht den Test im echten Client. Der genaue Stand steht in [TESTING.md](TESTING.md). In WoW: Forever wurde zuletzt 0.3.5 in der Beta im Spiel bestätigt; im veröffentlichten Client wurden die Rahmen von großem Fenster und Kompaktleiste aus 0.4.0 am 9. und 10. November 2026 gesehen und abgenommen, die übrigen Prüfpunkte noch nicht.
 
 16. Einstellungen an allen Bildschirmrändern öffnen: Breite und linke Außenkante müssen zur Kompaktleiste passen. Unten müssen sie nach oben ausweichen. Nach dem Schließen darf die gespeicherte Position nicht verändert sein.
 17. Aussehen prüfen: In WoW: Forever trägt Soundstone den Bronzerahmen, mit roten Kopfknöpfen (32 × 22), dem X in der Ecke (28 × 28) und in der Kompaktleiste roten Knöpfen für Zahnrad und Ansicht (24 × 22). In allen anderen Clients sieht es genau aus wie in 0.3.8. Ein Befehl zum Umstellen des Aussehens existiert nicht.
@@ -114,9 +114,9 @@ Die Versionszeile zeigt die installierte Addon-Version. Ab 0.3.2 enthält das Ad
 
 Die Optionen sind 276 × 236 Einheiten groß. Kompaktleiste und Audiofenster bleiben unverändert.
 
-Retail, Mists of Pandaria Classic, TBC Anniversary, Classic Era und WoW: Forever sind Zielplattformen. Die aktuelle Version ist noch nicht in sämtlichen Clients und Spielmodi im Spiel abgenommen. Siehe `docs/COMPATIBILITY.md`; in WoW: Forever wurde zuletzt 0.3.5 in der Beta im Spiel bestätigt.
+Retail, Mists of Pandaria Classic, TBC Anniversary, Classic Era und WoW: Forever sind Zielplattformen. Die aktuelle Version ist noch nicht in sämtlichen Clients und Spielmodi im Spiel abgenommen. Siehe `docs/COMPATIBILITY.md`; in WoW: Forever wurde zuletzt 0.3.5 in der Beta im Spiel bestätigt, im veröffentlichten Client die Rahmen von 0.4.0.
 
 
 ## Release herunterladen
 
-Das installierbare Paket heißt **Soundstone-0.3.2.zip** und liegt unter **Assets** auf der [Release-Seite](https://github.com/krebs3r/soundstone-azeroth-audio/releases/tag/v0.3.0). Nicht die automatisch angebotenen „Source code“-Archive verwenden. Beim Entpacken muss genau `Interface/AddOns/Soundstone/Soundstone.toc` entstehen. Die zusätzlichen README-Bilder zeigen die aktuelle Browser-Vorschau mit Originaltexturen, keine Ingame-Aufnahmen.
+Das installierbare Paket heißt **Soundstone-0.4.0.zip** und liegt unter **Assets** auf der [Release-Seite](https://github.com/krebs3r/soundstone-azeroth-audio/releases/tag/v0.4.0). Nicht die automatisch angebotenen „Source code“-Archive verwenden. Beim Entpacken muss genau `Interface/AddOns/Soundstone/Soundstone.toc` entstehen. Die zusätzlichen README-Bilder zeigen die aktuelle Browser-Vorschau mit Originaltexturen, keine Ingame-Aufnahmen.

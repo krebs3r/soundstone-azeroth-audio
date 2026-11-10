@@ -4,7 +4,7 @@ User-facing changes are grouped by version. Unreleased entries describe local wo
 
 ## 0.4.0 — 2026-11-10
 
-WoW: Forever gets a look of its own. Its window frames on the mixer, the options and the compact bar were seen and accepted in game on Forever's release client on 9 and 10 November 2026, at client scale 0.7 and Soundstone size 100%; not every point of the in-game checklist was checked. The drag fix and every other client have not been seen in game yet; they are covered by simulated scenarios only.
+WoW: Forever gets a look of its own. The frames of its mixer and its compact bar were seen and accepted in game on Forever's release client on 9 and 10 November 2026, at client scale 0.7 and Soundstone size 100%; the options window in the same frame and the other points of the in-game checklist have no documented in-game check. The release build ran in game on Retail and WoW: Forever on 10 November 2026, with no record of what was checked; Mists Classic, TBC Anniversary and Classic Era have no documented in-game test of 0.4.0. The drag fix is covered by simulated scenarios only. All five clients were released on the user's approval on 10 November 2026.
 
 ### Added
 
