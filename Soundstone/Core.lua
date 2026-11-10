@@ -83,6 +83,8 @@ function A:Initialize()
     db.viewMode=db.viewMode=='expanded' and 'expanded' or 'compact'
     db.uiScale=Layout.Scale(db.uiScale)
     db.minimapAngle=Layout.Number(db.minimapAngle,225)%360
+    -- The look follows the client; a choice saved by an unreleased 0.4.0 build has no meaning.
+    db.theme=nil
     db.schema=2; db.positions=nil
     self.audio=self.Audio.New(C,function() self.UI:RefreshAudio() end,db.lastVolumes)
     db.lastVolumes=self.audio.history

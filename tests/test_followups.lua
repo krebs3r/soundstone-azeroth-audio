@@ -116,4 +116,21 @@ test('long title fits and options retain layered Escape closing',function()
     Mock.pressEscape();eq(A.UI.menu:IsShown(),false);eq(A.UI.pendingScale,nil);eq(A.db.viewMode,'expanded')
     Mock.pressEscape();eq(A.db.viewMode,'compact')
 end)
+
+-- Seen on Forever: dragged across an action bar, the plate slipped behind its buttons.
+test('grabbing the bar or the window lifts the whole tree above the action buttons',function()
+    local root=A.UI.root
+    -- Every Soundstone frame and its offset to the root, before the first grab.
+    local offsets={}
+    local function collect(frame) offsets[frame]=frame.level-root.level;for _,child in ipairs({frame:GetChildren()}) do collect(child) end end
+    A.db.locked=true;local level=root.level;A.UI.grip:Fire('OnDragStart');eq(root.level,level);A.db.locked=false
+    collect(root);local count=0;for _ in pairs(offsets) do count=count+1 end;assert(count>40,'whole tree collected')
+    for _,handle in ipairs({A.UI.grip,A.UI.panelGrip,A.UI.panelHeader}) do
+        Mock.leftMouseDown=true;handle:Fire('OnDragStart');eq(root.moving,true)
+        -- Above the buttons' text overlay (frame level 500); every frame keeps its place in the tree.
+        eq(root.level,600);for frame,offset in pairs(offsets) do eq(frame.level-root.level,offset) end
+        assert(A.UI.bar.level>500 and A.UI.panel.level>500,'plates above the action buttons')
+        Mock.leftMouseDown=false;handle:Fire('OnDragStop');Mock.finishPlacement()
+    end
+end)
 return count

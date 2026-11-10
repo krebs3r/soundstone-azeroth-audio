@@ -17,18 +17,22 @@ function C.Write(name, value)
     return ok and result ~= false
 end
 
+-- False on WoW: Forever's release client, which reports WOW_PROJECT_CAMELOT; its only use is RetailStyle.
 function C.IsRetail()
     return WOW_PROJECT_MAINLINE ~= nil and WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 end
 
--- WoW: Forever runs the Retail API (project MAINLINE) under interface 16xxx.
+-- WoW: Forever loads the Mainline UI. Its release client reports WOW_PROJECT_CAMELOT (18); the beta
+-- reported MAINLINE. Both report interface 16xxx.
 function C.IsForever()
+    if WOW_PROJECT_CAMELOT ~= nil and WOW_PROJECT_ID == WOW_PROJECT_CAMELOT then return true end
     if type(GetBuildInfo) ~= "function" then return false end
     local ok, _, _, _, interface = pcall(GetBuildInfo)
     return ok and type(interface) == "number" and interface >= 16000 and interface < 17000
 end
 
--- Retail artwork only for modern Retail; Forever keeps the Classic look.
+-- Retail sprites only for modern Retail; Forever's sprite skin is the Classic one (its own look is the
+-- 'forever' theme, Theme.lua).
 function C.RetailStyle()
     return C.IsRetail() and not C.IsForever()
 end

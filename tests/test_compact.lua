@@ -112,7 +112,7 @@ end)
 
 test('metadata version and author surround a real heart texture in the footer',function()
     eq(A.UI.version.textValue,'v0.3.2');eq(A.UI.author.textValue,'by krebs3r')
-    eq(A.UI.version.fontSize,7.5);eq(A.UI.author.fontSize,7.5);eq(A.UI.footer.alpha,.55)
+    eq(A.UI.version.fontSize,7.5);eq(A.UI.author.fontSize,7.5);eq(A.UI.footer.alpha,A.Theme.Color('footerAlpha'))
     assert(A.UI.footerHeart.texturePath:find('Heart.tga',1,true))
     eq(A.UI.footerHeart:GetWidth(),8);eq(A.UI.footerHeart:GetHeight(),8)
     near(A.UI.footerHeart:GetLeft()-A.UI.version:GetLeft()-A.UI.version:GetWidth(),3)
@@ -146,8 +146,10 @@ test('metal buttons have distinct states, release cleanly and preserve the gear'
     end
     for _,b in ipairs({A.UI.barSettings,A.UI.panelSettings}) do
         eq(b.plate,nil)
-        b:Fire('OnLeave');eq(b.image.color[1],.9);eq(b.image.color[2],.8);eq(b.image.color[3],.57)
-        b:Fire('OnMouseDown');eq(b.image.color[1],.6);eq(b.image.color[2],.55);eq(b.image.color[3],.4)
+        -- 0.3.8's tints under the sprite skin, the theme's under Forever's look (test_theme.lua).
+        local rest,down=A.Theme.Color('gear'),A.Theme.Color('gearPressed')
+        b:Fire('OnLeave');for i=1,3 do eq(b.image.color[i],rest[i]) end
+        b:Fire('OnMouseDown');for i=1,3 do eq(b.image.color[i],down[i]) end
         b:Fire('OnMouseUp')
     end
 end)
