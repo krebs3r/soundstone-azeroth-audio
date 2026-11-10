@@ -1,11 +1,13 @@
 # Einrichtungsstand am 10.11.2026
 
-## Update: 0.4.0 vorbereitet
+## Update: 0.4.0 veröffentlicht
 
 - [v0.4.0](https://github.com/krebs3r/soundstone-azeroth-audio/releases/tag/v0.4.0) ist als GitHub-Pre-Release gebaut, Commit `d811ad2b01cbfd50c2728f91a2fa40094db3a80b`, ZIP-SHA256 `f522ac38816e94bd1428ab8efb2dbf63535482d6e4a4a37aa8dce4d1e4c5163c`. Inhalt bytegleich mit dem lokal gebauten und in allen fünf Clients installierten Paket.
 - Neu ist Forevers eigenes Aussehen. Die Rahmen von großem Fenster und Kompaktleiste hat der Nutzer am 9. und 10.11.2026 im Release-Client von WoW: Forever 1.60.1.70862 im Spiel abgenommen; für die Optionen im Rahmen ist keine Prüfung im Spiel dokumentiert. Alle fünf Clients sind auf Wunsch des Nutzers vom 10.11.2026 freigegeben. Der Release-Stand lief am 10.11.2026 in Retail 12.1.5.70783 und Forever im Spiel, ohne Aufzeichnung, was dabei geprüft wurde; für MoP 5.5.4.70631, TBC 2.5.6.70577 und Classic 1.15.9.70576 ist kein Ingame-Test von 0.4.0 dokumentiert. Die Zieh-Korrektur ist nur simuliert geprüft. Datensatz: `releases/v0.4.0.json`.
 - Forever wird wie bisher als Spielversion 1.60.1 der Familie `forever` hochgeladen; der Release-Client meldet dieselbe Version wie die Beta.
-- Offen: Release-Text aus `docs/RELEASE-NOTES.md` übernehmen, dann zum regulären Release hochstufen → automatischer Upload mit 12.1.5, 1.60.1, 5.5.4, 2.5.6, 1.15.9.
+- Vor dem Hochstufen hat ein [Prüflauf mit v0.3.8](https://github.com/krebs3r/soundstone-azeroth-audio/actions/runs/42779425258) (workflow_dispatch, dry_run, kein Upload) bestätigt, dass die CurseForge-API alle fünf Spielversionen weiterhin eindeutig auflöst, auch Forever 1.60.1.
+- Am 10.11.2026 auf Wunsch des Nutzers zum regulären Release (Latest) hochgestuft, per `gh release edit`; unmittelbar davor wurde der Release-Text aus `docs/RELEASE-NOTES.md` übernommen. Der [CurseForge-Workflow](https://github.com/krebs3r/soundstone-azeroth-audio/actions/runs/42779889488) war erfolgreich: Datei **9538398**, Upload 08:06 UTC, Spielversionen-IDs 16984 (12.1.5), 17053 (Forever 1.60.1), 16168 (5.5.4), 16533 (2.5.6), 16630 (1.15.9). Commit und ZIP-SHA256 im Beleg stimmen mit dem Release überein.
+- [Upload-Beleg](https://github.com/krebs3r/soundstone-azeroth-audio/releases/download/v0.4.0/curseforge-upload.json) am GitHub-Release gespeichert. Status laut Workflow `uploaded-awaiting-moderation`; die öffentliche Seite war direkt nach dem Upload nicht abrufbar (HTTP 403). Freigabe im Autoren-Dashboard noch prüfen.
 
 ## Update: 0.3.8 vorbereitet
 
