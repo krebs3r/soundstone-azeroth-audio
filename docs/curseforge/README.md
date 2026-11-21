@@ -16,6 +16,12 @@ Die aktuelle Automation verwendet die Werkzeuge und Abnahmedaten aus `main`, abe
 4. Einen CurseForge-API-Token unter https://www.curseforge.com/account/api-tokens erzeugen. Token direkt unter GitHub → Repository Settings → Secrets and variables → Actions als **Secret `CF_API_TOKEN`** speichern. Keine Tokens in Chat, Dateien, Befehlszeilen oder Git-Commits schreiben. Die numerische Projekt-ID als **Variable `CF_PROJECT_ID`** speichern.
 5. CurseForge Automatic Packaging nicht zusätzlich aktivieren: der GitHub-Workflow ist die einzige Upload-Quelle.
 
+## Projektseite
+
+Name, Summary, Beschreibung, Galerie und Kategorien pflegt der Autor selbst im [Autoren-Dashboard](https://authors.curseforge.com/#/projects/1696875); der Workflow überträgt nur ZIP und Changelog. `description.md` in den Beschreibungseditor kopieren. Ihre Bilder laden von `main`: geänderte Bilder erst nach `main` bringen, dann die Beschreibung speichern. Ändert sich der Name in `project.json`, das Projekt im Dashboard umbenennen; der Slug `soundstone-azeroth-audio` bleibt. Erst als erledigt melden, wenn die öffentliche Seite die Änderung zeigt.
+
+Die Bilder `screenshots/*-0.4.1-*.png` sind echte Spielaufnahmen des Testbuilds 0.4.1 vom 21.11.2026 aus Retail 12.1.5.70961, TBC Anniversary 2.5.6.70577 und WoW: Forever 1.60.1.71037, deutscher Client, Soundstone-Größe 100 %. Sie sind mit 12 Pixel Rand auf das Fenster zugeschnitten und zeigen keine Charakter- oder Gildennamen. Die Pixel sind unverändert übernommen: Retail und TBC Anniversary speicherten JPG in höchster Qualität, Forever PNG, dessen Alphakanal aus dem Bildpuffer weggelassen ist. Die Aufnahmen mit 0.3.0 im Namen sind historisch.
+
 ## Lokale Testinstallation
 
 ```powershell

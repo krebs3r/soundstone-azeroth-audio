@@ -25,21 +25,27 @@ Soundstone shares its visual style with [Hourstone – Azeroth Playtime Tracker]
 - From 0.4.0, WoW: Forever's own look on Forever: the mixer, the options and the compact bar in Forever's bronze window frame, with the client's own buttons, slider and close button. Every other client keeps the familiar artwork; the look follows the client and has no setting.
 - German interface on German clients, English on all others.
 
-## Interface previews
+## Screenshots
 
-Design previews of the 0.3.2 interface, not in-game screenshots; fonts and controls may differ.
+In-game screenshots of Soundstone 0.4.1 on German clients.
 
 ### Retail
 
-<img src="docs/screenshots/soundstone-0.3.2-retail.png" width="600" alt="Soundstone Retail mixer with master volume, sound effects and music controls">
+<img src="docs/curseforge/screenshots/retail-0.4.1-mixer.png" width="445" alt="Soundstone's mixer in Retail with master volume, sound effects and music">
 
-### Classic
+### TBC Anniversary, with the options
 
-<img src="docs/screenshots/soundstone-0.3.2-classic.png" width="600" alt="Soundstone Classic mixer with master volume, sound effects and music controls">
+<img src="docs/curseforge/screenshots/anniversary-0.4.1-options.png" width="445" alt="Soundstone's mixer and options in TBC Anniversary, with the audio output device, size and placement settings">
 
-### Compact bar and settings
+### WoW: Forever
 
-<img src="docs/screenshots/soundstone-0.3.2-compact-classic.png" width="552" alt="Soundstone compact Classic bar and German settings for output device, size and placement">
+<img src="docs/curseforge/screenshots/forever-0.4.1-mixer.png" width="417" alt="Soundstone's mixer in WoW: Forever's bronze window frame">
+
+### Compact bar
+
+<img src="docs/curseforge/screenshots/retail-0.4.1-compact.png" width="410" alt="Soundstone's compact bar in Retail">
+
+<img src="docs/curseforge/screenshots/forever-0.4.1-compact.png" width="385" alt="Soundstone's compact bar in WoW: Forever">
 
 ## Supported clients
 

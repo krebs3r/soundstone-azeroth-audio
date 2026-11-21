@@ -1,6 +1,6 @@
 # README interface previews
 
-The three `soundstone-0.3.2-*.png` images show the current Retail mixer, Classic mixer and compact Classic bar with German options. They use production PNG textures, UV coordinates from `Soundstone/Assets.lua`, dimensions from `Soundstone/Layout.lua` and the version from `Soundstone.toc`.
+The three `soundstone-0.3.2-*.png` images showed the 0.3.2 Retail mixer, Classic mixer and compact Classic bar with German options. Since 0.4.1 the README shows in-game screenshots from `docs/curseforge/screenshots/` instead; these previews and their renderer remain for reference. They use production PNG textures, UV coordinates from `Soundstone/Assets.lua`, dimensions from `Soundstone/Layout.lua` and the version from `Soundstone.toc`.
 
 These are browser-rendered mockups, not in-game screenshots. Georgia and the drawn native controls approximate WoW's fonts, buttons, gear, checkboxes and device menu. No game or system font files are redistributed.
 
