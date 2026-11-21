@@ -1,4 +1,4 @@
-# Soundstone – Azeroth Audio
+# Soundstone – Azeroth Volume Mixer
 
 ## Warum ich Soundstone erstellt habe
 
@@ -108,7 +108,7 @@ In den Optionen ist **„Überlappung beim Ablegen vermeiden“** standardmäßi
 
 Die Kompaktleiste zeigt kurze Klick-/Mausradhilfe. In der großen Ansicht unterscheiden sich die Hinweise für An/Aus-Buttons und Lautstärkeregler. Soundeffekte umfasst weiterhin Effekte, Umgebung und Dialoge.
 
-Der Titel heißt **Soundstone – Azeroth Audio**. Die Schrift passt sich innerhalb des vorhandenen Platzes an; falls ein Client den Namen nicht lesbar unterbringt, zeigt er „Soundstone“ und den vollen Namen im Tooltip.
+Das Addon heißt **Soundstone – Azeroth Volume Mixer**; so steht es in der Addon-Liste, bei den Tastenbelegungen und im Tooltip der Titelleiste. Die Titelleiste des großen Fensters zeigt den kürzeren Titel „Soundstone – Volume Mixer“, weil der volle Name dort in keiner Schriftgröße Platz hat. Die Schrift passt sich innerhalb des vorhandenen Platzes an; reicht er auch für den kurzen Titel nicht, zeigt die Leiste „Soundstone“.
 
 Die Versionszeile zeigt die installierte Addon-Version. Ab 0.3.2 enthält das Addon keine Änderungsübersicht mehr. Versionshinweise stehen auf der GitHub-Release-Seite und auf CurseForge.
 

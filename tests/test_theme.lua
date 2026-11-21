@@ -347,7 +347,7 @@ test('the window frame, track and icon frames come only on Forever and only with
         eq(ui.panelTitle.fontSize<=12,true);assert(ui.panelTitle:GetStringWidth()<=ui.panelHeader:GetWidth()-4)
         -- At the default scale the whole title fits the strip, near the client's window-title size
         -- (the double's font metrics run wide, so it may take half a size less here).
-        eq(ui.panelTitle.textValue,'Soundstone – Azeroth Audio');assert(ui.panelTitle.fontSize>=11)
+        eq(ui.panelTitle.textValue,'Soundstone – Volume Mixer');assert(ui.panelTitle.fontSize>=11)
         anchored(ui.panelTitle,1,{'TOP',ui.panelHeader,'TOP',0,-7})
         -- Rows of 37 below the separator, the footer above the bottom band; the options move with them.
         for i,id in ipairs({'master','sfx','music'}) do near(ui.panel:GetTop()-ui.rows[id]:GetTop(),30+(i-1)*37);eq(ui.rows[id].height,37) end

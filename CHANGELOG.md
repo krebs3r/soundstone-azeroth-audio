@@ -2,6 +2,11 @@
 
 User-facing changes are grouped by version. Unreleased entries describe local work and do not imply a GitHub release or verified support for every WoW client.
 
+## Unreleased
+
+- New name: **Soundstone – Azeroth Volume Mixer**. WoW's addon list, the Key Bindings menu and the tooltip of the mixer's title bar show it. The full name does not fit the title bar at any size, so the bar shows "Soundstone – Volume Mixer", at the size the old title had. The addon folder, your saved settings, `/soundstone` and `/azeraudio` stay as they are.
+- Where even the short title does not fit, for example at very small interface scales, the title bar shows "Soundstone" at its full size again instead of the smallest one.
+
 ## 0.4.0 — 2026-11-10
 
 WoW: Forever gets a look of its own. The frames of its mixer and its compact bar were seen and accepted in game on Forever's release client on 9 and 10 November 2026, at client scale 0.7 and Soundstone size 100%; the options window in the same frame and the other points of the in-game checklist have no documented in-game check. The release build ran in game on Retail and WoW: Forever on 10 November 2026, with no record of what was checked; Mists Classic, TBC Anniversary and Classic Era have no documented in-game test of 0.4.0. The drag fix is covered by simulated scenarios only. All five clients were released on the user's approval on 10 November 2026.

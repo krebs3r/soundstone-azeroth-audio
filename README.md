@@ -1,6 +1,6 @@
 <p align="center"><img src="docs/assets/Logo.png" width="170" alt="Soundstone: blue rune stone with golden sound waves"></p>
 
-# Soundstone – Azeroth Audio
+# Soundstone – Azeroth Volume Mixer
 
 **Your game. Your sound.**
 
@@ -12,7 +12,7 @@ Control your World of Warcraft audio in one compact window. Soundstone keeps mas
 
 I sometimes watch Netflix, YouTube or another streaming service on my second monitor while playing WoW. I wanted to quickly mute or adjust game sound and music without opening the full audio settings every time, so I built Soundstone to keep those controls within reach.
 
-Soundstone shares its visual style with [Hourstone – Azeroth Hours](https://github.com/krebs3r/hourstone-azeroth-hours), with frames for Retail and Classic. From 0.4.0, Soundstone wears WoW: Forever's own window frame on Forever.
+Soundstone shares its visual style with [Hourstone – Azeroth Playtime Tracker](https://github.com/krebs3r/hourstone-azeroth-hours), with frames for Retail and Classic. From 0.4.0, Soundstone wears WoW: Forever's own window frame on Forever.
 
 ## Features
 
@@ -57,7 +57,7 @@ Classic Era, Hardcore and Season of Discovery share the Classic client. Classic 
 
 ## Installation
 
-Install **Soundstone – Azeroth Audio** through the CurseForge app for your WoW client.
+Install **Soundstone – Azeroth Volume Mixer** through the CurseForge app for your WoW client.
 
 For manual installation:
 
@@ -84,7 +84,7 @@ The final path should be `Interface/AddOns/Soundstone/Soundstone.toc`. Repeat fo
 | Crossed-out eye | Hide Soundstone; restore it with `/soundstone show` |
 | Escape | Close the current menu or return to the compact bar |
 
-Use `/soundstone help` for all commands. `/azeraudio` works as an alias. Optional shortcuts are available under **Soundstone – Azeroth Audio** in WoW's Key Bindings menu.
+Use `/soundstone help` for all commands. `/azeraudio` works as an alias. Optional shortcuts are available under **Soundstone - Azeroth Volume Mixer** in WoW's Key Bindings menu. The mixer's title bar shows the shorter "Soundstone – Volume Mixer" and the full name in its tooltip.
 
 ### Audio and layout tips
 

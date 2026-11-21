@@ -110,8 +110,12 @@ test('short contextual tooltips describe compact, buttons and sliders individual
 end)
 
 test('long title fits and options retain layered Escape closing',function()
-    A:SetView('expanded');eq(A.UI.panelTitle.textValue,'Soundstone – Azeroth Audio');assert(A.UI.panelTitle:GetStringWidth()<=152)
+    -- The header shows the name without "Azeroth"; the full name is in its tooltip and the key bindings.
+    A:SetView('expanded');eq(A.UI.panelTitle.textValue,'Soundstone – Volume Mixer');assert(A.UI.panelTitle:GetStringWidth()<=152)
     assert(A.UI.panelTitle.fontSize>=10);near(A.UI.panelHeader:GetLeft()+A.UI.panelHeader:GetWidth()/2,A.UI.panel:GetLeft()+150)
+    A.UI.panelHeader:Fire('OnEnter');eq(Mock.tooltip.text,'Soundstone – Azeroth Volume Mixer');eq(Mock.tooltip.line,A.L.DRAG_HELP)
+    A.UI.panelHeader:Fire('OnLeave')
+    eq(A.L.BIND_HEADER,'Soundstone - Azeroth Volume Mixer');eq(BINDING_HEADER_SOUNDSTONE,A.L.BIND_HEADER)
     A.UI:ToggleMenu();A.UI.scaleSlider:SetValue(130);assert(A.UI.pendingScale)
     Mock.pressEscape();eq(A.UI.menu:IsShown(),false);eq(A.UI.pendingScale,nil);eq(A.db.viewMode,'expanded')
     Mock.pressEscape();eq(A.db.viewMode,'compact')

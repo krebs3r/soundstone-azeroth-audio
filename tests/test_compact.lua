@@ -175,15 +175,18 @@ test('values, names, title and footer shrink to fit when text needs more room',f
     local master=ui.barControls.master.value
     eq(master.textValue,'100 %');eq(master.fontSize,11);fitted()
     -- A smaller effective scale: the bar shrinks "100 %" a little instead of cutting it.
+    eq(ui.panelTitle.textValue,'Soundstone – Volume Mixer')
     Mock.textScale=1.3;ui:ApplyLayout();fitted()
     eq(master.fontSize,10);assert(width(master)<=37);eq(ui.rows.master.value.fontSize,8.5)
+    -- Too wide for the header: the addon's name alone, fitted again from the full size.
+    eq(ui.panelTitle.textValue,'Soundstone');assert(ui.panelTitle.fontSize>=12)
     -- Each value change fits again: a shorter value returns to the full size.
     A:SetVolume('music',5);eq(ui.barControls.music.value.fontSize,11);eq(master.fontSize,10);fitted()
     -- Never below the minimum, and no endless loop.
     Mock.textScale=3;ui:ApplyLayout();fitted();eq(master.fontSize,9);eq(ui.rows.master.value.fontSize,8)
     eq(ui.panelTitle.textValue,'Soundstone')
     Mock.textScale=nil;ui:ApplyLayout();fitted()
-    eq(master.fontSize,11);eq(ui.rows.master.value.fontSize,10);eq(ui.panelTitle.textValue,'Soundstone – Azeroth Audio')
+    eq(master.fontSize,11);eq(ui.rows.master.value.fontSize,10);eq(ui.panelTitle.textValue,'Soundstone – Volume Mixer')
     for _,ch in ipairs(A.Audio.channels) do Mock.cvars[ch.volume],Mock.cvars[ch.enabled]=saved[ch.id][1],saved[ch.id][2] end
     ui:Refresh();A:SetView('compact')
 end)

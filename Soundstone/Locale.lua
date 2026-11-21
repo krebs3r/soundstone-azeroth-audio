@@ -22,7 +22,7 @@ local en = {
     HELP = "/soundstone or /azeraudio: mixer; bar, minimap, lock, reset, help; master/sfx/music [0-100|on|off|toggle]",
     BAD_COMMAND = "Unknown command. Use /soundstone help.",
     WELCOME = "Ready. Use /soundstone to open the mixer.",
-    BIND_HEADER = "Soundstone - Azeroth Audio", BIND_PANEL = "Open audio mixer",
+    BIND_HEADER = "Soundstone - Azeroth Volume Mixer", BIND_PANEL = "Open audio mixer",
     BIND_MASTER = "Toggle all game audio", BIND_SFX = "Toggle sound effects", BIND_MUSIC = "Toggle music",
 }
 
@@ -48,7 +48,7 @@ local de = {
     HELP = "/soundstone oder /azeraudio: Regler; bar, minimap, lock, reset, help; master/sfx/music [0-100|on|off|toggle]",
     BAD_COMMAND = "Unbekannter Befehl. Nutze /soundstone help.",
     WELCOME = "Bereit. Mit /soundstone öffnest du die Regler.",
-    BIND_HEADER = "Soundstone - Azeroth Audio", BIND_PANEL = "Audioregler öffnen",
+    BIND_HEADER = "Soundstone - Azeroth Volume Mixer", BIND_PANEL = "Audioregler öffnen",
     BIND_MASTER = "Gesamten Spielton umschalten", BIND_SFX = "Soundeffekte umschalten", BIND_MUSIC = "Musik umschalten",
 }
 
