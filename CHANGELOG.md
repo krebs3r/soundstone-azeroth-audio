@@ -4,7 +4,7 @@ User-facing changes are grouped by version. Unreleased entries describe local wo
 
 ## 0.4.1 — 2026-11-21
 
-A name that says what Soundstone does. On 21 November 2026 the author ran the test build in Retail, TBC Anniversary and WoW: Forever and took the screenshots now on the CurseForge page: the mixer, the compact bar and the options in each client. Mists Classic and Classic Era have no documented in-game test of 0.4.1.
+A name that says what Soundstone does. On 21 November 2026 the author ran the test build in Retail, TBC Anniversary and WoW: Forever and took the screenshots now on the CurseForge page: the mixer, the compact bar and the options in each client. Mists Classic and Classic Era have no in-game test of 0.4.1; all five clients are released on the user's approval of 21 November 2026.
 
 ### Changed
 

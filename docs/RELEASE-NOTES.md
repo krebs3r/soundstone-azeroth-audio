@@ -12,7 +12,7 @@ The addon folder, your settings, positions and volume levels, `/soundstone` and 
 
 Download **Soundstone-0.4.1.zip** from this release's assets and replace the **Soundstone** folder in your client's **Interface/AddOns** directory (WoW: Forever: **_forever_/Interface/AddOns**). Keep your **WTF** folder to preserve settings.
 
-1709 simulated Lua scenario checks plus installer/release and package checks. On 21 November 2026 the author ran the test build in Retail 12.1.5.70961, TBC Anniversary 2.5.6.70577 and WoW: Forever 1.60.1.71037 and took in-game screenshots of the mixer, the compact bar and the options in each; every mixer shows the new title and version 0.4.1. Mists Classic and Classic Era have no documented in-game test of 0.4.1. Details are in the [validation status](https://github.com/krebs3r/soundstone-azeroth-audio/blob/v0.4.1/docs/TESTING.md).
+1709 simulated Lua scenario checks plus installer/release and package checks. On 21 November 2026 the author ran the test build in Retail 12.1.5.70961, TBC Anniversary 2.5.6.70577 and WoW: Forever 1.60.1.71037 and took in-game screenshots of the mixer, the compact bar and the options in each; every mixer shows the new title and version 0.4.1. Mists Classic and Classic Era have no in-game test of 0.4.1; all five clients are released on the user's approval of 21 November 2026. Details are in the [validation status](https://github.com/krebs3r/soundstone-azeroth-audio/blob/v0.4.1/docs/TESTING.md).
 
 ## Deutsch
 
@@ -22,4 +22,4 @@ Download **Soundstone-0.4.1.zip** from this release's assets and replace the **S
 
 Addon-Ordner, Einstellungen, Positionen und Lautstärken, `/soundstone` und `/azeraudio` bleiben unverändert; es wird nichts migriert. Alles andere ist wie in 0.4.0.
 
-**Installation:** Den enthaltenen Ordner **Soundstone** im jeweiligen **Interface/AddOns**-Verzeichnis ersetzen (WoW: Forever: **_forever_**) und **WTF** behalten. Am 21. November 2026 lief der Testbuild in Retail 12.1.5.70961, TBC Anniversary 2.5.6.70577 und WoW: Forever 1.60.1.71037 im Spiel; aus jedem Client gibt es Aufnahmen von großem Fenster, Kompaktleiste und Optionen. Für MoP Classic und Classic Era ist kein Ingame-Test von 0.4.1 dokumentiert.
+**Installation:** Den enthaltenen Ordner **Soundstone** im jeweiligen **Interface/AddOns**-Verzeichnis ersetzen (WoW: Forever: **_forever_**) und **WTF** behalten. Am 21. November 2026 lief der Testbuild in Retail 12.1.5.70961, TBC Anniversary 2.5.6.70577 und WoW: Forever 1.60.1.71037 im Spiel; aus jedem Client gibt es Aufnahmen von großem Fenster, Kompaktleiste und Optionen. MoP Classic und Classic Era sind ohne Ingame-Test von 0.4.1 freigegeben; alle fünf Clients auf Wunsch des Nutzers vom 21. November 2026.
