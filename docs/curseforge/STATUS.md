@@ -1,4 +1,10 @@
-# Einrichtungsstand am 10.11.2026
+# Einrichtungsstand am 21.11.2026
+
+## Update: 0.4.1 vorbereitet
+
+- [v0.4.1](https://github.com/krebs3r/soundstone-azeroth-audio/releases/tag/v0.4.1) ist als GitHub-Pre-Release gebaut, Commit `e2e273ef03d1cb1bb2cc09f9aeee02b18e8f19c6`, ZIP-SHA256 `eb49fb998777313dcdd317a58a906765fc01b8b998f6efbb6e9a137b0495d46b`. Alle 39 Dateien sind bytegleich mit dem lokal mit Python 3.12 gebauten und in allen fünf Clients installierten Paket; nur Zeitstempel und Dateiattribute im ZIP unterscheiden sich.
+- Neu ist der Name **Soundstone – Azeroth Volume Mixer**, in der Titelleiste kurz „Soundstone – Volume Mixer“, in Retail und Classic mittig zwischen Zahnrad und Kopfknöpfen. Am 21.11.2026 lief der Testbuild im Spiel in Retail 12.1.5.70961, TBC Anniversary 2.5.6.70577 und WoW: Forever 1.60.1.71037, mit Screenshots von großem Fenster, Kompaktleiste und Optionen. MoP 5.5.4.71060 und Classic 1.15.9.70576 sind auf Wunsch des Nutzers vom 21.11.2026 ohne Ingame-Test von 0.4.1 freigegeben. Datensatz: `releases/v0.4.1.json`.
+- Offen: Release-Text aus `docs/RELEASE-NOTES.md` übernehmen, zum regulären Release hochstufen, dann automatischer Upload mit 12.1.5, 1.60.1, 5.5.4, 2.5.6, 1.15.9. Danach Name, Summary, Beschreibung, Galerie und Kategorien im Dashboard ändern (siehe README, Abschnitt Projektseite) und die öffentliche Seite prüfen.
 
 ## Update: 0.4.0 veröffentlicht
 
