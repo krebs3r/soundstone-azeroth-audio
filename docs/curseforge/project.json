@@ -1,6 +1,6 @@
 {
-  "name": "Soundstone – Azeroth Audio",
-  "summary": "Control master volume, sound effects, music and your audio output device from a compact, movable mixer.",
+  "name": "Soundstone – Azeroth Volume Mixer",
+  "summary": "A compact volume bar and mixer: master volume, sound effects and music with sliders, mute and the mouse wheel, plus your audio output device.",
   "game": "World of Warcraft",
   "class": "Addons",
   "category": "Audio & Video",

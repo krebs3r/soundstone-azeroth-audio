@@ -95,7 +95,7 @@ test('direct view buttons replace menu actions without changing audio or positio
     eq(A.db.position,position);eq(#Mock.writes,writes)
 end)
 
-test('header controls have separate hit areas and keep the title centered',function()
+test('header controls have separate hit areas and keep the title centered between them',function()
     local function separated(left,right,gap)
         near(right:GetLeft()-left:GetLeft()-left:GetWidth(),gap)
     end
@@ -103,7 +103,12 @@ test('header controls have separate hit areas and keep the title centered',funct
     separated(A.UI.panelHide,A.UI.panelMode,2);separated(A.UI.panelMode,A.UI.close,2)
     assert(A.UI.panelHeader:GetLeft()>A.UI.panelSettings:GetLeft()+19)
     assert(A.UI.panelHeader:GetLeft()+A.UI.panelHeader:GetWidth()<A.UI.panelHide:GetLeft())
-    local tx=A.UI.panelTitle:GetCenter();local px=A.UI.panel:GetCenter();near(tx,px)
+    -- Centered between the gear and the hide button, as equal gaps on both sides show.
+    local settings,hide=A.UI.panelSettings,A.UI.panelHide
+    local tx=A.UI.panelTitle:GetCenter();near(tx,(settings:GetLeft()+settings:GetWidth()+hide:GetLeft())/2)
+    near(tx-A.UI.panel:GetLeft(),137.5)
+    local half=A.UI.panelTitle:GetStringWidth()/2
+    near(tx-half-(settings:GetLeft()+settings:GetWidth()),hide:GetLeft()-(tx+half))
     eq(A.UI.barMode:GetWidth(),19);eq(A.UI.barMode:GetHeight(),19)
     for _,b in ipairs({A.UI.panelMode,A.UI.panelHide,A.UI.close}) do
         eq(b:GetWidth(),20);eq(b:GetHeight(),20);eq(b:GetScript('OnDragStart'),nil)
@@ -175,15 +180,18 @@ test('values, names, title and footer shrink to fit when text needs more room',f
     local master=ui.barControls.master.value
     eq(master.textValue,'100 %');eq(master.fontSize,11);fitted()
     -- A smaller effective scale: the bar shrinks "100 %" a little instead of cutting it.
+    eq(ui.panelTitle.textValue,'Soundstone – Volume Mixer')
     Mock.textScale=1.3;ui:ApplyLayout();fitted()
     eq(master.fontSize,10);assert(width(master)<=37);eq(ui.rows.master.value.fontSize,8.5)
+    -- Too wide for the header: the addon's name alone, fitted again from the full size.
+    eq(ui.panelTitle.textValue,'Soundstone');assert(ui.panelTitle.fontSize>=12)
     -- Each value change fits again: a shorter value returns to the full size.
     A:SetVolume('music',5);eq(ui.barControls.music.value.fontSize,11);eq(master.fontSize,10);fitted()
     -- Never below the minimum, and no endless loop.
     Mock.textScale=3;ui:ApplyLayout();fitted();eq(master.fontSize,9);eq(ui.rows.master.value.fontSize,8)
     eq(ui.panelTitle.textValue,'Soundstone')
     Mock.textScale=nil;ui:ApplyLayout();fitted()
-    eq(master.fontSize,11);eq(ui.rows.master.value.fontSize,10);eq(ui.panelTitle.textValue,'Soundstone – Azeroth Audio')
+    eq(master.fontSize,11);eq(ui.rows.master.value.fontSize,10);eq(ui.panelTitle.textValue,'Soundstone – Volume Mixer')
     for _,ch in ipairs(A.Audio.channels) do Mock.cvars[ch.volume],Mock.cvars[ch.enabled]=saved[ch.id][1],saved[ch.id][2] end
     ui:Refresh();A:SetView('compact')
 end)

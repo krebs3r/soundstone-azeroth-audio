@@ -1,6 +1,6 @@
 <p align="center"><img src="docs/assets/Logo.png" width="170" alt="Soundstone: blue rune stone with golden sound waves"></p>
 
-# Soundstone – Azeroth Audio
+# Soundstone – Azeroth Volume Mixer
 
 **Your game. Your sound.**
 
@@ -12,7 +12,7 @@ Control your World of Warcraft audio in one compact window. Soundstone keeps mas
 
 I sometimes watch Netflix, YouTube or another streaming service on my second monitor while playing WoW. I wanted to quickly mute or adjust game sound and music without opening the full audio settings every time, so I built Soundstone to keep those controls within reach.
 
-Soundstone shares its visual style with [Hourstone – Azeroth Hours](https://github.com/krebs3r/hourstone-azeroth-hours), with frames for Retail and Classic. From 0.4.0, Soundstone wears WoW: Forever's own window frame on Forever.
+Soundstone shares its visual style with [Hourstone – Azeroth Playtime Tracker](https://github.com/krebs3r/hourstone-azeroth-hours), with frames for Retail and Classic. From 0.4.0, Soundstone wears WoW: Forever's own window frame on Forever.
 
 ## Features
 
@@ -25,21 +25,27 @@ Soundstone shares its visual style with [Hourstone – Azeroth Hours](https://gi
 - From 0.4.0, WoW: Forever's own look on Forever: the mixer, the options and the compact bar in Forever's bronze window frame, with the client's own buttons, slider and close button. Every other client keeps the familiar artwork; the look follows the client and has no setting.
 - German interface on German clients, English on all others.
 
-## Interface previews
+## Screenshots
 
-Design previews of the 0.3.2 interface, not in-game screenshots; fonts and controls may differ.
+In-game screenshots of Soundstone 0.4.1 on German clients.
 
 ### Retail
 
-<img src="docs/screenshots/soundstone-0.3.2-retail.png" width="600" alt="Soundstone Retail mixer with master volume, sound effects and music controls">
+<img src="docs/curseforge/screenshots/retail-0.4.1-mixer.png" width="445" alt="Soundstone's mixer in Retail with master volume, sound effects and music">
 
-### Classic
+### TBC Anniversary, with the options
 
-<img src="docs/screenshots/soundstone-0.3.2-classic.png" width="600" alt="Soundstone Classic mixer with master volume, sound effects and music controls">
+<img src="docs/curseforge/screenshots/anniversary-0.4.1-options.png" width="445" alt="Soundstone's mixer and options in TBC Anniversary, with the audio output device, size and placement settings">
 
-### Compact bar and settings
+### WoW: Forever
 
-<img src="docs/screenshots/soundstone-0.3.2-compact-classic.png" width="552" alt="Soundstone compact Classic bar and German settings for output device, size and placement">
+<img src="docs/curseforge/screenshots/forever-0.4.1-mixer.png" width="417" alt="Soundstone's mixer in WoW: Forever's bronze window frame">
+
+### Compact bar
+
+<img src="docs/curseforge/screenshots/retail-0.4.1-compact.png" width="410" alt="Soundstone's compact bar in Retail">
+
+<img src="docs/curseforge/screenshots/forever-0.4.1-compact.png" width="385" alt="Soundstone's compact bar in WoW: Forever">
 
 ## Supported clients
 
@@ -57,7 +63,7 @@ Classic Era, Hardcore and Season of Discovery share the Classic client. Classic 
 
 ## Installation
 
-Install **Soundstone – Azeroth Audio** through the CurseForge app for your WoW client.
+Install **Soundstone – Azeroth Volume Mixer** through the CurseForge app for your WoW client.
 
 For manual installation:
 
@@ -84,7 +90,7 @@ The final path should be `Interface/AddOns/Soundstone/Soundstone.toc`. Repeat fo
 | Crossed-out eye | Hide Soundstone; restore it with `/soundstone show` |
 | Escape | Close the current menu or return to the compact bar |
 
-Use `/soundstone help` for all commands. `/azeraudio` works as an alias. Optional shortcuts are available under **Soundstone – Azeroth Audio** in WoW's Key Bindings menu.
+Use `/soundstone help` for all commands. `/azeraudio` works as an alias. Optional shortcuts are available under **Soundstone - Azeroth Volume Mixer** in WoW's Key Bindings menu. The mixer's title bar shows the shorter "Soundstone – Volume Mixer" and the full name in its tooltip.
 
 ### Audio and layout tips
 

@@ -2,6 +2,19 @@
 
 User-facing changes are grouped by version. Unreleased entries describe local work and do not imply a GitHub release or verified support for every WoW client.
 
+## 0.4.1 — 2026-11-21
+
+A name that says what Soundstone does. On 21 November 2026 the author ran the test build in Retail, TBC Anniversary and WoW: Forever and took the screenshots now on the CurseForge page: the mixer, the compact bar and the options in each client. Mists Classic and Classic Era have no documented in-game test of 0.4.1.
+
+### Changed
+
+- New name: **Soundstone – Azeroth Volume Mixer**. WoW's addon list, the Key Bindings menu and the tooltip of the mixer's title bar show it. The full name does not fit the title bar at any size, so the bar shows "Soundstone – Volume Mixer", at the size the old title had. The addon folder, your saved settings, `/soundstone` and `/azeraudio` stay as they are.
+- In Retail and the Classic clients, the mixer's title sits centered between the gear and the header buttons. It was centered on the window, which left far more room on its left than on its right, so it looked pushed against the hide button. WoW: Forever's title strip already centered it this way.
+
+### Fixed
+
+- Where even the short title does not fit, for example at very small interface scales, the title bar shows "Soundstone" at its full size again instead of the smallest one.
+
 ## 0.4.0 — 2026-11-10
 
 WoW: Forever gets a look of its own. The frames of its mixer and its compact bar were seen and accepted in game on Forever's release client on 9 and 10 November 2026, at client scale 0.7 and Soundstone size 100%; the options window in the same frame and the other points of the in-game checklist have no documented in-game check. The release build ran in game on Retail and WoW: Forever on 10 November 2026, with no record of what was checked; Mists Classic, TBC Anniversary and Classic Era have no documented in-game test of 0.4.0. The drag fix is covered by simulated scenarios only. All five clients were released on the user's approval on 10 November 2026.

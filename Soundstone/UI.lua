@@ -6,6 +6,10 @@ local WHITE='Interface\\Buttons\\WHITE8X8'
 local MEDIA='Interface\\AddOns\\Soundstone\\Media\\'
 local ids={master='Master',sfx='Sfx',music='Music',logo='Logo'}
 local SIDES={'top','bottom','left','right'}
+-- The full name is wider than the mixer's header at every size from 14 down to 10, in the sprite
+-- header (152) and in Forever's title strip (about 169). The header shows it without "Azeroth"; its
+-- tooltip, the addon list and the key bindings carry the full name.
+local NAME,TITLE='Soundstone – Azeroth Volume Mixer','Soundstone – Volume Mixer'
 
 local function font(parent,text,size,gold)
     local f=parent:CreateFontString(nil,'OVERLAY')
@@ -444,10 +448,12 @@ function UI:CreatePanel()
     local p=CreateFrame('Frame','SoundstonePanel',self.root);self.panel=p
     p:SetSize(Layout.expanded.width,Layout.expanded.height);p:SetPoint('TOPLEFT');skin(p,self.theme..'Panel')
     p:HookScript('OnHide',function() UI:StopDrag() end)
-    local header=CreateFrame('Button',nil,p);self.panelHeader=header;place(header,{156,21},'TOPLEFT',72,-4);movable(header)
-    local title=font(header,'Soundstone – Azeroth Audio',14,true);self.panelTitle=title;place(title,nil,'CENTER')
+    -- The title sits centered between the gear (25 + 19) and the hide button (300 - 5 - 3 * 20 - 2 * 2 = 231),
+    -- not on the window's center, which left 24 units more space on its left than on its right.
+    local header=CreateFrame('Button',nil,p);self.panelHeader=header;place(header,{156,21},'TOPLEFT',(44+231)/2-78,-4);movable(header)
+    local title=font(header,TITLE,14,true);self.panelTitle=title;place(title,nil,'CENTER')
     title:SetWordWrap(false)
-    header:SetScript('OnEnter',function(self) tip(self,'Soundstone – Azeroth Audio',L.DRAG_HELP) end)
+    header:SetScript('OnEnter',function(self) tip(self,NAME,L.DRAG_HELP) end)
     header:SetScript('OnLeave',hideTip)
     self.panelGrip=CreateFrame('Button',nil,p);self.panelGrip:SetSize(16,21);self.panelGrip:SetPoint('TOPLEFT',7,-4)
     self.panelGripDots=dots(self.panelGrip,3.1,5.3);movable(self.panelGrip)
@@ -910,8 +916,9 @@ function UI:FitText()
     local size,width=14,152
     -- The strip's width from the frame's own size: an anchored rect may not be resolved yet.
     if framed then size,width=12,self.panel:GetWidth()+BORDER.right-BORDER.left-132-4 end
-    title:SetText('Soundstone – Azeroth Audio');fit(title,size,10,width)
-    if textWidth(title)>width then title:SetText('Soundstone') end
+    -- If even that does not fit, the addon's name alone, fitted again from the full size.
+    title:SetText(TITLE);fit(title,size,10,width)
+    if textWidth(title)>width then title:SetText('Soundstone');fit(title,size,10,width) end
     for _,ch in ipairs(A.Audio.channels) do
         local row=self.rows[ch.id]
         fit(self.barControls[ch.id].value,11,9,38);fit(row.value,10,8,32);fit(row.name,10,8,69)

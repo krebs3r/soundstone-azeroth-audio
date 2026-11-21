@@ -1,37 +1,66 @@
-# Soundstone – Azeroth Audio
+# Soundstone – Azeroth Volume Mixer
 
-Keep your game audio within reach. Soundstone adds a compact volume bar and an expandable mixer for master volume, sound effects and music.
+**Your game. Your sound.**
 
-## Features
+Soundstone puts WoW's master volume, sound effects and music on a small bar you can place anywhere on your screen. Click an icon to mute it, scroll over it to turn it up or down, and open the mixer for sliders and your audio output device. It wears your client's own look, from Retail's gold to WoW: Forever's bronze frame.
 
-- Adjust volume with sliders or the mouse wheel; click an audio icon to mute or unmute.
-- Switch between a compact bar and an expanded mixer.
-- Select WoW's audio output device when the client supports it.
-- Open it from the Retail Addons menu below the clock; clients without that menu use the minimap button.
-- Move and scale the controls, lock their position, and show or hide the minimap button.
-- Restore the last positive volume when enabling a channel set to zero.
-- English and German interface, with no required companion addons.
+![Soundstone's mixer in Retail](https://raw.githubusercontent.com/krebs3r/soundstone-azeroth-audio/main/docs/curseforge/screenshots/retail-0.4.1-mixer.png) ![Soundstone's mixer in WoW: Forever](https://raw.githubusercontent.com/krebs3r/soundstone-azeroth-audio/main/docs/curseforge/screenshots/forever-0.4.1-mixer.png) ![Soundstone's mixer in TBC Anniversary](https://raw.githubusercontent.com/krebs3r/soundstone-azeroth-audio/main/docs/curseforge/screenshots/anniversary-0.4.1-mixer.png)
 
-The sound-effects group controls effects, ambience and dialogue together. Voice chat remains separate. Soundstone reads your current WoW audio settings and does not apply default volume levels when you log in.
+In-game screenshots from Retail, WoW: Forever and TBC Anniversary, German client.
 
-## Getting started
+## What it does
 
-Install the file for your supported WoW client through CurseForge. For manual installation, extract the downloaded ZIP into that client's `Interface/AddOns` directory. The final path must be `Interface/AddOns/Soundstone/Soundstone.toc`.
+- **Three channels on one bar.** Master volume, sound effects and music, each with its icon and value. Click an icon to mute or unmute it; the volume stays where it was.
+- **Volume on the mouse wheel.** 5 % per step, 1 % with Shift.
+- **The mixer.** Sliders from 0 to 100 % and an On/Off button per channel; Escape takes you back to the bar.
+- **Your audio output device.** Switch between speakers and headset from the gear menu, without opening the sound settings.
+- **Sensible switching.** A channel turned on at 0 % gets its last volume back. With master volume off, turning on music or sound effects plays just that group.
+- **Leaves your settings alone.** Soundstone reads WoW's audio settings and changes nothing when you log in.
+- **One download, five clients.** Retail, Mists of Pandaria Classic, TBC Anniversary, Classic Era and WoW: Forever.
 
-Enter `/soundstone` to open the controls. Use `/soundstone show` to restore a hidden window and `/soundstone help` for commands. The mouse wheel changes volume by 5%; hold Shift for 1% steps. Optional key bindings are available in WoW's Key Bindings menu.
+![Soundstone's mixer and options in TBC Anniversary, with the audio output device](https://raw.githubusercontent.com/krebs3r/soundstone-azeroth-audio/main/docs/curseforge/screenshots/anniversary-0.4.1-options.png)
 
-## Compatibility
+The mixer and its options in TBC Anniversary, in-game.
 
-Use the game versions and client flavors listed on the selected CurseForge file. Additional client families are added after in-game testing. Device selection depends on the audio APIs exposed by your client. We do not claim support for every WoW version or game mode.
+## Options
+
+Click the gear on the bar or in the mixer for the output device, Soundstone's size (75 to 150 %), the minimap button, locked positions and overlap avoidance, which moves a dropped Soundstone to the nearest free spot beside your action bars and frames. Where the client has an Addons menu below the minimap clock, Soundstone opens from there too.
+
+`/soundstone` switches between bar and mixer, `/soundstone music 30` or `/soundstone master off` set a channel, and `/soundstone help` lists the rest. Four optional key bindings wait in WoW's Key Bindings menu.
+
+## Your client's look
+
+Soundstone wears the look of the client it runs in: Retail's gold frame on Retail; iron and stone on Mists Classic, TBC Anniversary and Classic Era. On WoW: Forever it opens in Forever's own bronze window frame, with the client's red buttons, slider and action-button frames. There is nothing to set.
+
+![Soundstone's compact bar in Retail](https://raw.githubusercontent.com/krebs3r/soundstone-azeroth-audio/main/docs/curseforge/screenshots/retail-0.4.1-compact.png)
+
+![Soundstone's compact bar in TBC Anniversary](https://raw.githubusercontent.com/krebs3r/soundstone-azeroth-audio/main/docs/curseforge/screenshots/anniversary-0.4.1-compact.png)
+
+![Soundstone's compact bar in WoW: Forever](https://raw.githubusercontent.com/krebs3r/soundstone-azeroth-audio/main/docs/curseforge/screenshots/forever-0.4.1-compact.png)
+
+The compact bar in Retail, TBC Anniversary and WoW: Forever, in-game.
+
+## Good to know
+
+- **Sound effects** covers effects, ambience and dialogue together. Voice chat, pet sounds and error speech stay as you set them.
+- **Device selection** depends on what your client's audio system offers. Switching restarts WoW's sound once, as the sound settings do.
+- **Hidden it?** `/soundstone show` brings it back.
+- English and German. No other addons needed.
+
+From the same author: [Buttonstone – Azeroth Minimap Buttons](https://www.curseforge.com/wow/addons/buttonstone-azeroth-minimap-buttons), [Hourstone – Azeroth Playtime Tracker](https://www.curseforge.com/wow/addons/hourstone-azeroth-hours) and [Umbra Unit Frames](https://www.curseforge.com/wow/addons/umbra-unit-frames). Source, German guide and issues: [GitHub](https://github.com/krebs3r/soundstone-azeroth-audio). Soundstone's artwork includes AI-generated source art; its provenance is documented in the repository.
+
+---
 
 ## Deutsch
 
-Soundstone bietet eine kompakte Lautstärkeleiste und einen aufklappbaren Mixer für Gesamtlautstärke, Soundeffekte und Musik. Regle die Lautstärke mit Schiebereglern oder dem Mausrad und schalte einzelne Gruppen per Klick stumm. Die Soundeffekt-Gruppe umfasst Effekte, Umgebung und Dialoge; der Sprachchat bleibt separat.
+**Dein Spiel. Dein Sound.**
 
-Installiere die zu deinem WoW-Client passende Datei über CurseForge. Öffne das Addon mit `/soundstone`, blende es mit `/soundstone show` wieder ein und zeige mit `/soundstone help` die Befehle an. Das Mausrad ändert die Lautstärke um 5 %, mit Umschalt um 1 %. In Retail findest du Soundstone im Addons-Menü unter der Uhr. Position, Größe und Minimap-Schaltfläche lassen sich anpassen. Weitere Addons sind nicht erforderlich.
+Soundstone legt Gesamtlautstärke, Soundeffekte und Musik auf eine kleine Leiste, die du frei platzierst. Ein Klick aufs Icon schaltet stumm, das Mausrad regelt lauter und leiser, und der Mixer bringt Schieberegler und dein Ausgabegerät dazu. Dabei trägt Soundstone den Look deines Clients, vom Gold in Retail bis zum Bronzerahmen in WoW: Forever.
 
-## Support and source
+- **Drei Kanäle auf einer Leiste:** Klick aufs Icon schaltet stumm, die Lautstärke bleibt erhalten. Mausrad 5 %, mit Umschalt 1 %.
+- **Mixer** mit Schiebereglern und An/Aus je Kanal; Escape führt zurück zur Leiste.
+- **Ausgabegerät** wechseln, etwa vom Lautsprecher zum Headset, direkt im Zahnrad-Menü.
+- **Lässt deine Einstellungen in Ruhe:** Soundstone liest WoWs Audioeinstellungen und ändert beim Einloggen nichts.
+- **Ein Download, fünf Clients:** Retail, Mists of Pandaria Classic, TBC Anniversary, Classic Era und WoW: Forever.
 
-Please report problems through [GitHub Issues](https://github.com/krebs3r/soundstone-azeroth-audio/issues), including your WoW client/build, Soundstone version, reproduction steps and any Lua error text.
-
-[Source code](https://github.com/krebs3r/soundstone-azeroth-audio) · MIT license. Original project artwork includes AI-generated source art; provenance is documented in the repository. Soundstone is an independent community addon and is not an official Blizzard product.
+Optionen über das Zahnrad: Ausgabegerät, Größe, Minimap-Button, Positionen sperren und Überlappung vermeiden. `/soundstone` wechselt zwischen Leiste und Mixer, `/soundstone help` zeigt alle Befehle.
