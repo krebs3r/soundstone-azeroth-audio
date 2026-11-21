@@ -6,6 +6,7 @@ User-facing changes are grouped by version. Unreleased entries describe local wo
 
 - New name: **Soundstone – Azeroth Volume Mixer**. WoW's addon list, the Key Bindings menu and the tooltip of the mixer's title bar show it. The full name does not fit the title bar at any size, so the bar shows "Soundstone – Volume Mixer", at the size the old title had. The addon folder, your saved settings, `/soundstone` and `/azeraudio` stay as they are.
 - Where even the short title does not fit, for example at very small interface scales, the title bar shows "Soundstone" at its full size again instead of the smallest one.
+- In Retail and the Classic clients, the mixer's title sits centered between the gear and the header buttons. It was centered on the window, which left far more room on its left than on its right, so it looked pushed against the hide button. WoW: Forever's title strip already centered it this way.
 
 ## 0.4.0 — 2026-11-10
 

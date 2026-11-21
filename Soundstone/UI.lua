@@ -448,7 +448,9 @@ function UI:CreatePanel()
     local p=CreateFrame('Frame','SoundstonePanel',self.root);self.panel=p
     p:SetSize(Layout.expanded.width,Layout.expanded.height);p:SetPoint('TOPLEFT');skin(p,self.theme..'Panel')
     p:HookScript('OnHide',function() UI:StopDrag() end)
-    local header=CreateFrame('Button',nil,p);self.panelHeader=header;place(header,{156,21},'TOPLEFT',72,-4);movable(header)
+    -- The title sits centered between the gear (25 + 19) and the hide button (300 - 5 - 3 * 20 - 2 * 2 = 231),
+    -- not on the window's center, which left 24 units more space on its left than on its right.
+    local header=CreateFrame('Button',nil,p);self.panelHeader=header;place(header,{156,21},'TOPLEFT',(44+231)/2-78,-4);movable(header)
     local title=font(header,TITLE,14,true);self.panelTitle=title;place(title,nil,'CENTER')
     title:SetWordWrap(false)
     header:SetScript('OnEnter',function(self) tip(self,NAME,L.DRAG_HELP) end)

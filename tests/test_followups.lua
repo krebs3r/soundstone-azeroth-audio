@@ -112,7 +112,7 @@ end)
 test('long title fits and options retain layered Escape closing',function()
     -- The header shows the name without "Azeroth"; the full name is in its tooltip and the key bindings.
     A:SetView('expanded');eq(A.UI.panelTitle.textValue,'Soundstone – Volume Mixer');assert(A.UI.panelTitle:GetStringWidth()<=152)
-    assert(A.UI.panelTitle.fontSize>=10);near(A.UI.panelHeader:GetLeft()+A.UI.panelHeader:GetWidth()/2,A.UI.panel:GetLeft()+150)
+    assert(A.UI.panelTitle.fontSize>=10);near(A.UI.panelHeader:GetLeft()+A.UI.panelHeader:GetWidth()/2,A.UI.panel:GetLeft()+137.5)
     A.UI.panelHeader:Fire('OnEnter');eq(Mock.tooltip.text,'Soundstone – Azeroth Volume Mixer');eq(Mock.tooltip.line,A.L.DRAG_HELP)
     A.UI.panelHeader:Fire('OnLeave')
     eq(A.L.BIND_HEADER,'Soundstone - Azeroth Volume Mixer');eq(BINDING_HEADER_SOUNDSTONE,A.L.BIND_HEADER)

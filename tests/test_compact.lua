@@ -95,7 +95,7 @@ test('direct view buttons replace menu actions without changing audio or positio
     eq(A.db.position,position);eq(#Mock.writes,writes)
 end)
 
-test('header controls have separate hit areas and keep the title centered',function()
+test('header controls have separate hit areas and keep the title centered between them',function()
     local function separated(left,right,gap)
         near(right:GetLeft()-left:GetLeft()-left:GetWidth(),gap)
     end
@@ -103,7 +103,12 @@ test('header controls have separate hit areas and keep the title centered',funct
     separated(A.UI.panelHide,A.UI.panelMode,2);separated(A.UI.panelMode,A.UI.close,2)
     assert(A.UI.panelHeader:GetLeft()>A.UI.panelSettings:GetLeft()+19)
     assert(A.UI.panelHeader:GetLeft()+A.UI.panelHeader:GetWidth()<A.UI.panelHide:GetLeft())
-    local tx=A.UI.panelTitle:GetCenter();local px=A.UI.panel:GetCenter();near(tx,px)
+    -- Centered between the gear and the hide button, as equal gaps on both sides show.
+    local settings,hide=A.UI.panelSettings,A.UI.panelHide
+    local tx=A.UI.panelTitle:GetCenter();near(tx,(settings:GetLeft()+settings:GetWidth()+hide:GetLeft())/2)
+    near(tx-A.UI.panel:GetLeft(),137.5)
+    local half=A.UI.panelTitle:GetStringWidth()/2
+    near(tx-half-(settings:GetLeft()+settings:GetWidth()),hide:GetLeft()-(tx+half))
     eq(A.UI.barMode:GetWidth(),19);eq(A.UI.barMode:GetHeight(),19)
     for _,b in ipairs({A.UI.panelMode,A.UI.panelHide,A.UI.close}) do
         eq(b:GetWidth(),20);eq(b:GetHeight(),20);eq(b:GetScript('OnDragStart'),nil)
